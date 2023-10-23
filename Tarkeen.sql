@@ -38,6 +38,8 @@ CREATE TABLE Tarkeen.UserTypes
 		(250) NOT NULL,
 	user_type_id int
 		(128) NOT NULL,
+        reset_token varchar(50),
+        reset_token_expiry datetime,
 	PRIMARY KEY
 		(user_id),
 	FOREIGN KEY

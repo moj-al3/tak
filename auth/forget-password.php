@@ -3,40 +3,48 @@ require_once("start_session.php");
 require("../utils/database_connection.php");
 require("../utils/validators.php");
 
-$error = null;
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Validate and sanitize user inputs
-    $data = checkAndCleanPostInputs(["email", "password"]);
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $email = $_POST["email"];
 
-    if (!isset($data["errors"])) {
-        // Use prepared statements with placeholders to avoid SQL injection
-        $query = "SELECT user_id, first_name, password FROM users WHERE email = ?";
+    // Validate the email
+    if (filter_var($email, FILTER_VALIDATE_EMAIL) && isEmailAlreadyUsed($connection, $email)) {
+        // Generate a random token for password reset (you should use a secure method)
+        $token = bin2hex(random_bytes(32));
+
+        // Store the token in the users table along with the user's email
+        $query = "UPDATE users SET reset_token = ?, reset_token_expiry = DATE_ADD(NOW(), INTERVAL 1 HOUR) WHERE email = ?";
         $stmt = $connection->prepare($query);
-        $stmt->bind_param("s", $data["email"]);
-        $stmt->execute();
-        $stmt->bind_result($user_id, $first_name, $hashed_password);
-        $stmt->fetch();
 
-        if (password_verify($data["password"], $hashed_password)) {
-            // Successfully logged in, set session variables
-            $_SESSION['user_id'] = $user_id;
-            // Redirect to the user's profile page or any other page
-            header('Location: /profile.php');
+        if ($stmt) {
+            $stmt->bind_param("ss", $token, $email);
+            $stmt->execute();
+            $stmt->close();
+
+            // Send an email to the user with a link to reset the password
+            $reset_link = "https://yourwebsite.com/reset_password.php?token=" . $token;
+
+            // Compose the email message
+            $subject = "Password Reset";
+            $message = "To reset your password, click the following link:\n\n$reset_link";
+
+            // send the email
+//            mail($email, $subject, $message);
+
+            // Display a success message to the user
+            $_SESSION['messages'] = [["text" => "We have sent a password recover instructions to your email..\nDid not receive the email? Check your spm filter", "type" => "success"]];
+            header('Location: /auth/login.php');
             exit();
         } else {
-            $error = "Wrong Email or Password";
+            // Display an error message
+            $_SESSION['messages'] = [["text" => "Error while updating the reset token. Please try again later.", "type" => "error"]];
         }
+    } else {
+        // Display an error message for an invalid email
+        $_SESSION['messages'] = [["text" => "Invalid email address.", "type" => "error"]];
     }
 }
-
-// If the user is already logged in, redirect to the home
-if (isset($_SESSION['user_id'])) {
-    header('Location: /profile.php');
-    exit();
-}
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -49,37 +57,21 @@ if (isset($_SESSION['user_id'])) {
     <link rel="stylesheet" type="text/css" href="/assets/css/font-awesome-5.15.1.min.css">
     <link rel="stylesheet" href="/assets/css/landing.css">
     <link rel="stylesheet" href="/assets/css/style.css">
-
-
-    <title>log in</title>
+    <title>forget password</title>
 </head>
+
 <body>
 <div id="content" class="container">
-
-    <form class="login-form" method="post">
-        <!-- php -->
-        <?php
-        if (isset($error)) {
-            echo "<h2>$error</h2>";
-        }
-        ?>
-        <h1>Log in</h1>
+    <form class="fp_form" method="POST">
+        <h1>Forget Password</h1>
+        <p>Please enter your email address</p>
         <div class="input-group">
-            <label for="email">Email</label>
+            <label for="email">Email*</label>
             <input type="email" name="email" id="email" required>
         </div>
-        <div class="input-group">
-            <label for="password">Password</label>
-            <input type="password" name="password" id="password" required><br>
-
-            <a href="/auth/forget-password.php"> Forget password ? </a>
-        </div>
-        <div class="login">
-            <input type="submit" value="log in">
-            <div class="flex-container">
-                <p>Don't have an account?</p>
-                <button type="button" onclick="window.location.href = '/auth/signup.php'">sign up</button>
-            </div>
+        <br>
+        <div class="Forget_password">
+            <input type="submit" value="submit">
         </div>
     </form>
 </div>
@@ -120,8 +112,9 @@ if (isset($_SESSION['user_id'])) {
     </section>
 </div>
 
+
+<!-- Javascripts -->
 <?php require_once "../utils/messages.php" ?>
 </body>
-
 
 </html>
