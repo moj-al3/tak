@@ -12,9 +12,8 @@ require("../utils/database_connection.php");
     <link rel="stylesheet" type="text/css" href="/assets/css/font-awesome-5.15.1.min.css">
     <link rel="stylesheet" href="/assets/css/landing.css">
     <link rel="stylesheet" href="/assets/css/style.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="/assets/js/script.js" defer></script>
-    <script src="/assets/js/validation.js" defer></script>
+    <script src="/assets/js/jquery-3.6.0.min.js"></script>
+    <script src="/assets/js/signup.js" defer></script>
 
     <title>Registration</title>
 </head>
