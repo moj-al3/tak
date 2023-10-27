@@ -1,5 +1,5 @@
 <?php
-require_once("start_session.php");
+session_start();
 session_unset();
 session_destroy();
 header("Location: /auth/login.php");

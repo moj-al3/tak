@@ -1,6 +1,6 @@
 <?php
-require("../utils/database_connection.php");
-require("../utils/validators.php");
+require("../snippets/database_connection.php");
+require("../snippets/validators.php");
 header('Content-Type: application/json; charset=utf-8');
 
 if ($_SERVER['REQUEST_METHOD'] != 'POST') {
@@ -28,6 +28,13 @@ if (isEmailAlreadyUsed($connection, $data["email"])) {
     exit();
 }
 
+// Check if the user_id is already in use
+if (isUserIDAlreadyUsed($connection, $data["user_id"])) {
+    http_response_code(400);
+    echo json_encode(["errors" => ["user_id" => "User ID Already In Use"]]);
+    exit();
+}
+
 // Hash the password before storing it
 $hashedPassword = password_hash($data["password"], PASSWORD_DEFAULT);
 
@@ -36,7 +43,7 @@ $insertUserQuery = $connection->prepare("INSERT INTO users (user_id, first_name,
 
 $insertUserQuery->bind_param("issssi", $data["user_id"], $data["first_name"], $data["last_name"], $hashedPassword, $data["email"], $data["user_type_id"]);
 
-if (!$insertUserQuery->execute()) {
+if ($insertUserQuery->execute()==false) {
     // 500 means Internal error (something went wrong)
     http_response_code(500);
     echo json_encode(["message" => "User creation failed"]);
@@ -47,7 +54,7 @@ if (!$insertUserQuery->execute()) {
 $insertCarQuery = $connection->prepare("INSERT INTO cars(owner_id, car_type, car_plate) VALUES (?, ?, ?)");
 $insertCarQuery->bind_param("iss", $data["user_id"], $data["car_type"], $data["car_plate"]);
 
-if (!$insertCarQuery->execute()) {
+if ($insertCarQuery->execute()==false) {
     // 500 means Internal error (something went wrong)
     http_response_code(500);
     echo json_encode(["message" => "Car creation failed"]);

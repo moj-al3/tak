@@ -46,14 +46,43 @@ function resetErrors() {
     });
 }
 
-function submitValidate(btn) {
-    if (validateSignUpForm()) {
-        error = false;
-        resetErrors();
-    }
+
+async function isUserIdUsed(userId) {
+    var result;
+    await $.ajax({
+        url: '/api/check-userid-used.php',
+        type: 'GET',
+        data: {user_id: userId},
+        success: function (data) {
+            result = data;
+        },
+        error: function () {
+            console.error("something went wrong with checking userID")
+            result = true;
+        }
+    });
+    return result;
 }
 
-function validateSignUpForm(formStepsNum) {
+async function isEmailUsed(email) {
+    var result;
+    await $.ajax({
+        url: '/api/check-email-used.php',
+        type: 'GET',
+        data: {email: email},
+        success: function (data) {
+            result = data;
+        },
+        error: function () {
+            console.error("something went wrong with checking email")
+            result = true;
+        }
+    });
+
+    return result;
+}
+
+async function validateSignUpForm(formStepsNum) {
     error = false;
     resetErrors();
 
@@ -80,11 +109,24 @@ function validateSignUpForm(formStepsNum) {
         nationalIdErr.innerHTML = "national id is required";
         nationalIdErr.hidden = false;
     }
+    if (!isEmptyStr(nationalId.value) && (await isUserIdUsed(nationalId.value))) {
+        error = true;
+        nationalIdErr.innerHTML = "national id is already used";
+        nationalIdErr.hidden = false;
+
+    }
 
     if (isEmptyStr(email.value)) {
         error = true;
         emailErr.innerHTML = "email is required";
         emailErr.hidden = false;
+    }
+
+    if (!isEmptyStr(email.value) && (await isEmailUsed(email.value))) {
+        error = true;
+        emailErr.innerHTML = "email id is already used";
+        emailErr.hidden = false;
+
     }
     if (formStepsNum <= 1) {
         return error;
@@ -109,6 +151,11 @@ function validateSignUpForm(formStepsNum) {
     if (isEmptyStr(password1.value)) {
         error = true;
         password1Err.innerHTML = "password is required";
+        password1Err.hidden = false;
+    }
+    if (!isEmptyStr(password1.value) && password1.value.length < 7) {
+        error = true;
+        password1Err.innerHTML = "password must be longer than 7 characters";
         password1Err.hidden = false;
     }
 
@@ -142,18 +189,21 @@ function getFormData() {
                 formData[element.name] = element.value;
             }
         }
+        if (element.name === "user_type_id") {
+            formData[element.name] = form.elements.user_type_id.value;
+        }
     }
+
+    console.log(formData);
     return formData;
 }
 
 
 async function sendDataToBackend(requestData) {
-    // Define the URL of the PHP page
-    const url = '/api/signup.php';
     try {
         // Perform a POST request using jQuery AJAX
         const response = await $.ajax({
-            url: url,
+            url: '/api/signup.php',
             type: 'POST',
             data: requestData
         });
@@ -171,8 +221,8 @@ async function sendDataToBackend(requestData) {
 let formStepsNum = 0;
 
 nextBtns.forEach((btn) => {
-    btn.addEventListener("click", () => {
-        if (validateSignUpForm(formStepsNum)) {
+    btn.addEventListener("click", async () => {
+        if (await validateSignUpForm(formStepsNum)) {
             return;
         }
         formStepsNum++;
@@ -224,11 +274,10 @@ visitorRadio.addEventListener("change", function () {
 });
 
 submitBtn.addEventListener("click", async function () {
-    if (validateSignUpForm(formStepsNum)) {
+    if (await validateSignUpForm(formStepsNum) == true) {
         return;
     }
     var result = await sendDataToBackend(getFormData());
-
 
     if (result == true) {
         alert("Your Account Was Created Successfully");

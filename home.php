@@ -4,22 +4,27 @@ require("snippets/force_loggin.php");
 
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html class="h-full bg-gray-100">
 
 <head>
     <?php include "snippets/layout/head.php" ?>
     <!--  Custom Head Values  -->
-    <title>profile</title>
+    <title>Home Page</title>
 </head>
 
 
-<body>
+
+<body class="h-full">
 
 <?php include "snippets/layout/header.php" ?>
 
-<div id="content" class="container">
-<h1>This is Profile page</h1>
-</div>
+<main>
+    <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+        <p class="font-sans">
+            This is a home page
+        </p>
+    </div>
+</main>
 
 
 <?php include "snippets/layout/footer.php" ?>

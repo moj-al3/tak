@@ -1,26 +1,17 @@
-<?php
-require("../utils/database_connection.php");
-?>
+<?php include "../snippets/base.php" ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <!-- Styles -->
-    <link rel="stylesheet" href="/assets/css/base.css">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" type="text/css" href="/assets/css/font-awesome-5.15.1.min.css">
-    <link rel="stylesheet" href="/assets/css/landing.css">
-    <link rel="stylesheet" href="/assets/css/style.css">
-    <script src="/assets/js/jquery-3.6.0.min.js"></script>
-    <script src="/assets/js/signup.js" defer></script>
-
+    <?php include "../snippets/layout/head.php" ?>
+    <!--  Custom Head Values  -->
     <title>Registration</title>
 </head>
 
 <body>
+<?php include "../snippets/layout/header.php" ?>
 <div id="content" class="container">
-    <form class="form" id="regestration_form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+    <form class="form" id="regestration_form">
         <h1>Create Account</h1>
         <!--Progress bar--->
         <div class="progressbar">
@@ -122,41 +113,15 @@ require("../utils/database_connection.php");
     </form>
 </div>
 
-<div class="footer">
-    <div class="row container">
-        <div class="footer-col">
-            <h4>Contact</h4>
-            <i class='bx bxs-phone'><span class="icon-text">920002366</span></i><br>
-            <i class='bx bxs-envelope'><span class="icon-text">info@kfu.edu.sa</span></i><br>
-            <i class='bx bxs-location-plus'><span class="icon-text">Eastern Province - AlAhsa</span></i><br>
-        </div>
-        <div class="footer-col">
-            <h4>About is</h4>
-            <a href="">TARKEEN-KFU</a>
-        </div>
-        <div class="footer-col">
-            <h4>Social midea</h4>
-            <div class="social-links">
-                <a href="#"><i class='bx bxl-twitter'></i></a>
-                <a href="#"><i class='bx bxl-facebook'></i></a>
-                <a href="#"><i class='bx bxl-instagram-alt'></i></a>
-                <a href="#"><i class='bx bxl-linkedin'></i></a>
-            </div>
-        </div>
-        <div class="footer-col">
-            <h4>Let us help you</h4>
-            <a href="">Visit Our Help Center</a> <br>
-            <a href="">Summary of Services</a><br>
-            <a href="">FAQs</a>
+<?php include "../snippets/layout/footer.php" ?>
 
-        </div>
-    </div>
-    <section>
-        <div class="footer-container">
-            <p class="copyright">All Rights Reserved for TARKEEN- KFU © 2023</p>
-        </div>
-    </section>
-</div>
+
+<!-- Javascript -->
+<?php include "../snippets/layout/scripts.php" ?>
+<script src="/assets/js/signup.js" defer></script>
+
+
+<?php include "../snippets/layout/messages.php" ?>
 
 
 </body>
