@@ -1,0 +1,260 @@
+* {
+   box-sizing: border-box;
+}
+
+.body {
+   /* height: 96vh; */
+   background-color: #f2f4f5;
+   display: block;
+   margin: 0px;
+}
+
+header {
+   background-color: #979797;
+   height: fit-content;
+   margin-block: 15px;
+   color: #fff;
+   padding-block: 3px;
+}
+
+header h1,
+h3 {
+   font-size: 20px !important;
+   text-align: center;
+}
+
+main {
+   /* height: calc(100% -  75px); */
+   /* height: 100%; */
+   padding: 15px;
+}
+
+.container-profile {
+   display: flex;
+   gap: 30px;
+   height: 100%;
+}
+
+.container-profile .left {
+   flex: 50%;
+   background-color: #fff;
+   padding-inline: 15px;
+   border-radius: 20px;
+   box-shadow: 1px 1px 10px -1px #979797;
+}
+
+.container-profile .right {
+   flex: 50%;
+   display: grid;
+   gap: 15px;
+}
+
+.img-container {
+   width: 100%;
+   height: 35%;
+   overflow: hidden;
+   text-align: center;
+   margin-bottom: 20px;
+}
+
+.fields label {
+   display: flex;
+   align-items: center;
+   border-bottom: 1px solid #a9a9a9;
+   margin-bottom: 5px;
+}
+
+.fields label input {
+   border: 0px;
+   outline: 0px;
+   padding: 11px;
+   flex: 1;
+}
+
+.fields label:has(input:focus) {
+   border-bottom: 1px solid #FF0050;
+}
+
+.fields label span {
+   display: inline-block;
+   white-space: nowrap;
+}
+
+.save-btn {
+   padding: 7px;
+   text-align: center;
+}
+
+.save-btn button {
+   margin-left: 0px;
+   background-color: #FF0050;
+   border: 1px solid #FF0050;
+   padding: 8px 15px;
+   font-size: 15px;
+   color: #fff;
+   border-radius: 5px;
+   cursor: pointer;
+}
+
+/* * ////// */
+.right .reservations,
+.right .violation {
+   background-color: #fff;
+   border-radius: 20px;
+   box-shadow: 1px 1px 10px -1px #979797;
+   padding: 10px;
+}
+
+.right .reservations .title,
+.right .violation .title {
+   font-weight: 600;
+   font-size: 17px;
+   padding: 12px 20px;
+   border-bottom: 1px solid #FF0050;
+}
+
+.right .reservations .reservations-list,
+.right .violation .violation-list {
+   list-style: none;
+   padding-inline: 20px;
+   margin-block: 10px;
+}
+
+.right .reservations .reservations-list li,
+.right .violation .violation-list li {
+   /* border: 1px solid #FF0050; */
+   margin-bottom: 9px;
+   line-height: 1.6;
+}
+
+.right .reservations .reservations-list li span,
+.right .violation .violation-list li span {
+   display: block;
+   width: 100%;
+   /* white-space: nowrap;
+   overflow-x: hidden;
+   text-overflow: ellipsis; */
+}
+
+.right .reservations .reservations-list li span:last-child,
+.right .violation .violation-list li span:last-child {
+   color: #979797;
+}
+
+.more {
+   padding: 8px 20px;
+   text-align: right;
+}
+
+.more .more-btn {
+   margin-left: 0px;
+   background-color: #FF0050;
+   border: 1px solid #FF0050;
+   padding: 8px 15px;
+   font-size: 15px;
+   color: #fff;
+   border-radius: 5px;
+   cursor: pointer;
+}
+
+/* .dialog {
+   position: fixed;
+   top:50%;
+   transform: translateY(-50%);
+} */
+dialog {
+   padding: 15px;
+   overflow: hidden;
+   border: 0;
+   height: 90%;
+   width: 60%;
+   border-radius: 20px;
+}
+
+dialog:-internal-dialog-in-top-layer::backdrop {
+   background: rgba(0, 0, 0, 0.5);
+}
+
+dialog .title {
+   font-weight: 600;
+   font-size: 19px;
+   padding: 12px 20px;
+   border-bottom: 1px solid #FF0050;
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+}
+
+dialog .title span:last-child {
+   background-color: #FF0050;
+   color: white;
+   width: 30px;
+   height: 30px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   border-radius: 50%;
+   cursor: pointer;
+}
+
+dialog .cont-list {
+   height: 88%;
+   overflow-y: auto;
+}
+
+dialog .dialog-list {
+   list-style: none;
+   padding-inline: 20px;
+   margin-block: 10px;
+}
+
+dialog .dialog-list li {
+   /* border: 1px solid #FF0050; */
+   margin-bottom: 9px;
+   line-height: 1.6;
+}
+
+dialog .dialog-list li span {
+   display: block;
+   width: 100%;
+   /* white-space: nowrap;
+   overflow-x: hidden;
+   text-overflow: ellipsis; */
+}
+
+dialog .dialog-list li span:last-child {
+   color: #979797;
+}
+
+.footer {
+   position: relative;
+}
+
+@media (max-width:768px) {
+   .container-profile {
+      flex-direction: column;
+   }
+
+   dialog {
+      padding: 15px;
+      overflow: hidden;
+      border: 0;
+      height: 90%;
+      width: 90%;
+      border-radius: 20px;
+   }
+}
+
+@media (max-width:578px) {
+   dialog {
+      height: 100%;
+      width: 100%;
+   }
+
+   dialog:-internal-dialog-in-top-layer {
+      max-width: 100%;
+      max-height: 100%;
+      margin: 0;
+      border-radius: 0;
+   }
+}

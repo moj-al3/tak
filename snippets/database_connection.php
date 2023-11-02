@@ -10,7 +10,8 @@ if (!isset($_SESSION['messages']))
     $_SESSION['messages'] = [];
 $HOST = "127.0.0.1";
 $USERNAME = "root";
-$PASSWORD = "";
+//$PASSWORD = "";
+$PASSWORD = "123456";
 $DATABASE_NAME = "Tarkeen";
 
 //  Create connection

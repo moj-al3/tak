@@ -1,6 +1,5 @@
 <?php
-require("../snippets/database_connection.php");
-require("../snippets/validators.php");
+require("../snippets/base.php");
 header('Content-Type: application/json; charset=utf-8');
 
 

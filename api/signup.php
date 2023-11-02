@@ -1,6 +1,5 @@
 <?php
-require("../snippets/database_connection.php");
-require("../snippets/validators.php");
+require("../snippets/base.php");
 header('Content-Type: application/json; charset=utf-8');
 
 if ($_SERVER['REQUEST_METHOD'] != 'POST') {
@@ -43,7 +42,7 @@ $insertUserQuery = $connection->prepare("INSERT INTO users (user_id, first_name,
 
 $insertUserQuery->bind_param("issssi", $data["user_id"], $data["first_name"], $data["last_name"], $hashedPassword, $data["email"], $data["user_type_id"]);
 
-if ($insertUserQuery->execute()==false) {
+if ($insertUserQuery->execute() == false) {
     // 500 means Internal error (something went wrong)
     http_response_code(500);
     echo json_encode(["message" => "User creation failed"]);
@@ -54,7 +53,7 @@ if ($insertUserQuery->execute()==false) {
 $insertCarQuery = $connection->prepare("INSERT INTO cars(owner_id, car_type, car_plate) VALUES (?, ?, ?)");
 $insertCarQuery->bind_param("iss", $data["user_id"], $data["car_type"], $data["car_plate"]);
 
-if ($insertCarQuery->execute()==false) {
+if ($insertCarQuery->execute() == false) {
     // 500 means Internal error (something went wrong)
     http_response_code(500);
     echo json_encode(["message" => "Car creation failed"]);

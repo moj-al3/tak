@@ -1,5 +1,6 @@
-<!-- This file will work as a base for anything we want to include in all the files-->
 <?php
+//This file will work as a base for anything we want to include in all the files
+date_default_timezone_set('Asia/Riyadh');
 // This will act as flag to tell the next include/require that they are being included by other file
 const INCLUDED_BY_OTHER_FILE = true;
 session_start();
