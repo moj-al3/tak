@@ -1,4 +1,6 @@
 <?php include "../snippets/base.php" ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,7 +18,6 @@
         <!--Progress bar--->
         <div class="progressbar">
             <div class="progress" id="progress">
-
             </div>
             <div class="progress-step progress-step-active">
             </div>
@@ -27,11 +28,10 @@
         <!-- radio group  -->
 
         <div class="radio-container">
-            <p>I am a :</p>
             <div class="radio-group">
-                <input type="radio" id="visitor" name="user_type_id" value="2">
+                <input type="radio" id="visitor" name="user_type_id" value="2" required>
                 <label for="visitor">Visitor</label>
-                <input type="radio" id="kfu_member" name="user_type_id" value="1">
+                <input type="radio" id="kfu_member" name="user_type_id" value="1" required>
                 <label for="kfu_member">KFU member</label>
             </div>
         </div>
