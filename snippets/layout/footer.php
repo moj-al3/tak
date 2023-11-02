@@ -35,6 +35,7 @@ if (!defined('INCLUDED_BY_OTHER_FILE')) {
 
         </div>
     </div>
+    <hr>
     <section>
         <div class="footer-container">
             <p class="copyright">All Rights Reserved for TARKEEN- KFU © 2023</p>
