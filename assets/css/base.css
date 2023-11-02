@@ -1,3 +1,4 @@
+
 :root {
   background: #ffffff;
   height: 100%;
@@ -15,14 +16,14 @@
 }
 
 .footer {
-  position: fixed;
+  position: none ;
   left: 0;
   bottom: 0;
   width: 100%;
-  background-color: white;
-  color: black;
+  background-color:  rgb(31 41 55);
+  color: white;
   text-align: center;
-  font-size: 14px;
+  font-size: 15px;
   /* height: 155px; */
 }
 
@@ -39,6 +40,9 @@
   flex-wrap: wrap;
 }
 
+.footer-col >h4{
+  font-size: 20px;
+}
 .footer-col {
   width: 25%;
   padding: 0;
@@ -49,30 +53,30 @@
   height: 40px;
   width: 10px;
   text-align: center;
-  line-height: 0px;
   transition: all 0.5s ease;
   margin: 0 10px 10px 0;
+  color: #ef444e;
 }
 
 .footer-col .social-links a:hover {
-  color: #080b1d;
+  color: #ef444e;
 }
 
 .footer-col a {
-  color: #080b1d;
+  color: white ;
   text-decoration: none;
 }
 
 section .footer-container {
-  height: 30px;
+  height: 40px;
   width: 100%;
-  background-color: rgba(14, 24, 36, 0.15);
+  background-color: rgb(31 41 55);
 }
 
 p.copyright {
-  color: black;
+  color: white;
   line-height: 40px;
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 700;
 }
 
@@ -83,7 +87,7 @@ p.copyright {
 /* header */
 
 nav {
-  background: #080B1D;
+  background:  rgb(31 41 55);
   padding: 5px 20px;
 }
 
@@ -153,13 +157,15 @@ a:hover {
   display: block;
 }
 
+
+
 /* Navbar Toggle */
 .toggle {
   cursor: pointer;
 }
 
 .bars {
-  background: #999;
+  background: rgb(55 65 81);
   display: inline-block;
   height: 2px;
   position: relative;
@@ -169,7 +175,7 @@ a:hover {
 
 .bars:before,
 .bars:after {
-  background: #999;
+  background: rgb(55 65 81);
   content: '';
   display: block;
   height: 100%;
@@ -185,6 +191,7 @@ a:hover {
 .bars:after {
   top: -5px;
 }
+
 
 /* Tablet menu */
 @media all and (min-width: 468px) {
@@ -212,8 +219,8 @@ a:hover {
 
   .button a {
     padding: 7.5px 15px;
-    background: #FF0050;
-    border: 1px #FF0050;
+    background: rgb(17 24 39);
+    border: 1px rgb(17 24 39);
     border-radius: 50em;
   }
 
@@ -227,8 +234,8 @@ a:hover {
   }
 
   .button:not(.secondary) a:hover {
-    background: #006d6d;
-    border-color: #005959;
+    background: rgb(55 65 81);
+    border-color: rgb(55 65 81);
   }
 
   .button.secondary a:hover {
@@ -266,4 +273,16 @@ a:hover {
   .menu li.button {
     padding-right: 0;
   }
+}
+/*responsive*/
+@media(max-width: 767px){
+  .footer-col{
+    width: 50%;
+    margin-bottom: 30px;
+}
+}
+@media(max-width: 574px){
+  .footer-col{
+    width: 100%;
+}
 }
