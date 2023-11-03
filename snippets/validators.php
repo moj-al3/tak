@@ -82,7 +82,7 @@ function checkAndCleanPostInputs($requiredInputs)
     // Check if all of the required inputs are present in the POST request.
     $errors = [];
     foreach ($requiredInputs as $input) {
-        if (!isset($_POST[$input])) {
+        if (!isset($_POST[$input]) || empty($_POST[$input])) {
             $errors[$input] = 'this field is required';
         }
     }
@@ -109,7 +109,7 @@ function checkAndCleanGETInputs($requiredInputs)
     // Check if all of the required inputs are present in the GET request.
     $errors = [];
     foreach ($requiredInputs as $input) {
-        if (!isset($_GET[$input])) {
+        if (!isset($_GET[$input]) || empty($_GET[$input])) {
             $errors[$input] = 'this field is required';
         }
     }
@@ -128,4 +128,47 @@ function checkAndCleanGETInputs($requiredInputs)
 
     // return the cleaned inputs.
     return $cleanedInputs;
+}
+
+
+function saveProfile($connection, $user)
+{
+
+    $data = checkAndCleanPostInputs(["first_name", "last_name", "email"]);
+
+    // Check for errors in input
+    if (isset($data["errors"])) {
+        return "All Fields are required";
+    }
+    $user_id = $user["user_id"];
+
+    // Extract sanitized inputs
+    $first_name = $data['first_name'];
+    $last_name = $data['last_name'];
+    $email = $data['email'];
+
+    // Check if the new email is already in use by other users
+    $emailInUseQuery = "SELECT user_id FROM users WHERE email = ? AND user_id != ?";
+    $emailInUseStatement = $connection->prepare($emailInUseQuery);
+    $emailInUseStatement->bind_param("si", $email, $user_id);
+    $emailInUseStatement->execute();
+    $emailInUseResult = $emailInUseStatement->get_result();
+
+    if ($emailInUseResult->num_rows > 0) {
+        return "Email is already in use by another user.";
+    }
+    // Update user information in the database
+    echo $first_name;
+    $updateUserQuery = "UPDATE users SET first_name = ?, last_name = ?, email = ? WHERE user_id = ?";
+    $updateStatement = $connection->prepare($updateUserQuery);
+    $updateStatement->bind_param("sssi", $first_name, $last_name, $email, $user_id);
+    $updateStatement->execute();
+    if ($updateStatement == false) {
+//        echo "Error: No rows were updated. " . $connection->error;
+        return "Something went wrong, please try again later.";
+    }
+
+
+    return true;
+
 }

@@ -13,3 +13,8 @@ if (!defined('INCLUDED_BY_OTHER_FILE')) {
 <link rel="stylesheet" type="text/css" href="/assets/css/font-awesome-5.15.1.min.css">
 <link rel="stylesheet" href="/assets/css/style.css">
 <link rel="stylesheet" href="/assets/css/base.css">
+<style>
+    .hide {
+        display: none;
+    }
+</style>
