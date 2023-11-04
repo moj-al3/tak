@@ -28,6 +28,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             margin: 1px;
             float: right;
         }
+
+        .link {
+            color: black;
+        }
     </style>
     <title>Home</title>
 </head>
@@ -114,10 +118,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             foreach ($user['reservations'] as $reservation) {
                                 if ($displayedReservations < 3) {
                                     ?>
-                                    <li>
-                                        <span><?php echo $reservation['parking_number']; ?></span>
-                                        <span><?php echo date('d F, Y h:i A', strtotime($reservation['reservation_datetime'])) ?></span>
-                                    </li>
+                                    <a href="/reservations/show.php?reservation_id=<?= $reservation['reservation_id'] ?>"
+                                       class="link">
+                                        <li>
+                                            <span><?= $reservation['parking_number'] ?></span>
+                                            <span><?= date('d F, Y h:i A', strtotime($reservation['reservation_datetime'])) ?></span>
+                                        </li>
+                                    </a>
                                     <?php
                                     $displayedReservations++;
                                 } else {
@@ -211,10 +218,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 if (count($user['reservations']) > 0) {
                     foreach ($user['reservations'] as $reservation) {
                         ?>
-                        <li>
-                            <span><?php echo $reservation['parking_number']; ?></span>
-                            <span><?php echo date('d F, Y h:i A', strtotime($reservation['reservation_datetime'])) ?></span>
-                        </li>
+                        <a href="/reservations/show.php?reservation_id=<?= $reservation['reservation_id'] ?>"
+                           class="link">
+                            <li>
+                                <span><?= $reservation['parking_number'] ?></span>
+                                <span><?= date('d F, Y h:i A', strtotime($reservation['reservation_datetime'])) ?></span>
+                            </li>
+                        </a>
                         <?php
                     }
                 }
