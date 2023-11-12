@@ -14,7 +14,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $_SESSION['messages'] = [["text" => $result, "type" => "error"]];
     }
 
-
 }
 ?>
 <!DOCTYPE html>
@@ -72,12 +71,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <label for="">
                             <span>Car Type:</span>
                             <input class="editable" type="text" name="car_type1"
-                                   value="<?= $user["cars"][0]['car_type'] ?>" readonly>
+                                   value="<?= $user["cars"][0]['car_type'] ?? ''?>" readonly>
                         </label>
                         <label for="">
                             <span>Car Plate:</span>
                             <input class="editable" type="text" name="car_plate1"
-                                   value="<?= $user["cars"][0]['car_plate'] ?>" readonly>
+                                   value="<?= $user["cars"][0]['car_plate'] ?? '' ?>" readonly>
                         </label>
                         <label for="">
                             <span>Car Type2:</span>
@@ -190,7 +189,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <ul class="dialog-list">
 
                 <?php
-                // Display violations using data from $user limited to the first 3 records
                 if (isset($user['violations']) && count($user['violations']) > 0) {
                     foreach ($user['violations'] as $violation) {
                         ?>
@@ -250,7 +248,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         });
 
         $("#save").on("click", async function () {
-            var resonse = await Swal.fire({
+            var response = await Swal.fire({
                 title: "Confirmation",
                 text: "Are you sure you want to save the changes?",
                 confirmButtonText: "Yes",
@@ -259,12 +257,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 cancelButtonColor: '#ff0050',
 
             });
-            if (resonse.isConfirmed) {
+            if (response.isConfirmed) {
                 $("#user-form").submit();
             }
         });
     });
 </script>
+<script src="/assets/js/header.js"></script>
+
 </body>
 
 </html>

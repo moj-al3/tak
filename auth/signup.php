@@ -119,6 +119,7 @@
 <!-- Javascript -->
 <?php include "../snippets/layout/scripts.php" ?>
 <script src="/assets/js/signup.js" defer></script>
+<script src="../assets/js/header.js"></script>
 
 
 <?php include "../snippets/layout/messages.php" ?>

@@ -158,7 +158,6 @@ function saveProfile($connection, $user)
         return "Email is already in use by another user.";
     }
     // Update user information in the database
-    echo $first_name;
     $updateUserQuery = "UPDATE users SET first_name = ?, last_name = ?, email = ? WHERE user_id = ?";
     $updateStatement = $connection->prepare($updateUserQuery);
     $updateStatement->bind_param("sssi", $first_name, $last_name, $email, $user_id);

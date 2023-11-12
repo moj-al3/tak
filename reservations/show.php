@@ -188,12 +188,13 @@ $url = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 
 <script type="text/javascript">
     new QRCode(document.getElementById("qrcode"), {
-        text: <?=  json_encode($url)  ?>,
+        text: "<?= $url  ?>",
         width: 128,
         height: 128,
         correctLevel: QRCode.CorrectLevel.H
     });
 </script>
+
 </body>
 
 </html>
