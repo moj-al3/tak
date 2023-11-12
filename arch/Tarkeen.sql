@@ -98,12 +98,16 @@ CREATE TABLE Tarkeen.Reservation
     enter_datetime       datetime (6),
     exit_datetime        datetime (6),
     parking_id           int (128) NOT NULL,
+    car_id               int (128) NOT NULL,
     reserver_id          int (128) NOT NULL,
     PRIMARY KEY
         (reservation_id),
     FOREIGN KEY
         (parking_id) REFERENCES Tarkeen.ParkingSpots
         (parking_id),
+    FOREIGN KEY
+        (car_id) REFERENCES Tarkeen.Cars
+        (car_id),
     FOREIGN KEY
         (reserver_id) REFERENCES Tarkeen.Users
         (user_id)
@@ -228,11 +232,11 @@ VALUES (1, 'b1', 1, 2),
 --
 INSERT INTO Tarkeen.Reservation
 (reservation_id, reservation_datetime, extensions_count, enter_datetime,
- exit_datetime, parking_id, reserver_id)
-VALUES (1, '2023-09-20T00:00:00', NULL, '2023-09-2T8:30:11', '2023-09-20 15:30:12', 1, 11100098),
-       (2, '2023-09-22T00:00:00', NULL, '2023-09-22T12:30:11', '2023-09-22 15:35:12', 2, 220006286),
-       (3, '2023-09-24T00:00:00', NULL, '2023-09-24T15:30:11', '2023-09-24 16:30:12', 3, 220008788),
-       (4, '2023-09-25T00:00:00', NULL, '2023-09-25T9:30:11', '2023-09-25 10:30:12', 4, 878287269);
+ exit_datetime, parking_id, car_id, reserver_id)
+VALUES (1, '2023-09-20T00:00:00', NULL, '2023-09-2T8:30:11', '2023-09-20 15:30:12', 1, 1, 11100098),
+       (2, '2023-09-22T00:00:00', NULL, '2023-09-22T12:30:11', '2023-09-22 15:35:12', 2, 2, 220006286),
+       (3, '2023-09-24T00:00:00', NULL, '2023-09-24T15:30:11', '2023-09-24 16:30:12', 3, 3, 220008788),
+       (4, '2023-09-25T00:00:00', NULL, '2023-09-25T9:30:11', '2023-09-25 10:30:12', 4, 4, 878287269);
 --
 -- --FeedBacks
 --

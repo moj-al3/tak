@@ -66,9 +66,36 @@ if ($resultParking == false || $resultParking->num_rows == 0) {
 // Fetch the parking information
 $parking_info = $resultParking->fetch_assoc();
 
-// Free the result set and close the statement for parking details
-$resultParking->free();
-$stmtParking->close();
+// Retrieve car information using the car_id from the reservation
+$car_id = $reservation['car_id'];
+
+// Prepare SQL statement to get Car details
+$sqlCar = "SELECT * FROM Cars WHERE car_id = ?";
+
+// Prepare the statement for parking details
+$stmtCar = $connection->prepare($sqlCar);
+
+// Bind the parameter
+$stmtCar->bind_param("i", $car_id);
+
+// Execute the statement to get car details
+$stmtCar->execute();
+
+// Get the result for car details
+$resultCar = $stmtCar->get_result();
+
+// Check if the query was successful
+if ($resultCar == false || $resultCar->num_rows == 0) {
+    die("No car found for the reservation");
+}
+
+// Fetch the car information
+$car_info = $resultCar->fetch_assoc();
+
+
+// Free the result set and close the statement for car details
+$resultCar->free();
+$stmtCar->close();
 // change this link to get the security to his page
 $url = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 
@@ -168,15 +195,15 @@ $url = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
                         </div>
                         <div class="flex flex-col text-gray-200">
                             <span class="text-xs text-parking-text">Car Number</span>
-                            <span class="font-mono text-red-500">HFS232</span>
+                            <span class="font-mono text-gray-200"><?= $car_info["car_plate"] ?></span>
                         </div>
                         <div class="flex flex-col text-gray-200">
                             <span class="text-xs text-parking-text">Vehicle</span>
-                            <span class="font-mono text-red-500">Toyota Camry</span>
+                            <span class="font-mono text-gray-200"><?= $car_info["car_type"] ?></span>
                         </div>
                         <div class="flex flex-col text-gray-200">
-                            <span class="text-xs text-parking-text">Zone/Spot</span>
-                            <span class="font-mono"><?= $parking_info['zone_number'] . '/' . $parking_info['flour_number'] . '-' . $parking_info["parking_number"] ?></span>
+                            <span class="text-xs text-parking-text">Floor/Spot</span>
+                            <span class="font-mono"><?= $parking_info['flour_number'] . '/' . $parking_info['zone_number'] . '-' . $parking_info["parking_number"] ?></span>
                         </div>
                     </div>
                 </div>
