@@ -29,11 +29,14 @@ function createReservation()
     $insertReservationStmt->close();
 }
 
+// ... (existing code)
+
 function SwitchReservation()
 {
     global $connection;
     global $parkingInfoArray;
     global $occupiedParkingSpots;
+    global $user; // Make sure $user is in the global scope
 
     // Retrieve form data
     $previousSpot = $_POST['previous-spot'];
@@ -57,24 +60,71 @@ function SwitchReservation()
         return;
     }
 
+    // Fetch reservation data for the new spot
+    $getReservationDataSql = "SELECT res.car_id, reserver_id, cars.owner_id 
+                              FROM Reservation res
+                              JOIN cars ON res.car_id = cars.car_id
+                              WHERE res.parking_id = ? 
+                              AND DATE(res.reservation_datetime) = CURDATE()";
+    $getReservationDataStmt = $connection->prepare($getReservationDataSql);
+    $getReservationDataStmt->bind_param("i", $parkingInfoArray[$previousSpot]);
+    $getReservationDataStmt->execute();
+    $reservationDataResult = $getReservationDataStmt->get_result();
+
+    $reservationData = $reservationDataResult->fetch_assoc();
+    $carId = $reservationData['car_id'];
+    $ownerId = $reservationData['owner_id'];
+    $violatorId = $user['user_id']; // Use the violator_id from $user
 
     // Update the database with the new parking information
     $updateSql = "UPDATE Reservation SET parking_id = ? WHERE parking_id = ? AND DATE(reservation_datetime) = CURDATE()";
     $updateStmt = $connection->prepare($updateSql);
     $updateStmt->bind_param("ii", $parkingInfoArray[$newSpot], $parkingInfoArray[$previousSpot]);
 
-    if ($updateStmt->execute()) {
-        $_SESSION['messages'] = [["text" => "Parking spots updated successfully", "type" => "success"]];
-        // update the stored data in $user by refreshing the page
-        header('Location: /reservations/create.php');
-        exit();
-    } else {
+    $result = $updateStmt->execute();
+
+    if ($result == false) {
         $_SESSION['messages'] = [["text" => "Failed to update parking spots", "type" => "error"]];
+        return;
     }
 
-    // Close the statement
+    // Violation logic
+    $violationTypeId = 2; // Set violation type ID to 2
+    // Fetch violation types with their IDs from the database
+    $violationTypeQuery = "SELECT number_of_days FROM ViolationTypes where violation_type_id=2";
+    $violationTypeStmt = $connection->prepare($violationTypeQuery);
+    $violationTypeStmt->execute();
+    $selectedViolationTypeDays = $violationTypeStmt->get_result()->fetch_assoc()['number_of_days'];
+    $violationDatetime = date('Y-m-d H:i:s');
+
+
+    // Calculate violation_end_datetime
+    $violationEndDatetime = date('Y-m-d H:i:s', strtotime("+ $selectedViolationTypeDays days"));
+
+    // Insert the violation into the violations table including the note and violation_end_datetime
+    $insertViolationQuery = "INSERT INTO violations (violation_datetime, violation_end_datetime, car_id, violation_type_id, violator_id, violated_id) 
+                                VALUES (?, ?, ?, ?, ?, ?)";
+    $insertStatement = $connection->prepare($insertViolationQuery);
+    $insertStatement->bind_param("ssiiis", $violationDatetime, $violationEndDatetime, $carId, $violationTypeId, $ownerId, $violatorId);
+    $violationResult = $insertStatement->execute();
+
+    if ($violationResult == false) {
+        $_SESSION['messages'] = [["text" => "Failed to record violation." . $connection->error, "type" => "error"]];
+        return;
+    }
+
+    $_SESSION['messages'] = [["text" => "Switching and Violation recorded successfully.", "type" => "success"]];
+    // Close the statements
     $updateStmt->close();
+    $insertStatement->close();
+    $getReservationDataStmt->close();
+    // update the stored data in $user by refreshing the page
+    header('Location: /reservations/create.php');
+    exit();
+
+
 }
+
 
 // Check if the user already has a reservation for today
 $checkReservationSql = "SELECT COUNT(*) AS count FROM Reservation WHERE reserver_id = ? AND DATE(reservation_datetime) = CURDATE()";
