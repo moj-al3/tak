@@ -20,7 +20,7 @@ if (isset($_SESSION['user_id'])) {
     $stmt->close();
 
     // Retrieve cars associated with the user
-    $queryCars = "SELECT car_id, car_type, car_plate FROM cars WHERE owner_id = ?";
+    $queryCars = "SELECT car_id, car_type, car_plate FROM cars WHERE owner_id = ? and deleted=FALSE";
     $stmtCars = $connection->prepare($queryCars);
     $stmtCars->bind_param("i", $user_id);
     $stmtCars->execute();

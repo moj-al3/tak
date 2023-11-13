@@ -60,13 +60,12 @@ CREATE TABLE Tarkeen.Cars
     car_type  varchar(15) NOT NULL,
     car_plate varchar(15) NOT NULL,
     owner_id  int (128) NOT NULL,
+    deleted   tinyint(1) NOT NULL DEFAULT 0,
     PRIMARY KEY
         (car_id),
     FOREIGN KEY
         (owner_id) REFERENCES Tarkeen.Users
-        (user_id),
-    UNIQUE KEY `unique_car`
-        (car_type, car_plate)
+        (user_id)
 );
 
 
@@ -141,7 +140,7 @@ CREATE TABLE Tarkeen.ViolationTypes
 (
     violation_type_id int(128) NOT NULL
         AUTO_INCREMENT,
-    `name`            varchar(18) NOT NULL,
+    `name`            varchar(256) NOT NULL,
     number_of_days    int(128),
     PRIMARY KEY
         (violation_type_id)

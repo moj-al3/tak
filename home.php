@@ -3,17 +3,17 @@
 require("snippets/force_loggin.php");
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    //    make the logic of saving the form
-    $result = saveProfile($connection, $user);
-    if ($result === true) {
-        $_SESSION['messages'] = [["text" => "Your user information updated successfully", "type" => "success"]];
-        // update the stored data in $user by refreshing the page
-        header('Location: /home.php');
-        exit();
-    } else {
-        $_SESSION['messages'] = [["text" => $result, "type" => "error"]];
+    switch ($_POST["action"] ?? "") {
+        case "delete_car":
+            deleteCar($connection, $user);
+            break;
+        case "add_car":
+            addCar($connection, $user);
+            break;
+        default:
+            saveProfile($connection, $user);
+            break;
     }
-
 }
 ?>
 <!DOCTYPE html>
@@ -68,21 +68,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <input class="editable" type="email" name="email" value="<?= $user['email'] ?>" readonly>
                     </label>
                     <?php if ($user["user_type_id"] == "1" || $user["user_type_id"] == "2"): ?>
-                        <label for="">
-                            <span>Car Type:</span>
-                            <input class="editable" type="text" name="car_type1"
-                                   value="<?= $user["cars"][0]['car_type'] ?? '' ?>" readonly>
-                                   <span>Car Plate:</span>
-                            <input class="editable" type="text" name="car_plate1"
-                                   value="<?= $user["cars"][0]['car_plate'] ?? '' ?>" readonly>
-                                   <p><span id="delete">delete</span></p>
-                        </label>
+                        <?php foreach ($user["cars"] as $car): ?>
+                            <label for="">
+                                <span>Car Type:</span>
+                                <input class="editable" type="text" name="car_type1"
+                                       value="<?= $car['car_type'] ?? '' ?>" readonly>
+                                <span>Car Plate:</span>
+                                <input class="editable" type="text" name="car_plate1"
+                                       value="<?= $car['car_plate'] ?? '' ?>" readonly>
+                                <?php if (count($user["cars"]) >= 2): ?>
+                                    <p><span id="delete"
+                                             onclick="deleteCar(<?= $car["car_id"] ?>)">delete</span>
+                                    </p>
+                                <?php endif; ?>
+                            </label>
+                        <?php endforeach; ?>
 
-                        <label for="">
-                        <span>Do you want to</span>
-                        <p><span id="new car" class ="new-car">Add new car</span></p>
-                    </label>
-                        
+                        <?php if (count($user["cars"]) <= 1): ?>
+                            <label for="">
+                                <span>Do you want to</span>
+                                <p><span id="new car" class="new-car">Add new car</span></p>
+                            </label>
+                        <?php endif; ?>
                     <?php endif; ?>
 
                 </div>

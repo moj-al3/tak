@@ -18,11 +18,7 @@ violationsMoreBtn.addEventListener('click', e => {
     dialogViolations.showModal();
 
 })
-// MoreBtn.forEach(btn=> {
-//    btn.addEventListener('click', e=> {
-//       dialog.showModal();
-//    });
-// });
+
 
 closeDialogV.addEventListener('click', e => {
     dialogViolations.close();
@@ -40,9 +36,9 @@ $(function () {
         }
     });
 });
-document.getElementById("delete").onclick = 
-function delete1() {
-    Swal.fire({
+
+async function deleteCar(carID) {
+    const result = await Swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
         icon: "warning",
@@ -50,38 +46,29 @@ function delete1() {
         confirmButtonColor: "#blue",
         cancelButtonColor: "#d33",
         confirmButtonText: "Yes"
-    }).then((result) => {
-        if (result.isConfirmed) {
-            Swal.fire({
-                title: "Deleted!",
-                text: "Your file has been deleted.",
-                icon: "success"
-            });
-        }
     });
+    if (result.isConfirmed) {
+        submitForm({"action": "delete_car", "car_id": carID});
+    }
 }
 
 
-document.getElementById("new car").onclick = 
-async function addnewcar() {
-    const { value: formValues } = await Swal.fire({
-        title: "new car information",
-        html: `
+document.getElementById("new car").onclick =
+    async function addnewcar() {
+        const {value: formValues} = await Swal.fire({
+            title: "new car information",
+            html: `
           <input id="swal-input1"  placeholder="Car plate">
           <input id="swal-input2"  placeholder="Car type">
         `,
-        focusConfirm: false,
-        preConfirm: () => {
-            return [
-                document.getElementById("swal-input1").value,
-                document.getElementById("swal-input2").value
-            ];
-        }
-    });
-    if (formValues) {
-        Swal.fire(JSON.stringify(formValues));
+            focusConfirm: false,
+            preConfirm: () => {
+                const carPlate = document.getElementById("swal-input1").value;
+                const carType = document.getElementById("swal-input2").value;
+                submitForm({"action": "add_car", "car_plate": carPlate, "car_type": carType});
+            }
+        });
     }
-}
 
 
 // get reference to button

@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
     // Get car_id and owner_id based on car_plate
-    $carQuery = "SELECT car_id, owner_id FROM cars WHERE car_plate = ?";
+    $carQuery = "SELECT car_id, owner_id FROM cars WHERE car_plate = ? and deleted=FALSE";
     $carStatement = $connection->prepare($carQuery);
     $carStatement->bind_param("s", $carPlate);
     $carStatement->execute();
