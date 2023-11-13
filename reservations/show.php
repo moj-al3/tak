@@ -1,9 +1,7 @@
 <?php include "../snippets/base.php" ?>
 <?php
 require("../snippets/force_loggin.php");
-if ($user["user_type_id"] != "2" && $user["user_type_id"] != "1") {
-    die("Access Denied");
-}
+
 
 if (!isset($_GET['reservation_id'])) {
     die("No reservation ID provided in the URL.");
@@ -13,13 +11,11 @@ if (!isset($_GET['reservation_id'])) {
 $reservation_id = $_GET['reservation_id'];
 
 // Prepare the SQL statement with a placeholder for the parameters
-$sql = "SELECT * FROM Reservation WHERE reservation_id = ? AND reserver_id = ?";
-
+$sql = "SELECT * FROM Reservation WHERE reservation_id = ?";
 // Prepare the statement
 $stmt = $connection->prepare($sql);
-
 // Bind the parameters
-$stmt->bind_param("ii", $reservation_id, $user_id);
+$stmt->bind_param("i", $reservation_id);
 
 // Execute the statement
 $stmt->execute();
@@ -34,6 +30,11 @@ if ($result == false || $result->num_rows == 0) {
 // Check if there is a matching reservation
 // Fetch the reservation data
 $reservation = $result->fetch_assoc();
+
+// Check if the query was successful
+if ($user["user_type_id"] != "3" && $reservation["reserver_id"] != $user["user_id"]) {
+    die("No reservation found for the provided ID");
+}
 // Free the result set
 $result->free();
 // Close the statement
@@ -113,6 +114,7 @@ $url = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.js"></script>
     <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+    <script src="/assets/js/sweetalert2.all.min.js"></script>
 
     <style>
         body {
@@ -203,7 +205,7 @@ $url = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
                         </div>
                         <div class="flex flex-col text-gray-200">
                             <span class="text-xs text-parking-text">Floor/Spot</span>
-                            <span class="font-mono"><?= $parking_info['flour_number'] . '/' . $parking_info['zone_number'] . '-' . $parking_info["parking_number"] ?></span>
+                            <span class="font-mono"><?= $parking_info['floor_number'] . '/' . $parking_info['zone_number'] . $parking_info["parking_number"] ?></span>
                         </div>
                     </div>
                 </div>
@@ -213,6 +215,7 @@ $url = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
     </main>
 </div>
 
+<?php include "../snippets/layout/messages.php" ?>
 <script type="text/javascript">
     new QRCode(document.getElementById("qrcode"), {
         text: "<?= $url  ?>",

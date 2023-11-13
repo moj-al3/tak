@@ -1,15 +1,17 @@
 
 .spot-container {
     margin: 20px 0;
-    display: flex ;
+    display: flex;
     justify-content: center;
 }
-.spot-container label{
+
+.spot-container label {
     margin-top: 60px;
     margin-left: 20px;
 }
+
 .spot-container select {
-    background-color: rgba(0, 0, 0, 0.1) ;
+    background-color: rgba(0, 0, 0, 0.1);
     border: 0;
     border-radius: 5px;
     font-size: 14px;
@@ -82,13 +84,15 @@
     margin-bottom: 5px;
 
 }
-.available{
+
+.available {
     margin-top: 10px;
     margin-bottom: 10px;
     margin-left: 10px;
     margin-right: 10px;
 }
-.reserve-btn  {
+
+.reserve-btn {
     display: flex;
     margin-top: 30px;
     align-items: center;
@@ -96,7 +100,8 @@
     margin-right: 80px;
 
 }
-.switch-btn  {
+
+.switch-btn {
     display: flex;
     margin-top: 30px;
     align-items: center;
@@ -104,26 +109,31 @@
     margin-right: 80px;
 }
 
-
-.time-selection button{
-    background-color:rgb(142, 142, 142) ;
-    margin-right: 60px;
-
+.time-selection {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
 }
-h6{
+
+.time-selection button {
+    background-color: rgb(142, 142, 142);
+    margin: unset;
+}
+
+h6 {
     text-align: center;
     margin: 6px;
-    color:gray;
+    color: gray;
 }
-.spot.available:hover h6 {
-    color:white;
-  }
 
+.spot.available:hover h6 {
+    color: white;
+}
 
 
 /* Tablet menu */
 @media all and (max-width: 1000px) {
-.row-container{
-    display: flex;
-}
+    .row-container {
+        display: flex;
+    }
 }

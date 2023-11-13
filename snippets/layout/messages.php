@@ -4,8 +4,7 @@ if (!defined('INCLUDED_BY_OTHER_FILE')) {
     // Display an error message or perform any desired action
     die('Access denied.');
 }
-?>
-<?php
+
 if (!empty($_SESSION['messages'])) {
     echo '<script>';
     echo 'var messages = ' . json_encode($_SESSION['messages']) . ';';

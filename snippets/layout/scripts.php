@@ -6,6 +6,7 @@ if (!defined('INCLUDED_BY_OTHER_FILE')) {
 }
 ?>
 <script src="/assets/js/jquery-3.6.0.min.js"></script>
+<script src="/assets/js/utils.js"></script>
 <!--this line for the nav bar on mobile-->
 <script>
     $(function () {

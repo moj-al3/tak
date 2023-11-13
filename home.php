@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <label for="">
                             <span>Car Type:</span>
                             <input class="editable" type="text" name="car_type1"
-                                   value="<?= $user["cars"][0]['car_type'] ?? ''?>" readonly>
+                                   value="<?= $user["cars"][0]['car_type'] ?? '' ?>" readonly>
                         </label>
                         <label for="">
                             <span>Car Plate:</span>
