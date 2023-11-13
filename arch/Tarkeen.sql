@@ -273,9 +273,9 @@ VALUES (1, 1, 4),
 --
 
 INSERT INTO Tarkeen.ViolationTypes (violation_type_id, `name`, number_of_days)
-VALUES (1, 'Time Extend', 1),
-       (2, 'Wrong Parking', 2),
-       (3, 'Exceeds the allowed', 3);
+VALUES (1, 'Exceeding the time allowed for parking', 1),
+       (2, 'Parked on a wrong parking', 2),
+       (3, 'Parked for full day', 3);
 
 -- Violation
 --
