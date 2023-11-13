@@ -195,6 +195,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <li>
                             <span><?php echo $violation['name'] . '  |   ' . $violation['car_plate']; ?></span>
                             <span><?php echo date('d F, Y h:i A', strtotime($violation['violation_datetime'])) ?></span>
+                            <span><?php echo $violation["note"] ?></span>
                         </li>
                         <?php
                     }

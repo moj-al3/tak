@@ -55,15 +55,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($insertStatement) {
             if ($insertStatement->affected_rows > 0) {
-                echo "Violation recorded successfully.";
+                $_SESSION['messages'] = [["text" => "Violation recorded successfully.", "type" => "success"]];
             } else {
-                echo "Error: No rows inserted. " . $connection->error;
+                $_SESSION['messages'] = [["text" => "Error: No rows inserted." . $connection->error, "type" => "error"]];
             }
         } else {
-            echo "Error: " . $connection->error;
+            $_SESSION['messages'] = [["text" => "Error: " . $connection->error . $connection->error, "type" => "error"]];
         }
     } else {
-        echo "Car with the provided plate not found.";
+        $_SESSION['messages'] = [["text" => "No Car with was found with the provided plate." . $connection->error, "type" => "error"]];
     }
 }
 ?>
@@ -71,21 +71,55 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Record Violations</title>
+    <?php include "../snippets/layout/head.php" ?>
+    <title>Record Violation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-<form method="post">
-    Car Plate: <input type="text" name="car_plate" required><br><br>
-    Violation Type:
-    <select id="violation_id" name="violation_id">
-        <?php
-        foreach ($violationTypes as $type) {
-            echo '<option value="' . $type['violation_type_id'] . '">' . $type['name'] . '</option>';
-        }
-        ?>
-    </select><br><br>
-    Note: <input type="text" name="note"><br><br>
-    <input type="submit" value="Submit">
-</form>
+<?php include "../snippets/layout/header.php" ?>
+<main class="mb-12">
+    <h1 class="text-6xl mb-8  mt-5 text-white texe-bold">Implementing Violations</h1>
+    <form class=" mb-5  flex justify-end items-center flex-col" method="post">
+        <div class="w-full max-w-mds flex justify-end gap-12 items-center row">
+            <div class="col-md-6 w-fulls w-5/12	">
+                <div class="flex items-center border-b border-gray-500 py-2 mb-4">
+                    <input class="appearance-none bg-transparent border-none  w-full text-white mr-3 py-1 px-2  focus:outline-none"
+                           type="text" placeholder="Car plate*" aria-label="Full name" name="car_plate" required>
+                </div>
+            </div>
+            <div class="col w-5/12 ">
+                <?php foreach ($violationTypes as $type): ?>
+                    <div class="flex items-center">
+                        <input id="default-radio-<?= $type['violation_type_id'] ?>" type="radio"
+                               value="<?= $type['violation_type_id'] ?>" name="violation_id">
+                        <label for="default-radio-<?= $type['violation_type_id'] ?>"
+                               class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"><?= $type['name'] ?></label>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+        <div class="flex items-center flex-col  py-2  mt-5 w-full">
+            <div class="w-6/12">
+                <label for="message" class="block font-medium text-sm text-gray-100">Comment</label>
+                <textarea class="appearance-none bg-transparent border  w-full text-white py-1 "
+                          name="note"
+                          id="" cols="20" rows="3"></textarea>
+            </div>
+            <button class="px-5 w-60 mt-3 bg-red-500 text-gray-100 text-center rounded-xl" type="submit">Submit</button>
+            <!-- <input class="appearance-none bg-transparent border-none  w-full text-white mr-3 py-1 px-2 leading-tight focus:outline-none" type="text" placeholder="Car plate*" aria-label="Full name"> -->
+        </div>
+
+
+    </form>
+
+
+</main>
+<?php include "../snippets/layout/footer.php" ?>
+<!-- Javascript -->
+<?php include "../snippets/layout/scripts.php" ?>
+<?php include "../snippets/layout/messages.php" ?>
+
 </body>
 </html>
+
+
