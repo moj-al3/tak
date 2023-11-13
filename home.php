@@ -72,26 +72,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <span>Car Type:</span>
                             <input class="editable" type="text" name="car_type1"
                                    value="<?= $user["cars"][0]['car_type'] ?? '' ?>" readonly>
-                        </label>
-                        <label for="">
-                            <span>Car Plate:</span>
+                                   <span>Car Plate:</span>
                             <input class="editable" type="text" name="car_plate1"
                                    value="<?= $user["cars"][0]['car_plate'] ?? '' ?>" readonly>
+                                   <p><span id="delete">delete</span></p>
                         </label>
-                        <label for="">
-                            <span>Car Type2:</span>
-                            <input class="editable" type="text" name="car_type2"
-                                   value="<?= $user['cars'][1]['car_type'] ?? '' ?>"
-                                   readonly>
 
-                        </label>
                         <label for="">
-                            <span>Car Plate2:</span>
-                            <input class="editable" type="text" name="car_plate2"
-                                   value="<?= $user['cars'][1]['car_plate'] ?? '' ?>"
-                                   readonly>
-
-                        </label>
+                        <span>Do you want to</span>
+                        <p><span id="new car" class ="new-car">Add new car</span></p>
+                    </label>
+                        
                     <?php endif; ?>
 
                 </div>

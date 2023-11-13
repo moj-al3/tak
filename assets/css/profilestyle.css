@@ -76,33 +76,30 @@ main {
    flex: 1;
 }
 
-.fields label:has(input:focus) {
-   border-bottom: 1px solid #FF0050;
-}
+#delete { 
+   cursor: pointer; /* Add a pointer cursor to indicate it's clickable */ 
+   transition: text-decoration 0.3s; /* Add a smooth transition for text-decoration changes */ 
+font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 
-.fields label span {
-   display: inline-block;
-   white-space: nowrap;
-}
-
-.save-btn {
-   padding: 7px;
-   text-align: center;
+ } 
   
-}
+ #delete:hover { 
+   text-decoration: underline; /* Underline the text on hover */ 
+   color: blue; 
+ }
 
-.save-btn button {
-   margin-left: 0px;
-   background-color: #6200ff;
-   border: 1px solid #6200ff;
-   padding: 8px 15px;
-   font-size: 15px;
-   color:#fdfdfd ;
-   border-radius: 5px;
-   cursor: pointer;
-}
-
-
+ .new-car { 
+   cursor: pointer; /* Add a pointer cursor to indicate it's clickable */ 
+   transition: text-decoration 0.3s; /* Add a smooth transition for text-decoration changes */ 
+   margin-left: 255px;
+   font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+ } 
+  
+ .new-car:hover { 
+   text-decoration: underline; /* Underline the text on hover */
+   color: blue; 
+  
+ }
 
 .right .violation {
    background-color: #fff;
@@ -122,28 +119,9 @@ main {
 }
 
 
-.right .violation .violation-list {
-   list-style: none;
-   padding-inline: 20px;
-  
-   margin-top: 200PX;
-}
-
-
-
-
-.right .violation .violation-list li span:last-child {
-   color: #979797;
-   
-}
-
-.more {
-   padding: 100px 20px;
-   text-align: right;
-}
-
 .more .more-btn {
-   margin-left: 7px;
+   margin-left: 400px;
+   margin-top: 120px;
    background-color: #FF0050;
    border: 1px solid #FF0050;
    padding: 8px 15px;
@@ -154,7 +132,6 @@ main {
   
 }
 
-
 dialog {
    padding: 15px;
    overflow: hidden;
@@ -164,9 +141,7 @@ dialog {
    border-radius: 20px;
 }
 
-dialog:-internal-dialog-in-top-layer::backdrop {
-   background: rgba(0, 0, 0, 0.5);
-}
+ 
 
 dialog .title {
    font-weight: 600;
