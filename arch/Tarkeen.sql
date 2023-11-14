@@ -38,7 +38,7 @@ CREATE TABLE Tarkeen.Users
     `password`         varchar(250) NOT NULL,
     email              varchar(250) NOT NULL,
     user_type_id       int (128) NOT NULL,
-    reset_token        varchar(50),
+    reset_token        varchar(256),
     reset_token_expiry datetime,
     PRIMARY KEY
         (user_id),
@@ -274,7 +274,7 @@ VALUES (1, 1, 4),
 INSERT INTO Tarkeen.ViolationTypes (violation_type_id, `name`, number_of_days)
 VALUES (1, 'Exceeding the time allowed for parking', 1),
        (2, 'Parked on a wrong parking', 2),
-       (3, 'Parked for full day', 3);
+       (3, 'Extended reservation 3 times', 3);
 
 -- Violation
 --

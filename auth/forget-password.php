@@ -1,4 +1,5 @@
 <?php include "../snippets/base.php" ?>
+<?php include "../snippets/emailSender.php" ?>
 <?php
 
 
@@ -19,15 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->execute();
             $stmt->close();
 
-            // Send an email to the user with a link to reset the password
-            $reset_link = "http://localhost/auth/reset-password.php?token=" . $token;
-
-            // Compose the email message
-            $subject = "Password Reset";
-            $message = "To reset your password, click the following link:\n\n$reset_link";
-
-            // send the email
-//            mail($email, $subject, $message);
+            sendPasswordResetEmail($email, $token);
 
             // Display a success message to the user
             $_SESSION['messages'] = [["text" => "We have sent a password recover instructions to your email..\nDid not receive the email? Check your spm filter", "type" => "success"]];

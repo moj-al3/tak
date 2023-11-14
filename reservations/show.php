@@ -100,9 +100,21 @@ $stmtCar->close();
 // change this link to get the security to his page
 $url = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    switch ($_POST["action"] ?? "") {
+        case "checkIn":
+            checkIn($connection, $user);
+            break;
+        case "checkOut":
+            checkOut($connection, $user);
+            break;
+        case "cancelReservation":
+            cancelReservation($connection, $user);
+            break;
+    }
+}
 
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -119,6 +131,11 @@ $url = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
     <style>
         body {
             overflow-x: hidden;
+            background-image: linear-gradient(to top, #a7a6cb 0%, #8989ba 52%, #8989ba 100%);
+            background-position: center !important;
+            background-repeat: no-repeat !important;
+            background-size: contain !important;
+
         }
     </style>
 </head>
@@ -143,26 +160,35 @@ $url = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
                 </div>
                 <div class="h-full py-8 px-10 bg-gray-800 flex-grow rounded-r-3xl flex flex-col text-gray-200">
                     <div class="flex flex-end justify-end">
-                        <button id="dropdownMenuIconButton" data-dropdown-toggle="dropdownDots"
-                                class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-200 bg-gray-800 rounded-lg hover:bg-gray-600 focus:ring-4 focus:outline-none  focus:ring-gray-50  "
-                                type="button">
-                            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                 fill="currentColor" viewBox="0 0 4 15">
-                                <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
-                            </svg>
-                        </button>
-                        <div id="dropdownDots"
-                             class="z-10 hidden bg-gray-400 divide-y divide-gray-100 rounded-lg shadow w-44 ">
-                            <ul class="py-2 text-sm text-gray-900 " aria-labelledby="dropdownMenuIconButton">
-                                <li class=" ">
-                                    <a href="#" class="block  text-red-500 px-4 py-2 hover:bg-gray-100 ">Cancel Ticket
 
-                                    </a>
-                                </li>
+                        <?php if ($reservation['enter_datetime'] == null || $reservation['exit_datetime'] == null): ?>
+                            <button id="dropdownMenuIconButton" data-dropdown-toggle="dropdownDots"
+                                    class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-200 bg-gray-800 rounded-lg hover:bg-gray-600 focus:ring-4 focus:outline-none  focus:ring-gray-50  "
+                                    type="button">
+                                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                     fill="currentColor" viewBox="0 0 4 15">
+                                    <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
+                                </svg>
+                            </button>
 
-                            </ul>
+                            <div id="dropdownDots"
+                                 class="z-10 hidden bg-gray-400 divide-y divide-gray-100 rounded-lg shadow w-44 ">
+                                <ul class="py-2 text-sm text-gray-900 " aria-labelledby="dropdownMenuIconButton">
+                                    <?php if ($user["user_type_id"] == "3" && $reservation['enter_datetime'] == null): ?>
+                                        <li><a href="#" class="block px-4 py-2 hover:bg-gray-100 "
+                                               onclick="submitAction('checkIn')">Check in</a></li>
+                                    <?php elseif ($user["user_type_id"] == "3" && $reservation['exit_datetime'] == null): ?>
+                                        <li><a href="#" class="block px-4 py-2 hover:bg-gray-100 "
+                                               onclick="submitAction('checkOut')">Check out</a></li>
+                                    <?php endif; ?>
+                                    <?php if ($reservation['enter_datetime'] == null && $reservation['exit_datetime'] == null): ?>
+                                        <li><a href="#" class="block px-4 py-2 hover:bg-gray-100"
+                                               onclick="submitAction('cancelReservation')">Cancel Ticket</a></li>
+                                    <?php endif; ?>
+                                </ul>
+                            </div>
+                        <?php endif; ?>
 
-                        </div>
 
                     </div>
                     <div class="flex w-full justify-between items-center">
@@ -171,7 +197,7 @@ $url = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
                             <span class="text-parking-text text-sm text-gray-200">Parking Area</span>
                         </div>
                         <div class="flex flex-col flex-grow items-center px-10">
-                            <span class="font-bold text-xs text-red-500">Spot 1st-3A</span>
+                            <span class="font-bold text-xs text-gray-200">Spot <?= $parking_info['floor_number'] . 'st-' . $parking_info['zone_number'] . $parking_info["parking_number"] ?></span>
                             <div class="w-full flex items-center mt-2">
                                 <div class="w-3 h-3 rounded-full border-2 border-parking-text"></div>
                                 <div class="flex-grow border-t-2 border-zinc-400 border-dotted h-px"></div>
@@ -182,7 +208,7 @@ $url = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
                                 <div class="w-3 h-3 rounded-full border-2 border-parking-text"></div>
                             </div>
                             <div class="flex items-center px-3 rounded-full bg-parking-time h-8 mt-2">
-                                <span class="text-sm text-red-500">1h 30m</span>
+                                <span class="text-sm text-gray-200">1h 30m</span>
                             </div>
                         </div>
                         <div class="flex flex-col items-center text-gray-200">
@@ -197,15 +223,16 @@ $url = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
                         </div>
                         <div class="flex flex-col text-gray-200">
                             <span class="text-xs text-parking-text">Car Number</span>
-                            <span class="font-mono text-gray-200"><?= $car_info["car_plate"] ?></span>
+                            <span class="font-mono"><?= $car_info["car_plate"] ?></span>
                         </div>
                         <div class="flex flex-col text-gray-200">
                             <span class="text-xs text-parking-text">Vehicle</span>
-                            <span class="font-mono text-gray-200"><?= $car_info["car_type"] ?></span>
+                            <span class="font-mono"><?= $car_info["car_type"] ?></span>
                         </div>
                         <div class="flex flex-col text-gray-200">
                             <span class="text-xs text-parking-text">Floor/Spot</span>
                             <span class="font-mono"><?= $parking_info['floor_number'] . '/' . $parking_info['zone_number'] . $parking_info["parking_number"] ?></span>
+
                         </div>
                     </div>
                 </div>
@@ -214,7 +241,7 @@ $url = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 
     </main>
 </div>
-
+<?php include "../snippets/layout/scripts.php" ?>
 <?php include "../snippets/layout/messages.php" ?>
 <script type="text/javascript">
     new QRCode(document.getElementById("qrcode"), {
@@ -223,8 +250,13 @@ $url = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
         height: 128,
         correctLevel: QRCode.CorrectLevel.H
     });
+
+    function submitAction(action) {
+        submitForm({"action": action})
+    }
 </script>
 
 </body>
 
 </html>
+

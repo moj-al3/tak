@@ -1,11 +1,12 @@
 <?php
+
 // Make sure this file is only included and not accessed directly
 if (!defined('INCLUDED_BY_OTHER_FILE')) {
     // Display an error message or perform any desired action
     die('Access denied.');
 }
-?>
-<?php
+
+
 function validate($data)
 {
     $data = trim($data);
@@ -24,24 +25,22 @@ function isEmailAlreadyUsed($connection, $email)
         die("Database error: " . $connection->error);
     }
 
+
     // Bind the parameter and execute the query
     $stmt->bind_param("s", $email);
-    $stmt->execute();
-
-    // Check for errors in the query execution
-    if ($stmt->error) {
+    if ($stmt->execute() == false) {
         die("Query error: " . $stmt->error);
     }
-
     // Get the result
     $stmt->bind_result($count);
     $stmt->fetch();
-
-    // Close the statement
     $stmt->close();
+
 
     // If count is greater than 0, the email exists in the database
     return $count > 0;
+
+
 }
 
 
@@ -178,6 +177,22 @@ function saveProfile($connection, $user)
 
 }
 
+function getBlockingInfo($connection, $user_id)
+{
+    $currentDateTime = date("Y-m-d H:i:s");
+
+    $query = "SELECT MAX(violation_end_datetime) FROM Tarkeen.Violations WHERE violator_id = ? AND violation_end_datetime > ?";
+
+    $stmt = $connection->prepare($query);
+    $stmt->bind_param("is", $user_id, $currentDateTime);
+    $stmt->execute();
+    $stmt->bind_result($blockingEndDatetime);
+    $stmt->fetch();
+    $stmt->close();
+
+    return $blockingEndDatetime;
+}
+
 
 function deleteCar($connection, $user)
 {
@@ -279,3 +294,154 @@ function addCar($connection, $user)
     // Close statement
     $stmt->close();
 }
+
+function checkIn($connection, $user)
+{
+    // Check if user is an admin
+    if ($user["user_type_id"] != 3) {
+        $_SESSION['messages'] = [["text" => "You don't have permission to check in for this reservation.", "type" => "error"]];
+        return;
+    }
+
+    // Check if reservation_id is provided in $_GET
+    if (!isset($_GET['reservation_id'])) {
+        $_SESSION['messages'] = [["text" => "Invalid reservation ID.", "type" => "error"]];
+        return;
+    }
+
+    $reservation_id = $_GET['reservation_id'];
+
+    // Check if enter_datetime is already set
+    $query = "SELECT enter_datetime FROM Tarkeen.Reservation WHERE reservation_id = ?";
+    $stmt = $connection->prepare($query);
+    $stmt->bind_param("i", $reservation_id);
+    $stmt->execute();
+    $stmt->bind_result($enter_datetime);
+    $stmt->fetch();
+    $stmt->close();
+
+    if ($enter_datetime !== null) {
+        $_SESSION['messages'] = [["text" => "Entry datetime is already marked for this reservation.", "type" => "error"]];
+        return;
+    }
+
+    // Set enter_datetime to current date and time
+    $enter_datetime_now = date("Y-m-d H:i:s");
+    $query = "UPDATE Tarkeen.Reservation SET enter_datetime = ? WHERE reservation_id = ?";
+    $stmt = $connection->prepare($query);
+    $stmt->bind_param("si", $enter_datetime_now, $reservation_id);
+    $result = $stmt->execute();
+    $stmt->close();
+
+    if ($result) {
+        $_SESSION['messages'] = [["text" => "Check-in successful.", "type" => "success"]];
+        header("Location: $_SERVER[REQUEST_URI]"); // Redirect to the same page
+        exit();
+    } else {
+        $_SESSION['messages'] = [["text" => "Failed to check in. Please try again.", "type" => "error"]];
+    }
+}
+
+
+function checkOut($connection, $user)
+{
+    // Check if user is an admin
+    if ($user["user_type_id"] != 3) {
+        $_SESSION['messages'] = [["text" => "You don't have permission to check out for this reservation.", "type" => "error"]];
+        return;
+    }
+
+    // Check if reservation_id is provided in $_GET
+    if (!isset($_GET['reservation_id'])) {
+        $_SESSION['messages'] = [["text" => "Invalid reservation ID.", "type" => "error"]];
+        return;
+    }
+
+    $reservation_id = $_GET['reservation_id'];
+
+    // Check if enter_datetime or exit_datetime is already set
+    $query = "SELECT enter_datetime, exit_datetime FROM Tarkeen.Reservation WHERE reservation_id = ?";
+    $stmt = $connection->prepare($query);
+    $stmt->bind_param("i", $reservation_id);
+    $stmt->execute();
+    $stmt->bind_result($enter_datetime, $exit_datetime);
+    $stmt->fetch();
+    $stmt->close();
+
+    if ($enter_datetime === null) {
+        $_SESSION['messages'] = [["text" => "Enter datetime must be set before checking out.", "type" => "error"]];
+        return;
+    }
+
+    if ($exit_datetime !== null) {
+        $_SESSION['messages'] = [["text" => "Exit datetime is already marked for this reservation.", "type" => "error"]];
+        return;
+    }
+
+    // Set exit_datetime to current date and time
+    $exit_datetime_now = date("Y-m-d H:i:s");
+    $query = "UPDATE Tarkeen.Reservation SET exit_datetime = ? WHERE reservation_id = ?";
+    $stmt = $connection->prepare($query);
+    $stmt->bind_param("si", $exit_datetime_now, $reservation_id);
+    $result = $stmt->execute();
+    $stmt->close();
+
+    if ($result) {
+        $_SESSION['messages'] = [["text" => "Check-out successful.", "type" => "success"]];
+        header("Location: $_SERVER[REQUEST_URI]"); // Redirect to the same page
+        exit();
+    } else {
+        $_SESSION['messages'] = [["text" => "Failed to check out. Please try again.", "type" => "error"]];
+    }
+}
+
+
+function cancelReservation($connection, $user)
+{
+    // Check if reservation_id is provided in $_GET
+    if (!isset($_GET['reservation_id'])) {
+        $_SESSION['messages'] = [["text" => "Invalid reservation ID.", "type" => "error"]];
+        return;
+    }
+
+    $reservation_id = $_GET['reservation_id'];
+
+
+    // Check if the reservation belongs to the user
+    $query = "SELECT reserver_id, enter_datetime, exit_datetime FROM Tarkeen.Reservation WHERE reservation_id = ?";
+    $stmt = $connection->prepare($query);
+    $stmt->bind_param("i", $reservation_id);
+    $stmt->execute();
+    $stmt->bind_result($reserver_id, $enter_datetime, $exit_datetime);
+    $stmt->fetch();
+    $stmt->close();
+
+    if ($user["user_type_id"] != 3 && $reserver_id != $user["user_id"]) {
+        $_SESSION['messages'] = [["text" => "You don't have permission to cancel this reservation.", "type" => "error"]];
+        return;
+    }
+
+    // Check if enter_datetime or exit_datetime is set
+    if ($enter_datetime !== null || $exit_datetime !== null) {
+        $_SESSION['messages'] = [["text" => "Cannot cancel reservation with entry or exit datetime set.", "type" => "error"]];
+        return;
+    }
+
+
+    $query = "DELETE FROM Tarkeen.Reservation WHERE reservation_id = ?";
+    $stmt = $connection->prepare($query);
+    $stmt->bind_param("i", $reservation_id);
+    $result = $stmt->execute();
+
+
+    if ($result) {
+        $_SESSION['messages'] = [["text" => "Reservation canceled successfully.", "type" => "success"]];
+        header("Location: /home.php"); // Redirect to /home.php
+        $stmt->close();
+        exit();
+    } else {
+        $_SESSION['messages'] = [["text" => "Failed to cancel reservation. Error: " . $stmt->error, "type" => "error"]];
+        $stmt->close();
+    }
+}
+

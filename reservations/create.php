@@ -29,7 +29,6 @@ function createReservation()
     $insertReservationStmt->close();
 }
 
-// ... (existing code)
 
 function SwitchReservation()
 {
@@ -125,6 +124,14 @@ function SwitchReservation()
 
 }
 
+// Check if the user already  has Ongoing Violations
+$blockingEndDatetime = getBlockingInfo($connection, $user["user_id"]);
+if ($blockingEndDatetime !== null) {
+    $_SESSION['messages'] = [["text" => "You can't make Any Reservation Because you are blocked until: " . $blockingEndDatetime, "type" => "error"]];
+    header('Location: /home.php');  // Redirect to the desired page
+    exit();
+}
+
 
 // Check if the user already has a reservation for today
 $checkReservationSql = "SELECT COUNT(*) AS count FROM Reservation WHERE reserver_id = ? AND DATE(reservation_datetime) = CURDATE()";
@@ -140,6 +147,7 @@ if ($reservationCount > 0) {
     header('Location: /home.php');  // Redirect to the desired page
     exit();
 }
+
 
 //get all parking information
 // Fetch parking spots data from the database
