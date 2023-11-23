@@ -513,5 +513,3 @@ function rateReservation($connection, $user)
     }
 }
 
-?>
-
