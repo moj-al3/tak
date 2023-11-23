@@ -97,8 +97,6 @@ $car_info = $resultCar->fetch_assoc();
 // Free the result set and close the statement for car details
 $resultCar->free();
 $stmtCar->close();
-// change this link to get the security to his page
-$url = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 $needFeedback = false;
 // Check if the ticket is closed'
 if ($reservation['enter_datetime'] !== null && $reservation['exit_datetime'] !== null && $user["user_type_id"] != 3) {
@@ -262,7 +260,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <?php include "../snippets/layout/messages.php" ?>
 <script type="text/javascript">
     new QRCode(document.getElementById("qrcode"), {
-        text: "<?= $url  ?>",
+        text: "<?= $reservation_id  ?>",
         width: 128,
         height: 128,
         correctLevel: QRCode.CorrectLevel.H
