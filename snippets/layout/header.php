@@ -19,12 +19,17 @@ if (!defined('INCLUDED_BY_OTHER_FILE')) {
                 <li class="logo"><a href="/"><img src="../assets/img/logo2.png" alt=""></a></li>
             </ul>
             <ul class="menu desk-menu">
-                <li class="item"><a href="/home.php">Home</a></li>
-                <li class="item"><a href="/reservations/create.php">Reservation</a></li>
-                <li class="item"><a href="#">About</a></li>
-                <li class="item"><a href="/violations/create.php">vaiolations</a></li>
-                <li class="item"><a href="/reservations/scan.php">QR scanning</a></li>
+                <?php if (isset($user)): ?>
+                    <li class="item"><a href="/home.php">Home</a></li>
+                    <li class="item"><a href="/reservations/create.php">Reservation</a></li>
+                    <?php if ($user["user_type_id"] == 3): ?>
+                        <li class="item"><a href="/violations/create.php">Violations</a></li>
+                        <li class="item"><a href="/reservations/scan.php">QR scanning</a></li>
+                    <?php endif; ?>
+                <?php endif; ?>
+                <li class="item"><a href="/">About us</a></li>
                 <!-- </li> -->
+
             </ul>
         </div>
         <ul class="menu">
@@ -58,10 +63,16 @@ if (!defined('INCLUDED_BY_OTHER_FILE')) {
     </div>
     <div class="nav-cont mobile-nav-cont">
         <ul class="menu modile-menu">
-            <li class="item"><a href="/home.php">Home</a></li>
-            <li class="item"><a href="#">About</a></li>
-            <li class="item"><a href="#">Services</a></li>
-            <li class="item"><a href="#">history</a></li>
+            <?php if (isset($user)): ?>
+                <li class="item"><a href="/home.php">Home</a></li>
+                <li class="item"><a href="/reservations/create.php">Reservation</a></li>
+                <?php if ($user["user_type_id"] == 3): ?>
+                    <li class="item"><a href="/violations/create.php">Violations</a></li>
+                    <li class="item"><a href="/reservations/scan.php">QR scanning</a></li>
+                <?php endif; ?>
+            <?php endif; ?>
+            <li class="item"><a href="/">About us</a></li>
+
         </ul>
     </div>
 </nav>

@@ -1,6 +1,8 @@
 <?php include "../snippets/base.php" ?>
+<?php include "../snippets/emailSender.php" ?>
 <?php
 require("../snippets/force_loggin.php");
+
 
 function createReservation()
 {
@@ -19,6 +21,8 @@ function createReservation()
     $insertReservationStmt->bind_param("iii", $user['user_id'], $parkingId, $carId);
 
     if ($insertReservationStmt->execute()) {
+        $reservationId = $insertReservationStmt->insert_id;
+        sendTicketEmail($user['email'], $reservationId);
         $_SESSION['messages'] = [["text" => "Your reservation was created successfully", "type" => "success"]];
         header('Location: /reservations/show.php?reservation_id=' . $insertReservationStmt->insert_id);
         exit();
@@ -134,7 +138,7 @@ if ($blockingEndDatetime !== null) {
 
 
 // Check if the user already has a reservation for today
-$checkReservationSql = "SELECT COUNT(*) AS count FROM Reservation WHERE reserver_id = ? AND DATE(reservation_datetime) = CURDATE()";
+$checkReservationSql = "SELECT COUNT(*) AS count FROM Reservation WHERE reserver_id = ? AND DATE(reservation_datetime) = CURDATE() AND exit_datetime is NULL";
 $checkReservationStmt = $connection->prepare($checkReservationSql);
 $checkReservationStmt->bind_param("i", $user['user_id']);
 $checkReservationStmt->execute();

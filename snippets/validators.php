@@ -193,7 +193,6 @@ function getBlockingInfo($connection, $user_id)
     return $blockingEndDatetime;
 }
 
-
 function deleteCar($connection, $user)
 {
     // Retrieve user_id from $user array
@@ -201,6 +200,7 @@ function deleteCar($connection, $user)
 
     // Retrieve car_id from $_POST
     $car_id = isset($_POST['car_id']) ? $_POST['car_id'] : null;
+
 
     // Return if car_id is not set
     if ($car_id === null) {
@@ -211,7 +211,15 @@ function deleteCar($connection, $user)
     // Check if the user is the owner of the specified car
     $ownershipCheck = $connection->prepare("SELECT COUNT(*) FROM Cars WHERE car_id = ? AND owner_id = ?");
     $ownershipCheck->bind_param("ii", $car_id, $user_id);
-    $ownershipCheck->execute();
+
+    // Check if the query executed successfully
+    if ($ownershipCheck->execute() === FALSE) {
+
+        $_SESSION['messages'] = [["text" => $ownershipCheck->error, "type" => "error"]];
+        $ownershipCheck->close();
+        return;
+    }
+
     $ownershipCheck->bind_result($ownershipCount);
     $ownershipCheck->fetch();
     $ownershipCheck->close();
@@ -222,22 +230,36 @@ function deleteCar($connection, $user)
         return;
     }
 
-    // Prepare and execute SQL statement to set the deleted flag
-    $stmt = $connection->prepare("UPDATE Cars SET deleted = 1 WHERE car_id = ?");
-    $stmt->bind_param("i", $car_id);
+    // Get reservations associated with the specified car_id that are still not finished
+    $deleteReservationsQuery = "DELETE FROM Tarkeen.Reservation WHERE car_id = ? AND exit_datetime IS NULL";
+    $reservationsStmt = $connection->prepare($deleteReservationsQuery);
+    $reservationsStmt->bind_param("i", $car_id);
 
     // Check if the query executed successfully
-    if ($stmt->execute() === TRUE) {
-        $_SESSION['messages'] = [["text" => "Car deleted successfully!", "type" => "success"]];
+    if ($reservationsStmt->execute() === FALSE) {
+        $_SESSION['messages'] = [["text" => $reservationsStmt->error, "type" => "error"]];
+        $reservationsStmt->close();
+        return;
+    }
+
+    $reservationsStmt->close();
+
+    // Prepare and execute SQL statement to set the deleted flag for the car
+    $deleteCarStmt = $connection->prepare("UPDATE Cars SET deleted = 1 WHERE car_id = ?");
+    $deleteCarStmt->bind_param("i", $car_id);
+
+    // Check if the query executed successfully
+    if ($deleteCarStmt->execute() === TRUE) {
+        $_SESSION['messages'] = [["text" => "Car and associated reservations deleted successfully!", "type" => "success"]];
         // update the stored data in $user by refreshing the page
         header('Location: /home.php');
         exit();
     } else {
-        $_SESSION['messages'] = [["text" => $stmt->error, "type" => "error"]];
+        $_SESSION['messages'] = [["text" => $deleteCarStmt->error, "type" => "error"]];
     }
 
-    // Close statement
-    $stmt->close();
+    // Close statements
+    $deleteCarStmt->close();
 }
 
 
@@ -444,4 +466,52 @@ function cancelReservation($connection, $user)
         $stmt->close();
     }
 }
+
+function rateReservation($connection, $user)
+{
+    // Check if user is an admin
+    if ($user["user_type_id"] == 3) {
+        $_SESSION['messages'] = [["text" => "You don't have permission to rate reservations.", "type" => "error"]];
+        return;
+    }
+
+    // Check if reservation_id and rating are provided in $_GET and $_POST
+    if (!isset($_GET['reservation_id']) || !isset($_POST['rating'])) {
+        $_SESSION['messages'] = [["text" => "Invalid reservation ID or rating.", "type" => "error"]];
+        return;
+    }
+
+    $reservation_id = $_GET['reservation_id'];
+    $rating = $_POST['rating'];
+
+    // Validate the rating (you may customize this based on your rating system)
+    if (!is_numeric($rating) || $rating < 1 || $rating > 5) {
+        $_SESSION['messages'] = [["text" => "Invalid rating. Please provide a numeric value between 1 and 5.", "type" => "error"]];
+        return;
+    }
+
+
+    // Update the Feedback table with the provided rating
+    $insertFeedbackQuery = "INSERT INTO Feedbacks (reservation_id, rating_scale) VALUES (?, ?)";
+    $stmt = $connection->prepare($insertFeedbackQuery);
+
+    // Check for errors in the query preparation
+    if (!$stmt) {
+        $_SESSION['messages'] = [["text" => "Error preparing statement: " . $connection->error, "type" => "error"]];
+        return;
+    }
+    $stmt->bind_param("ii", $reservation_id, $rating);
+    $result = $stmt->execute();
+    $stmt->close();
+
+    if ($result) {
+        $_SESSION['messages'] = [["text" => "Rating submitted successfully.", "type" => "success"]];
+        header("Location: $_SERVER[REQUEST_URI]"); // Redirect to the same page
+        exit();
+    } else {
+        $_SESSION['messages'] = [["text" => "Failed to submit rating. Please try again.", "type" => "error"]];
+    }
+}
+
+?>
 
