@@ -29,8 +29,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (password_verify($data["password"], $hashed_password)) {
             // Successfully logged in, set session variables
             $_SESSION['user_id'] = $user_id;
+            if (isset($_GET["next"])) {
+                header('Location: ' . $_GET["next"]);
+            } else {
+                header('Location: /home.php');
+            }
             // Redirect to the user's profile page or any other page
-            header('Location: ' . $_GET["next"] ?? '/home.php');
+
             exit();
         } else {
             $_SESSION['messages'] = [["text" => "Wrong Email or Password", "type" => "error"]];
