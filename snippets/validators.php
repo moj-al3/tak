@@ -492,7 +492,7 @@ function rateReservation($connection, $user)
 
 
     // Update the Feedback table with the provided rating
-    $insertFeedbackQuery = "INSERT INTO Feedbacks (reservation_id, rating_scale) VALUES (?, ?)";
+    $insertFeedbackQuery = "INSERT INTO FeedBacks (reservation_id, rating_scale) VALUES (?, ?)";
     $stmt = $connection->prepare($insertFeedbackQuery);
 
     // Check for errors in the query preparation
