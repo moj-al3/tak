@@ -56,19 +56,19 @@ if (isset($_SESSION['user_id'])) {
     // Retrieve violations associated with the user
     // If he is a security then get the violations created by him
     if ($user["user_type_id"] == "3") {
-        $vailoationQuery = "SELECT violations.violation_id, violationtypes.name, violations.violation_datetime,violations.note, Cars.car_plate 
+        $vailoationQuery = "SELECT Violations.violation_id, violationtypes.name, Violations.violation_datetime,Violations.note, Cars.car_plate 
                         FROM `Violations` 
-                        JOIN `Violationtypes` ON violationtypes.violation_type_id = violations.violation_type_id 
-                        JOIN `Cars` ON Cars.car_id = violations.car_id 
-                        WHERE violations.violated_id = ? 
-                        ORDER BY violations.violation_datetime DESC";
+                        JOIN `Violationtypes` ON violationtypes.violation_type_id = Violations.violation_type_id 
+                        JOIN `Cars` ON Cars.car_id = Violations.car_id 
+                        WHERE Violations.violated_id = ? 
+                        ORDER BY Violations.violation_datetime DESC";
     } else {
-        $vailoationQuery = "SELECT violations.violation_id, violationtypes.name, violations.violation_datetime,violations.note, Cars.car_plate 
+        $vailoationQuery = "SELECT Violations.violation_id, violationtypes.name, Violations.violation_datetime,Violations.note, Cars.car_plate 
                         FROM `Violations` 
-                        JOIN `Violationtypes` ON violationtypes.violation_type_id = violations.violation_type_id 
-                        JOIN `Cars` ON Cars.car_id = violations.car_id 
-                        WHERE violations.violator_id = ? 
-                        ORDER BY violations.violation_datetime DESC";
+                        JOIN `Violationtypes` ON violationtypes.violation_type_id = Violations.violation_type_id 
+                        JOIN `Cars` ON Cars.car_id = Violations.car_id 
+                        WHERE Violations.violator_id = ? 
+                        ORDER BY Violations.violation_datetime DESC";
     }
     $stmtViolations = $connection->prepare($vailoationQuery);
     $stmtViolations->bind_param("i", $user_id);
