@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
             // Update the user's password in the database
-            $update_query = "UPDATE users SET password = ?, reset_token = NULL, reset_token_expiry = NULL WHERE email = ?";
+            $update_query = "UPDATE Users SET password = ?, reset_token = NULL, reset_token_expiry = NULL WHERE email = ?";
             $update_stmt = $connection->prepare($update_query);
 
             if ($update_stmt) {

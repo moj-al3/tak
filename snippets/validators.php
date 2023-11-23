@@ -159,7 +159,7 @@ function saveProfile($connection, $user)
         return;
     }
     // Update user information in the database
-    $updateUserQuery = "UPDATE users SET first_name = ?, last_name = ?, email = ? WHERE user_id = ?";
+    $updateUserQuery = "UPDATE Users SET first_name = ?, last_name = ?, email = ? WHERE user_id = ?";
     $updateStatement = $connection->prepare($updateUserQuery);
     $updateStatement->bind_param("sssi", $first_name, $last_name, $email, $user_id);
     $updateStatement->execute();

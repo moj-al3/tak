@@ -39,7 +39,7 @@ if (isUserIDAlreadyUsed($connection, $data["user_id"])) {
 $hashedPassword = password_hash($data["password"], PASSWORD_DEFAULT);
 
 // Store user information in the database using prepared statements
-$insertUserQuery = $connection->prepare("INSERT INTO users (user_id, first_name, last_name, password, email, user_type_id) VALUES (?, ?, ?, ?, ?, ?)");
+$insertUserQuery = $connection->prepare("INSERT INTO Users (user_id, first_name, last_name, password, email, user_type_id) VALUES (?, ?, ?, ?, ?, ?)");
 
 $insertUserQuery->bind_param("issssi", $data["user_id"], $data["first_name"], $data["last_name"], $hashedPassword, $data["email"], $data["user_type_id"]);
 
