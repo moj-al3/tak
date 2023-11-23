@@ -20,7 +20,7 @@ if (isset($_SESSION['user_id'])) {
     $stmt->close();
 
     // Retrieve cars associated with the user
-    $queryCars = "SELECT car_id, car_type, car_plate FROM cars WHERE owner_id = ? and deleted=FALSE";
+    $queryCars = "SELECT car_id, car_type, car_plate FROM Cars WHERE owner_id = ? and deleted=FALSE";
     $stmtCars = $connection->prepare($queryCars);
     $stmtCars->bind_param("i", $user_id);
     $stmtCars->execute();
@@ -37,7 +37,7 @@ if (isset($_SESSION['user_id'])) {
     // Retrieve reservations associated with the user
     $reservationQuery = "SELECT reservation.reservation_id, reservation.reservation_datetime, reservation.extensions_count, parkingspots.parking_number 
                         FROM `reservation` 
-                        JOIN `parkingspots` ON parkingspots.parking_id = reservation.parking_id 
+                        JOIN `ParkingSpots` ON parkingspots.parking_id = reservation.parking_id 
                         WHERE reservation.reserver_id = ? 
                         ORDER BY reservation.reservation_datetime DESC";
     $stmtReservations = $connection->prepare($reservationQuery);
@@ -57,16 +57,16 @@ if (isset($_SESSION['user_id'])) {
     // If he is a security then get the violations created by him
     if ($user["user_type_id"] == "3") {
         $vailoationQuery = "SELECT violations.violation_id, violationtypes.name, violations.violation_datetime,violations.note, cars.car_plate 
-                        FROM `violations` 
-                        JOIN `violationtypes` ON violationtypes.violation_type_id = violations.violation_type_id 
-                        JOIN `cars` ON cars.car_id = violations.car_id 
+                        FROM `Violations` 
+                        JOIN `Violationtypes` ON violationtypes.violation_type_id = violations.violation_type_id 
+                        JOIN `Cars` ON cars.car_id = violations.car_id 
                         WHERE violations.violated_id = ? 
                         ORDER BY violations.violation_datetime DESC";
     } else {
         $vailoationQuery = "SELECT violations.violation_id, violationtypes.name, violations.violation_datetime,violations.note, cars.car_plate 
-                        FROM `violations` 
-                        JOIN `violationtypes` ON violationtypes.violation_type_id = violations.violation_type_id 
-                        JOIN `cars` ON cars.car_id = violations.car_id 
+                        FROM `Violations` 
+                        JOIN `Violationtypes` ON violationtypes.violation_type_id = violations.violation_type_id 
+                        JOIN `Cars` ON cars.car_id = violations.car_id 
                         WHERE violations.violator_id = ? 
                         ORDER BY violations.violation_datetime DESC";
     }

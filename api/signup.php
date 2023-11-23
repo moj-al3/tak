@@ -51,7 +51,7 @@ if ($insertUserQuery->execute() == false) {
 }
 
 // Store user car information in the database using prepared statements
-$insertCarQuery = $connection->prepare("INSERT INTO cars(owner_id, car_type, car_plate) VALUES (?, ?, ?)");
+$insertCarQuery = $connection->prepare("INSERT INTO Cars(owner_id, car_type, car_plate) VALUES (?, ?, ?)");
 $insertCarQuery->bind_param("iss", $data["user_id"], $data["car_type"], $data["car_plate"]);
 
 if ($insertCarQuery->execute() == false) {

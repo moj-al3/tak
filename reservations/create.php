@@ -66,7 +66,7 @@ function SwitchReservation()
     // Fetch reservation data for the new spot
     $getReservationDataSql = "SELECT res.car_id, reserver_id, cars.owner_id 
                               FROM Reservation res
-                              JOIN cars ON res.car_id = cars.car_id
+                              JOIN Cars ON res.car_id = cars.car_id
                               WHERE res.parking_id = ? 
                               AND DATE(res.reservation_datetime) = CURDATE()";
     $getReservationDataStmt = $connection->prepare($getReservationDataSql);
