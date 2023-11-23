@@ -7,3 +7,4 @@ session_start();
 include "database_connection.php";
 include "get_user.php";
 include "validators.php";
+?>
