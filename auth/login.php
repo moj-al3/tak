@@ -1,5 +1,5 @@
-<?php include "../snippets/base.php" ?>
 <?php
+include "../snippets/base.php";
 // If the user is already logged in, redirect him to the home
 if (isset($user)) {
     header('Location: /home.php');
@@ -37,9 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 }
-
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
