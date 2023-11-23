@@ -18,7 +18,7 @@ function validate($data)
 function isEmailAlreadyUsed($connection, $email)
 {
     // Use prepared statements to prevent SQL injection
-    $sql = "SELECT COUNT(*) as count FROM users WHERE email = ?";
+    $sql = "SELECT COUNT(*) as count FROM Users WHERE email = ?";
     $stmt = $connection->prepare($sql);
 
     if (!$stmt) {
@@ -47,7 +47,7 @@ function isEmailAlreadyUsed($connection, $email)
 function isUserIDAlreadyUsed($connection, $id)
 {
     // Use prepared statements to prevent SQL injection
-    $sql = "SELECT COUNT(*) as count FROM users WHERE user_id = ?";
+    $sql = "SELECT COUNT(*) as count FROM Users WHERE user_id = ?";
     $stmt = $connection->prepare($sql);
 
     if (!$stmt) {
@@ -148,7 +148,7 @@ function saveProfile($connection, $user)
     $email = $data['email'];
 
     // Check if the new email is already in use by other users
-    $emailInUseQuery = "SELECT user_id FROM users WHERE email = ? AND user_id != ?";
+    $emailInUseQuery = "SELECT user_id FROM Users WHERE email = ? AND user_id != ?";
     $emailInUseStatement = $connection->prepare($emailInUseQuery);
     $emailInUseStatement->bind_param("si", $email, $user_id);
     $emailInUseStatement->execute();

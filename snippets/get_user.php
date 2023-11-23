@@ -11,7 +11,7 @@ if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
 
     // Retrieve user data
-    $query = "SELECT * FROM users WHERE user_id = ?";
+    $query = "SELECT * FROM Users WHERE user_id = ?";
     $stmt = $connection->prepare($query);
     $stmt->bind_param("i", $user_id);
     $stmt->execute();

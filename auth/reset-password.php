@@ -6,7 +6,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $token = $_GET["token"] ?? ""; // Get the token from the URL
 
     // Verify the validity of the reset token
-    $query = "SELECT email FROM users WHERE reset_token = ? AND reset_token_expiry > NOW()";
+    $query = "SELECT email FROM Users WHERE reset_token = ? AND reset_token_expiry > NOW()";
     $stmt = $connection->prepare($query);
 
     if ($stmt) {

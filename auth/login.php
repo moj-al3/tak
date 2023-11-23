@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 //    check if we got the data cleaned or got errors instead
     if (!isset($data["errors"])) {
         // Use prepared statements with placeholders to avoid SQL injection
-        $query = "SELECT user_id, password FROM users WHERE email = ?";
+        $query = "SELECT user_id, password FROM Users WHERE email = ?";
         $stmt = $connection->prepare($query);
         if (!$stmt) {
             die($connection->error);
