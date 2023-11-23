@@ -22,8 +22,8 @@ if (!defined('INCLUDED_BY_OTHER_FILE')) {
                 <li class="item"><a href="/home.php">Home</a></li>
                 <li class="item"><a href="/reservations/create.php">Reservation</a></li>
                 <li class="item"><a href="#">About</a></li>
-                <li class="item"><a href="#">Services</a></li>
-                <li class="item"><a href="#">history</a></li>
+                <li class="item"><a href="/violations/create.php">vaiolations</a></li>
+                <li class="item"><a href="/reservations/scan.php">QR scanning</a></li>
                 <!-- </li> -->
             </ul>
         </div>

@@ -4,8 +4,9 @@
   height: 100%;
   background-position: center;
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: contain;
   background-image: url("../img/background.jpeg");
+  background-image: linear-gradient(to top, #6a85b6 0%, #bac8e0 100%);
   background-repeat: no-repeat;
 }
 body, * {
@@ -19,10 +20,11 @@ body, * {
 }
 body{
   /* background-color: #d4e0eb; */
-  background-image: url("../img/background1.jpeg") !important;
+  /* background-image: url("../img/background1.jpeg") !important; */
+  background-image: linear-gradient(to top, #6a85b6 0%, #bac8e0 100%);
   background-position: center !important;
   background-repeat: no-repeat !important;
-  background-size: cover !important;
+  background-size: contain !important;
  
 } 
 .test {
