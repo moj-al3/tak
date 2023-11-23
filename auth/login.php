@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt = $connection->prepare($query);
         if (!$stmt) {
             die($connection->error);
-            return;
+
         }
         $stmt->bind_param("s", $data["email"]);
         $stmt->execute();
@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Successfully logged in, set session variables
             $_SESSION['user_id'] = $user_id;
             // Redirect to the user's profile page or any other page
-            header('Location: /home.php');
+            header('Location: ' . $_GET["next"] ?? '/home.php');
             exit();
         } else {
             $_SESSION['messages'] = [["text" => "Wrong Email or Password", "type" => "error"]];

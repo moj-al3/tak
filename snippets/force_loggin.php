@@ -7,6 +7,6 @@ if (!defined('INCLUDED_BY_OTHER_FILE')) {
 ?>
 <?php
 if (!isset($_SESSION['user_id'])) {
-    header('Location: /auth/login.php');
+    header('Location: /auth/login.php?next='.$_SERVER['REQUEST_URI']);
     exit();
 }
