@@ -1,6 +1,6 @@
 <?php
-require("../snippets/base.php");
 header('Content-Type: application/json; charset=utf-8');
+require("../snippets/base.php");
 
 
 // Validate and sanitize user inputs

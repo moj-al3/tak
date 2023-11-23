@@ -1,6 +1,7 @@
 <?php
-require("../snippets/base.php");
 header('Content-Type: application/json; charset=utf-8');
+require("../snippets/base.php");
+
 
 if ($_SERVER['REQUEST_METHOD'] != 'POST') {
     // 405 means we are using the wrong method
