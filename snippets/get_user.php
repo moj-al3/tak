@@ -56,16 +56,16 @@ if (isset($_SESSION['user_id'])) {
     // Retrieve violations associated with the user
     // If he is a security then get the violations created by him
     if ($user["user_type_id"] == "3") {
-        $vailoationQuery = "SELECT Violations.violation_id, violationtypes.name, Violations.violation_datetime,Violations.note, Cars.car_plate 
+        $vailoationQuery = "SELECT Violations.violation_id, ViolationTypes.name, Violations.violation_datetime,Violations.note, Cars.car_plate 
                         FROM `Violations` 
-                        JOIN `Violationtypes` ON violationtypes.violation_type_id = Violations.violation_type_id 
+                        JOIN `ViolationTypes` ON ViolationTypes.violation_type_id = Violations.violation_type_id 
                         JOIN `Cars` ON Cars.car_id = Violations.car_id 
                         WHERE Violations.violated_id = ? 
                         ORDER BY Violations.violation_datetime DESC";
     } else {
-        $vailoationQuery = "SELECT Violations.violation_id, violationtypes.name, Violations.violation_datetime,Violations.note, Cars.car_plate 
+        $vailoationQuery = "SELECT Violations.violation_id, ViolationTypes.name, Violations.violation_datetime,Violations.note, Cars.car_plate 
                         FROM `Violations` 
-                        JOIN `Violationtypes` ON violationtypes.violation_type_id = Violations.violation_type_id 
+                        JOIN `ViolationTypes` ON ViolationTypes.violation_type_id = Violations.violation_type_id 
                         JOIN `Cars` ON Cars.car_id = Violations.car_id 
                         WHERE Violations.violator_id = ? 
                         ORDER BY Violations.violation_datetime DESC";
