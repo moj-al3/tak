@@ -16,6 +16,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Use prepared statements with placeholders to avoid SQL injection
         $query = "SELECT user_id, password FROM users WHERE email = ?";
         $stmt = $connection->prepare($query);
+        if (!$stmt) {
+            die($connection->error);
+            return;
+        }
         $stmt->bind_param("s", $data["email"]);
         $stmt->execute();
         // tell the sql statement to store the result in $user_id and $hashed_password
