@@ -2,9 +2,9 @@
 
 use PHPMailer\PHPMailer\PHPMailer;
 
-include '../PHPMailer/src/Exception.php';
-include '../PHPMailer/src/PHPMailer.php';
-include '../PHPMailer/src/SMTP.php';
+include 'PHPMailer/src/Exception.php';
+include 'PHPMailer/src/PHPMailer.php';
+include 'PHPMailer/src/SMTP.php';
 
 
 $EMAIL = 'ghadoorabbas1422@gmail.com';
