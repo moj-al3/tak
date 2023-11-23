@@ -181,7 +181,7 @@ function getBlockingInfo($connection, $user_id)
 {
     $currentDateTime = date("Y-m-d H:i:s");
 
-    $query = "SELECT MAX(violation_end_datetime) FROM Tarkeen.Violations WHERE violator_id = ? AND violation_end_datetime > ?";
+    $query = "SELECT MAX(violation_end_datetime) FROM Violations WHERE violator_id = ? AND violation_end_datetime > ?";
 
     $stmt = $connection->prepare($query);
     $stmt->bind_param("is", $user_id, $currentDateTime);
@@ -231,7 +231,7 @@ function deleteCar($connection, $user)
     }
 
     // Get reservations associated with the specified car_id that are still not finished
-    $deleteReservationsQuery = "DELETE FROM Tarkeen.Reservation WHERE car_id = ? AND exit_datetime IS NULL";
+    $deleteReservationsQuery = "DELETE FROM Reservation WHERE car_id = ? AND exit_datetime IS NULL";
     $reservationsStmt = $connection->prepare($deleteReservationsQuery);
     $reservationsStmt->bind_param("i", $car_id);
 
@@ -334,7 +334,7 @@ function checkIn($connection, $user)
     $reservation_id = $_GET['reservation_id'];
 
     // Check if enter_datetime is already set
-    $query = "SELECT enter_datetime FROM Tarkeen.Reservation WHERE reservation_id = ?";
+    $query = "SELECT enter_datetime FROM Reservation WHERE reservation_id = ?";
     $stmt = $connection->prepare($query);
     $stmt->bind_param("i", $reservation_id);
     $stmt->execute();
@@ -349,7 +349,7 @@ function checkIn($connection, $user)
 
     // Set enter_datetime to current date and time
     $enter_datetime_now = date("Y-m-d H:i:s");
-    $query = "UPDATE Tarkeen.Reservation SET enter_datetime = ? WHERE reservation_id = ?";
+    $query = "UPDATE Reservation SET enter_datetime = ? WHERE reservation_id = ?";
     $stmt = $connection->prepare($query);
     $stmt->bind_param("si", $enter_datetime_now, $reservation_id);
     $result = $stmt->execute();
@@ -382,7 +382,7 @@ function checkOut($connection, $user)
     $reservation_id = $_GET['reservation_id'];
 
     // Check if enter_datetime or exit_datetime is already set
-    $query = "SELECT enter_datetime, exit_datetime FROM Tarkeen.Reservation WHERE reservation_id = ?";
+    $query = "SELECT enter_datetime, exit_datetime FROM Reservation WHERE reservation_id = ?";
     $stmt = $connection->prepare($query);
     $stmt->bind_param("i", $reservation_id);
     $stmt->execute();
@@ -402,7 +402,7 @@ function checkOut($connection, $user)
 
     // Set exit_datetime to current date and time
     $exit_datetime_now = date("Y-m-d H:i:s");
-    $query = "UPDATE Tarkeen.Reservation SET exit_datetime = ? WHERE reservation_id = ?";
+    $query = "UPDATE Reservation SET exit_datetime = ? WHERE reservation_id = ?";
     $stmt = $connection->prepare($query);
     $stmt->bind_param("si", $exit_datetime_now, $reservation_id);
     $result = $stmt->execute();
@@ -430,7 +430,7 @@ function cancelReservation($connection, $user)
 
 
     // Check if the reservation belongs to the user
-    $query = "SELECT reserver_id, enter_datetime, exit_datetime FROM Tarkeen.Reservation WHERE reservation_id = ?";
+    $query = "SELECT reserver_id, enter_datetime, exit_datetime FROM Reservation WHERE reservation_id = ?";
     $stmt = $connection->prepare($query);
     $stmt->bind_param("i", $reservation_id);
     $stmt->execute();
@@ -450,7 +450,7 @@ function cancelReservation($connection, $user)
     }
 
 
-    $query = "DELETE FROM Tarkeen.Reservation WHERE reservation_id = ?";
+    $query = "DELETE FROM Reservation WHERE reservation_id = ?";
     $stmt = $connection->prepare($query);
     $stmt->bind_param("i", $reservation_id);
     $result = $stmt->execute();
