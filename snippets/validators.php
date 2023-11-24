@@ -74,6 +74,38 @@ function isUserIDAlreadyUsed($connection, $id)
     return $count > 0;
 }
 
+function isCarPlateAlreadyUsed($connection, $carPlate)
+{
+    // Convert car plate to uppercase
+    $carPlate = strtoupper($carPlate);
+    // Use prepared statements to prevent SQL injection
+    $sql = "SELECT COUNT(*) as count FROM Cars WHERE car_plate = ? and deleted=FALSE";
+    $stmt = $connection->prepare($sql);
+
+    if (!$stmt) {
+        die("Database error: " . $connection->error);
+    }
+
+    // Bind the parameter and execute the query
+    $stmt->bind_param("s", $carPlate);
+    $stmt->execute();
+
+    // Check for errors in the query execution
+    if ($stmt->error) {
+        die("Query error: " . $stmt->error);
+    }
+
+    // Get the result
+    $stmt->bind_result($count);
+    $stmt->fetch();
+
+    // Close the statement
+    $stmt->close();
+
+    // If count is greater than 0, the car plate is already in use in the database
+    return $count > 0;
+}
+
 
 function checkAndCleanPostInputs($requiredInputs)
 {
@@ -284,7 +316,8 @@ function addCar($connection, $user)
         $_SESSION['messages'] = [["text" => "Please provide Car Type and Car Plate.", "type" => "error"]];
         return;
     }
-
+    // Convert car plate to uppercase
+    $car_plate = strtoupper($car_plate);
     // Check if the car_plate already exists in the database
     $existingCarCheck = $connection->prepare("SELECT COUNT(*) FROM Cars WHERE car_plate = ? AND deleted=FALSE");
     $existingCarCheck->bind_param("s", $car_plate);

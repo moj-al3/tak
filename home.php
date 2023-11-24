@@ -56,16 +56,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </label>
                     <label for="">
                         <span>First Name:</span>
-                        <input class="editable" type="text" name="first_name" value="<?= $user['first_name'] ?>"
+                        <input class="editable" id="first_name" type="text" name="first_name"
+                               value="<?= $user['first_name'] ?>"
                                readonly>
                     </label>
                     <label for="">
                         <span>Last Name:</span>
-                        <input class="editable" type="text" name="last_name" value="<?= $user['last_name'] ?>" readonly>
+                        <input class="editable" id="last_name" type="text" name="last_name"
+                               value="<?= $user['last_name'] ?>" readonly>
                     </label>
                     <label for="">
                         <span>Email:</span>
-                        <input class="editable" type="email" name="email" value="<?= $user['email'] ?>" readonly>
+                        <input class="editable" id="email" type="email" name="email" value="<?= $user['email'] ?>"
+                               readonly>
                     </label>
                     <?php if ($user["user_type_id"] == "1" || $user["user_type_id"] == "2"): ?>
                         <?php foreach ($user["cars"] as $car): ?>
@@ -237,31 +240,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <?php include "snippets/layout/messages.php" ?>
 <script src="/assets/js/profile-tarkken.js"></script>
 
-<script>
-    $(function () {
-        // trigger form editing when the edit icon is clicked
-        $("#edit").on("click", function () {
-            $("#edit").addClass("hide");
-            $("#save").removeClass("hide");
-            $(".editable").removeAttr('readonly');
-        });
 
-        $("#save").on("click", async function () {
-            var response = await Swal.fire({
-                title: "Confirmation",
-                text: "Are you sure you want to save the changes?",
-                confirmButtonText: "Yes",
-                showCancelButton: true,
-                cancelButtonText: "Cancel",
-                cancelButtonColor: '#ff0050',
-
-            });
-            if (response.isConfirmed) {
-                $("#user-form").submit();
-            }
-        });
-    });
-</script>
 <script src="/assets/js/header.js"></script>
 
 </body>

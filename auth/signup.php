@@ -75,7 +75,7 @@
         <div class="form-step ">
             <div class="input-group">
                 <label for="carPlate">Car plate </label>
-                <input type="text" name="car_plate" id="car_plate" required>
+                <input type="text" name="car_plate" id="car_plate" placeholder="ABC-1234" required>
                 <p class="error-message" id="car_plate_err" hidden></p>
             </div>
             <div class="input-group">

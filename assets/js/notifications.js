@@ -1,120 +1,133 @@
-// define util functions
-function numberOfDays(endDate) {
-  today = new Date();
-  var time_difference = endDate.getTime() - today.getTime();
-  //calculate days difference by dividing total milliseconds in a day
-  var days_difference = time_difference / (1000 * 60 * 60 * 24);
-  return Math.ceil(days_difference);
+let count = 1;
+const actions = {
+    "sendReminder": showReminder,
+    "showBlock": showBlock,
+    "sendWarning": sendWarning
 }
+timeLeft = document.getElementById("time-left");
 
-// define alert functions
-function showParkingReminder() {
-  Swal.fire({
-    title: "Reminder!",
-    text: "if you still need extra time please click extend or you can cancel your reservation",
-    
-    confirmButtonText: "Extend",
-    showCancelButton:true,
-    cancelButtonText:"Cancel Reservation",
-    cancelButtonColor: '#d33',
 
-  }).then((result) => {
-    if (result.isConfirmed) {
-      Swal.fire({
-        position: 'top-end',
-        icon: 'success',
-        title: 'You Chose Extend',
-        showConfirmButton: false,
-        timer: 1500
-      })
+async function checkNotifications() {
+    try {
+
+        const response = await $.ajax({url: '/api/notifications.php'});
+
+        if (response.action in actions) {
+            actions[response.action](response)
+        } else {
+            console.error(response.action + " :Action Not Found")
+        }
+        //    set the timer if exists
+        if (timeLeft) {
+            timeLeft.innerText = (response.timeLeft ?? 0) + "-min"
+        }
+    } catch (error) {
+        console.error(error);
+        console.error(error.responseText);
     }
-  })
-}
-function showBlockedMessage(blockEndDateString) {
-  endDate = new Date(blockEndDateString);
-  period = numberOfDays(endDate);
-  Swal.fire({
-    title: "Blocked",
-    text: `Sorry you cannot reserve a parking till ${period} days.`,
-    icon: "error",
-    confirmButtonText: "Close",
-    confirmButtonColor: "#d33",
-  });
-}
-function showViolationMessage(userFirstName,blockEndDateString) {
-  endDate = new Date(blockEndDateString);
-  period = numberOfDays(endDate);
-  Swal.fire({
-    title: "Violations message",
-    text: `Dear ${userFirstName},you are currently broke the rules of reservation and you will be able to reserve again after passing ${period} days.`,
-    icon: "error",
-    confirmButtonText: "Close",
-    confirmButtonColor: "#d33",
-  });
 }
 
 
-// define setup
-function setup() {
-  // get reference to button
-  var btn = document.getElementById("test-button-1");
-  // add event listener for the button, for action "click"
-  btn.addEventListener("click", showParkingReminder);
+async function extendReservation(reservation_id) {
 
-  // get reference to button
-  var btn2 = document.getElementById("test-button-2");
-  // add event listener for the button, for action "click"
-  btn2.addEventListener("click", function () {
-    showBlockedMessage("10/6/2023");
-  });
-
-  // get reference to button
-  var btn3 = document.getElementById("test-button-3");
-  // add event listener for the button, for action "click"
-  btn3.addEventListener("click", function () {
-    showBlockedMessage("10/2/2023");
-  });
-
-   // get reference to button
-   var btn4 = document.getElementById("test-button-4");
-   // add event listener for the button, for action "click"
-   btn4.addEventListener("click", function () {
-     showViolationMessage("bayan","10/18/2023");
-   });
+    try {
+        await $.ajax({
+            data: {reservation_id: reservation_id, action: "extend"},
+            type: 'GET',
+            url: '/api/manage-reservation.php'
+        });
+        Swal.fire({
+            icon: 'success',
+            title: 'Your Reservation Was Extended Successfully',
+            showConfirmButton: false,
+            timer: 1500
+        })
+    } catch (error) {
+        console.error(error)
+        Swal.fire({
+            icon: 'error',
+            title: 'Something Went Wrong, Please Try Again Later',
+            showConfirmButton: false,
+            timer: 1500
+        })
+    }
 }
 
-function getBlockedUntil(){
+async function cancelReservation(reservation_id) {
+    try {
+        const result = await $.ajax({
+            data: {reservation_id: reservation_id, action: "cancel"},
+            type: 'GET',
+            url: '/api/manage-reservation.php'
+        });
+        await Swal.fire({
+            icon: 'success',
+            title: 'Your Reservation Was Canceled Successfully',
+            showConfirmButton: false,
+            timer: 1500
+        })
+        window.location.replace("/home.php");
+    } catch (error) {
+        console.error(error)
+        Swal.fire({
+            icon: 'error',
+            title: 'Something Went Wrong, Please Try Again Later',
+            showConfirmButton: false,
+            timer: 1500
+        })
+    }
 
-  return "10/20/2023"
 }
 
-// NOTE: we wrap the function inside another function if we want to pass values to the inner function
-// without accedentily calling it
-// window.onload = function () {
-//     setup(1,2,3);
-// };
+async function showReminder(response) {
+    const canExtend = response.extensions < 3;
+    const result = await Swal.fire({
+        title: "Reminder!",
+        text: "your reservation will expire in " + response.timeLeft + " minutes, " + (canExtend ? "if you still need extra time please click extend or ignore this message" : "you can't request any extension because you exceeded the allowed times"),
+        confirmButtonText: "Extend",
+        showConfirmButton: canExtend,
+        showCancelButton: true,
+        cancelButtonText: "Cancel",
+        cancelButtonColor: '#d33',
 
-// NOTE: this is wrong becuase we are giving it the result of the call to the function
-// window.onload = setup();
-window.onload = setup;
+    });
+    //if user clicked on extend
+    if (result.isConfirmed) {
+        await extendReservation(response.reservation_id);
+        return;
+    }
+    //if user clicked on cancel
+    if (result.dismiss === "cancel") {
+        await cancelReservation(response.reservation_id);
+        return;
+    }
 
-// const buttons = document.querySelectorAll(".btn");
-//   buttons.forEach(function (button) {
-//     button.addEventListener("click", function (event) {
-//       // do something when the button is clicked
-//     //   alert(event)
-//       alert("You clicked a button with a value of "+event.target.value);
-//     });
-//   });
+}
 
-//   run a check if there is any notification
-  // setInterval(function () {
-  //   // run the checks
-  //   Swal.fire({
-  //     position: "top-end",
-  //     icon: "success",
-  //     title: "Your work has been saved",
-  //     showConfirmButton: false,
-  //     timer: 1500,
-  //   });
-  // }, 5000);
+async function sendWarning(response) {
+    await Swal.fire({
+        title: "Warning!",
+        text: "your reservation will expire in " + response.timeLeft + " minutes, Please leave before the timer ends or you will be blocked with violation ticket",
+        confirmButtonText: "OK",
+    });
+}
+
+
+async function showBlock(response) {
+    await Swal.fire({
+        icon: "error",
+        title: "Blocked!",
+        text: "your reservation has been canceled for the following reason: " + response.reason,
+        confirmButtonText: "OK",
+    });
+    window.location.replace("/home.php");
+}
+
+
+const minutesSpace = 0.08;
+window.onload = () => {
+    // run for the first time
+    checkNotifications()
+    //then run every minutesSpace
+    setInterval(checkNotifications, (minutesSpace) * 60000);
+}

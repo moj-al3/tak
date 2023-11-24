@@ -64,6 +64,24 @@ async function isUserIdUsed(userId) {
     return result;
 }
 
+// Function to check if a car plate is used
+async function isCarPlateUsed(carPlate) {
+    var result;
+    await $.ajax({
+        url: '/api/check-car-plate.php',
+        type: 'GET',
+        data: {car_plate: carPlate},
+        success: function (data) {
+            result = data;
+        },
+        error: function () {
+            console.error("Something went wrong with checking car plate");
+            result = true;
+        }
+    });
+    return result;
+}
+
 async function isEmailUsed(email) {
     var result;
     await $.ajax({
@@ -87,15 +105,31 @@ async function validateSignUpForm(formStepsNum) {
     resetErrors();
 
     // step one validation
+    if (!visitorRadio.checked && !kfuMemberRadio.checked) {
+        error = true;
+        swal.fire({
+            icon: "error",
+            text: "Please Select A User Type First"
+        })
+    }
+
     if (isEmptyStr(firstName.value)) {
         error = true;
-        firstNameErr.innerHTML = "first name is required";
+        firstNameErr.innerHTML = "This Field is required";
+        firstNameErr.hidden = false;
+    } else if (!isAlphabetic(firstName.value)) {
+        error = true;
+        firstNameErr.innerHTML = "Only alphabets are allowed";
         firstNameErr.hidden = false;
     }
 
     if (isEmptyStr(lastName.value)) {
         error = true;
-        lastNameErr.innerHTML = "last name is required";
+        lastNameErr.innerHTML = "This Field is required";
+        lastNameErr.hidden = false;
+    } else if (!isAlphabetic(lastName.value)) {
+        error = true;
+        lastNameErr.innerHTML = "Only alphabets are allowed";
         lastNameErr.hidden = false;
     }
 
@@ -104,29 +138,44 @@ async function validateSignUpForm(formStepsNum) {
     }
     // step two validation
 
+
     if (isEmptyStr(nationalId.value)) {
         error = true;
-        nationalIdErr.innerHTML = "national id is required";
+        nationalIdErr.innerHTML = "This Field is required";
         nationalIdErr.hidden = false;
-    }
-    if (!isEmptyStr(nationalId.value) && (await isUserIdUsed(nationalId.value))) {
+    } else if (!isNumeric(nationalId.value)) {
         error = true;
-        nationalIdErr.innerHTML = "national id is already used";
+        nationalIdErr.innerHTML = "Only numbers are allowed";
+        nationalIdErr.hidden = false;
+    } else if (!error && visitorRadio.checked && nationalId.value.length !== 10) {
+        error = true;
+        nationalIdErr.innerHTML = "The length of the ID should be 10";
+        nationalIdErr.hidden = false;
+    } else if (!error && kfuMemberRadio.checked && nationalId.value.length !== 9) {
+        error = true;
+        nationalIdErr.innerHTML = "The length of the ID should be 9";
+        nationalIdErr.hidden = false;
+    } else if (await isUserIdUsed(nationalId.value)) {
+        error = true;
+        nationalIdErr.innerHTML = "This ID is already used";
         nationalIdErr.hidden = false;
 
     }
 
+
+    // Step three validation
     if (isEmptyStr(email.value)) {
         error = true;
-        emailErr.innerHTML = "email is required";
+        emailErr.innerHTML = "This Field is required";
         emailErr.hidden = false;
-    }
-
-    if (!isEmptyStr(email.value) && (await isEmailUsed(email.value))) {
+    } else if (!isValidEmail(email.value)) {
         error = true;
-        emailErr.innerHTML = "email id is already used";
+        emailErr.innerHTML = "Invalid email format";
         emailErr.hidden = false;
-
+    } else if (!isEmptyStr(email.value) && (await isEmailUsed(email.value))) {
+        error = true;
+        emailErr.innerHTML = "This email is already used";
+        emailErr.hidden = false;
     }
     if (formStepsNum <= 1) {
         return error;
@@ -135,13 +184,25 @@ async function validateSignUpForm(formStepsNum) {
 
     if (isEmptyStr(carPlate.value)) {
         error = true;
-        carPlateErr.innerHTML = "car plate is required";
+        carPlateErr.innerHTML = "This Field is required";
+        carPlateErr.hidden = false;
+    } else if (!isValidCarPlate(carPlate.value)) {
+        error = true;
+        carPlateErr.innerHTML = "Invalid car plate format. Use ABC-1234 format";
+        carPlateErr.hidden = false;
+    } else if (!error && (await isCarPlateUsed(carPlate.value))) {
+        error = true;
+        carPlateErr.innerHTML = "This car plate is already used";
         carPlateErr.hidden = false;
     }
 
     if (isEmptyStr(carType.value)) {
         error = true;
-        carTypeErr.innerHTML = "car type is required";
+        carTypeErr.innerHTML = "This Field is required";
+        carTypeErr.hidden = false;
+    } else if (!isAlphabetic(carType.value)) {
+        error = true;
+        carTypeErr.innerHTML = "Only alphabets are allowed";
         carTypeErr.hidden = false;
     }
     if (formStepsNum <= 2) {
@@ -150,7 +211,7 @@ async function validateSignUpForm(formStepsNum) {
     // step four validation
     if (isEmptyStr(password1.value)) {
         error = true;
-        password1Err.innerHTML = "password is required";
+        password1Err.innerHTML = "This Field is required";
         password1Err.hidden = false;
     }
     if (!isEmptyStr(password1.value) && password1.value.length < 7) {
@@ -161,7 +222,7 @@ async function validateSignUpForm(formStepsNum) {
 
     if (isEmptyStr(password2.value)) {
         error = true;
-        password2Err.innerHTML = "password is required";
+        password2Err.innerHTML = "This Field is required";
         password2Err.hidden = false;
     }
 // check passweord that match
@@ -211,6 +272,7 @@ async function sendDataToBackend(requestData) {
         // Assuming a successful response, return true
         return true;
     } catch (error) {
+        alert(error)
         console.error(error);
         // Return false in case of an error
         return false;
@@ -280,10 +342,37 @@ submitBtn.addEventListener("click", async function () {
     var result = await sendDataToBackend(getFormData());
 
     if (result == true) {
-        alert("Your Account Was Created Successfully");
+        await swal.fire({
+            icon: "success",
+            text: "Your Account Was Created Successfully",
+            showConfirmButton: false,
+            timer: 1500,
+        })
         window.location.href = "/auth/login.php";
         return;
     }
 
     alert("Something Went wrong");
 });
+
+// Function to check if a string contains only alphabets
+function isAlphabetic(str) {
+    return /^[a-zA-Z]+$/.test(str);
+}
+
+// Function to check if a string contains only numbers
+function isNumeric(str) {
+    return /^\d+$/.test(str);
+}
+
+// Function to check if an email has a valid format
+function isValidEmail(email) {
+    // A simple regular expression for basic email format validation
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+// Function to check if a car plate has a valid format
+function isValidCarPlate(carPlate) {
+    // A simple regular expression for basic car plate format validation
+    return /^[A-Za-z]{3}-\d{4}$/.test(carPlate);
+}

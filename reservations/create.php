@@ -16,9 +16,9 @@ function createReservation()
 
 
     // Insert reservation data into the database
-    $insertReservationSql = "INSERT INTO Reservation (reserver_id, parking_id, car_id, reservation_datetime) VALUES (?, ?, ?, NOW())";
+    $insertReservationSql = "INSERT INTO Reservation (reserver_id, parking_id, car_id, reservation_datetime,reservation_length) VALUES (?, ?, ?, NOW(),?)";
     $insertReservationStmt = $connection->prepare($insertReservationSql);
-    $insertReservationStmt->bind_param("iii", $user['user_id'], $parkingId, $carId);
+    $insertReservationStmt->bind_param("iiii", $user['user_id'], $parkingId, $carId, $hours);
 
     if ($insertReservationStmt->execute()) {
         $reservationId = $insertReservationStmt->insert_id;
@@ -379,7 +379,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 return;
             }
             var parkingId = selectedSpot.getAttribute("data-parking-id");
-            var hours = selectedTime === undefined ? selectedTime?.getAttribute("data-hours") : 0;
+            var hours = selectedTime === undefined ? 0 : selectedTime.getAttribute("data-hours");
             var car = carSelector.value;
             submitForm({"parking_id": parkingId, "hours": hours, "car_id": car})
         })

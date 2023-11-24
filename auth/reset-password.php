@@ -61,12 +61,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
 <?php include "../snippets/layout/header.php" ?>
 <div id="content" class="container">
-    <form class="reset_form" method="POST">
+    <form class="reset_form" method="POST" onsubmit="return validatePassword()">
         <h1>Password Reset</h1>
         <p>Reset your password</p>
         <div class="input-group">
             <label for="new password">New password</label>
-            <input type="password" name="password" id="new_pass" required>
+            <input type="password" name="password" id="password" required>
+            <p class="error-message" id="password_err" hidden></p>
         </div>
         <div class="reset">
             <input type="submit" value="Submit">
@@ -79,6 +80,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!-- Javascript -->
 <?php include "../snippets/layout/scripts.php" ?>
 <script src="../assets/js/header.js"></script>
+
+<script>
+    function validatePassword() {
+
+        var password = document.getElementById("password").value;
+        var passwordErr = document.getElementById("password_err");
+        passwordErr.innerHTML = "";
+        if (password.length < 7) {
+            passwordErr.innerHTML = "password must be longer than 7 characters";
+            passwordErr.hidden = false;
+            return false; // Prevent form submission
+        }
+        return true; // Allow form submission
+    }
+</script>
 
 
 <?php include "../snippets/layout/messages.php" ?>
