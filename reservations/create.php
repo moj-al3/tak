@@ -379,7 +379,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 return;
             }
             var parkingId = selectedSpot.getAttribute("data-parking-id");
-            var hours = selectedTime === undefined ? 0 : selectedTime.getAttribute("data-hours");
+            var hours = (selectedTime == undefined) ? 0 : selectedTime.getAttribute("data-hours");
             var car = carSelector.value;
             submitForm({"parking_id": parkingId, "hours": hours, "car_id": car})
         })
