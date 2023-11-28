@@ -141,6 +141,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.js"></script>
     <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
     <script src="/assets/js/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="/assets/css/ticket.css">
 
     <style>
         body {
@@ -156,110 +157,213 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <body>
 
-<div class="containerd">
-    <main class="w-screen h-screen flex flex-col">
+<div class=" md:hidden ">
+    <div class="ticket w-auto md:w-96">
+        <header>
+            <div class="company-name">
+                Tarkeen
+            </div>
+            <div class="gate">
+                <div class="flex flex-end justify-end">
+                    <?php if ($reservation['enter_datetime'] == null || $reservation['exit_datetime'] == null) : ?>
+                        <button id="dropdownMenuIconButton" data-dropdown-toggle="dropdownDots"
+                                class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-200 bg-gray-800 rounded-lg hover:bg-gray-600 focus:ring-4 focus:outline-none  focus:ring-gray-50  "
+                                type="button">
+                            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                 fill="currentColor" viewBox="0 0 4 15">
+                                <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
+                            </svg>
+                        </button>
 
-        <section class="w-full flex-grow bg-parking-bg flex flex-cold items-center justify-center  p-4">
-
-            <div class="flex w-full max-w-3xl text-parking-text h-64">
-
-                <div class="h-full bg-gray-800 flex items-center justify-center px-8 rounded-l-3xl flex-col">
-                    <div id="qrcode"></div>
-                    <p class="text-gray-200">Scan to check in </p>
-                    <p class="text-gray-200">ID: <?= $reservation['reservation_id'] ?></p>
+                        <div id="dropdownDots"
+                             class="z-10 hidden bg-gray-400 divide-y divide-gray-100 rounded-lg shadow w-44 ">
+                            <ul class="py-2 text-sm text-gray-900 " aria-labelledby="dropdownMenuIconButton">
+                                <?php if ($user["user_type_id"] == "3" && $reservation['enter_datetime'] == null) : ?>
+                                    <li><a href="#" class="block px-4 py-2 hover:bg-gray-100 "
+                                           onclick="submitAction('checkIn')">Check in</a></li>
+                                <?php elseif ($user["user_type_id"] == "3" && $reservation['exit_datetime'] == null) : ?>
+                                    <li><a href="#" class="block px-4 py-2 hover:bg-gray-100 "
+                                           onclick="submitAction('checkOut')">Check out</a></li>
+                                <?php endif; ?>
+                                <?php if ($reservation['enter_datetime'] == null && $reservation['exit_datetime'] == null) : ?>
+                                    <li><a href="#" class="block px-4 py-2 hover:bg-gray-100"
+                                           onclick="submitAction('cancelReservation')">Cancel Ticket</a></li>
+                                <?php endif; ?>
+                            </ul>
+                        </div>
+                    <?php endif; ?>
                 </div>
-                <div class="relative h-full flex flex-col items-center border-dashed justify-between border-2 bg-gray-800 border-parking-text">
-                    <div class="absolute rounded-full w-8 h-8 bg-white -top-5"></div>
-                    <div class="absolute rounded-full w-8 h-8 bg-white -bottom-5"></div>
+            </div>
+        </header>
+        <section class="airports">
+            <div class="flex flex-col flex-grow order-first md:order-2 items-center px-10">
+                <span class="font-bold text-xs text-gray-200">Spot <?= $parking_info['floor_number'] . 'st-' . $parking_info['zone_number'] . $parking_info["parking_number"] ?></span>
+                <div class="w-full flex items-center mt-2">
+                    <div class="w-3 h-3 rounded-full border-2 border-parking-text"></div>
+                    <div class="flex-grow border-t-2 border-zinc-400 border-dotted h-px"></div>
+                    <!-- <div class="flex-grow border-t-2 border-parking-line border-dotted h-px"></div> -->
+                    <img src="/assets/img/car-2.png" class="w-6 h-6 mx-2" alt="">
+                    <div class="flex-grow border-t-2 border-zinc-400 border-dotted h-px"></div>
+                    <!-- <div class="flex-grow border-t-2 border-parking-line border-dotted h-px"></div> -->
+                    <div class="w-3 h-3 rounded-full border-2 border-parking-text"></div>
                 </div>
-                <div class="h-full py-8 px-10 bg-gray-800 flex-grow rounded-r-3xl flex flex-col text-gray-200">
-                    <div class="flex flex-end justify-end">
+                <!-- <div class="flex items-center px-3 rounded-full bg-parking-time h-8 mt-2">
+                    <span class="text-sm text-gray-200">1h 30m</span>
+                </div> -->
+            </div>
+            <div class="flex w-full justify-between items-center flex-wrap md:flex-nowrap">
+                <div class="flex flex-col items-center o ">
+                    <span class="text-4xl font-bold text-gray-200">PARK</span>
+                    <span class="text-parking-text text-sm t text-gray-200">Parking Area</span>
+                </div>
 
-                        <?php if ($reservation['enter_datetime'] == null || $reservation['exit_datetime'] == null): ?>
-                            <button id="dropdownMenuIconButton" data-dropdown-toggle="dropdownDots"
-                                    class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-200 bg-gray-800 rounded-lg hover:bg-gray-600 focus:ring-4 focus:outline-none  focus:ring-gray-50  "
-                                    type="button">
-                                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                     fill="currentColor" viewBox="0 0 4 15">
-                                    <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
-                                </svg>
-                            </button>
-
-                            <div id="dropdownDots"
-                                 class="z-10 hidden bg-gray-400 divide-y divide-gray-100 rounded-lg shadow w-44 ">
-                                <ul class="py-2 text-sm text-gray-900 " aria-labelledby="dropdownMenuIconButton">
-                                    <?php if ($user["user_type_id"] == "3" && $reservation['enter_datetime'] == null): ?>
-                                        <li><a href="#" class="block px-4 py-2 hover:bg-gray-100 "
-                                               onclick="submitAction('checkIn')">Check in</a></li>
-                                    <?php elseif ($user["user_type_id"] == "3" && $reservation['exit_datetime'] == null): ?>
-                                        <li><a href="#" class="block px-4 py-2 hover:bg-gray-100 "
-                                               onclick="submitAction('checkOut')">Check out</a></li>
-                                    <?php endif; ?>
-                                    <?php if ($reservation['enter_datetime'] == null && $reservation['exit_datetime'] == null): ?>
-                                        <li><a href="#" class="block px-4 py-2 hover:bg-gray-100"
-                                               onclick="submitAction('cancelReservation')">Cancel Ticket</a></li>
-                                    <?php endif; ?>
-                                </ul>
-                            </div>
-                        <?php endif; ?>
-
-
-                    </div>
-                    <div class="flex w-full justify-between items-center">
-                        <div class="flex flex-col items-center">
-                            <span class="text-4xl font-bold text-gray-200">PARK</span>
-                            <span class="text-parking-text text-sm text-gray-200">Parking Area</span>
-                        </div>
-                        <div class="flex flex-col flex-grow items-center px-10">
-                            <span class="font-bold text-xs text-gray-200">Spot <?= $parking_info['floor_number'] . 'st-' . $parking_info['zone_number'] . $parking_info["parking_number"] ?></span>
-                            <div class="w-full flex items-center mt-2">
-                                <div class="w-3 h-3 rounded-full border-2 border-parking-text"></div>
-                                <div class="flex-grow border-t-2 border-zinc-400 border-dotted h-px"></div>
-                                <!-- <div class="flex-grow border-t-2 border-parking-line border-dotted h-px"></div> -->
-                                <img src="/assets/img/car-2.png" class="w-6 h-6 mx-2" alt="">
-                                <div class="flex-grow border-t-2 border-zinc-400 border-dotted h-px"></div>
-                                <!-- <div class="flex-grow border-t-2 border-parking-line border-dotted h-px"></div> -->
-                                <div class="w-3 h-3 rounded-full border-2 border-parking-text"></div>
-                            </div>
-                            <div class="flex items-center px-3 rounded-full bg-parking-time h-8 mt-2">
-                                <span class="text-sm text-gray-200" id="time-left"></span>
-                            </div>
-                        </div>
-                        <div class="flex flex-col items-center text-gray-200">
-                            <span class="text-4xl font-bold text-gray-200">EXIT</span>
-                            <span class="text-parking-text text-sm">Exit Gate</span>
-                        </div>
-                    </div>
-                    <div class="flex w-full mt-auto justify-between">
-                        <div class="flex flex-col">
-                            <span class="text-xs text-parking-text text-gray-200">Date</span>
-                            <span class="font-mono text-gray-200"><?= date('d/m/Y', strtotime($reservation['reservation_datetime'])) ?></span>
-                        </div>
-                        <div class="flex flex-col text-gray-200">
-                            <span class="text-xs text-parking-text">Car Number</span>
-                            <span class="font-mono"><?= $car_info["car_plate"] ?></span>
-                        </div>
-                        <div class="flex flex-col text-gray-200">
-                            <span class="text-xs text-parking-text">Vehicle</span>
-                            <span class="font-mono"><?= $car_info["car_type"] ?></span>
-                        </div>
-                        <div class="flex flex-col text-gray-200">
-                            <span class="text-xs text-parking-text">Floor/Spot</span>
-                            <span class="font-mono"><?= $parking_info['floor_number'] . '/' . $parking_info['zone_number'] . $parking_info["parking_number"] ?></span>
-
-                        </div>
-                    </div>
+                <div class="flex flex-col items-center text-gray-200  ">
+                    <span class="text-4xl font-bold text-gray-200">EXIT</span>
+                    <span class="text-parking-text text-sm">Exit Gate</span>
                 </div>
             </div>
         </section>
+        <section class="place">
+            <div class="flex w-full mt-auto justify-between">
+                <!-- <div class="flex flex-col">
+                                    <span class="text-xs text-parking-text text-gray-200">Date</span>
+                                    <span class="font-mono text-gray-200"><?= date('d/m/Y', strtotime($reservation['reservation_datetime'])) ?></span>
+                                </div> -->
+                <div class="flex flex-col text-gray-200">
+                    <span class="text-xs text-parking-text">Car Number</span>
+                    <span class="font-mono"><?= $car_info["car_plate"] ?></span>
+                </div>
+                <div class="flex flex-col text-gray-200">
+                    <span class="text-xs text-parking-text">Vehicle</span>
+                    <span class="font-mono"><?= $car_info["car_type"] ?></span>
+                </div>
+                <div class="flex flex-col text-gray-200">
+                    <span class="text-xs text-parking-text">Floor/Spot</span>
+                    <span class="font-mono"><?= $parking_info['floor_number'] . '/' . $parking_info['zone_number'] . $parking_info["parking_number"] ?></span>
 
-    </main>
+                </div>
+            </div>
+            <div class="qr">
+                <div class="h-full bg-gray-100 flex items-center justify-center  rounded flex-col">
+                    <div id="qrcode-mobile"></div>
+                    <p class="text-gray-900">Scan to check in </p>
+                    <p class="text-gray-900">ID: <?= $reservation['reservation_id'] ?></p>
+                </div>
+                <!-- <img src="http://www.classtools.net/QR/pics/qr.png" /> -->
+            </div>
+        </section>
+    </div>
 
 </div>
+<main class="w-screen h-screen flex justify-center align-center hidden md:flex   flex-col">
+
+    <section class=" w-full flex-grow bg-parking-bg flex flex-col md:flex-row items-center
+         justify-center  p-4">
+        <div class="flex w-full md:max-w-3xl max-w-3xl text-parking-text h-64">
+
+            <div class="h-full bg-gray-800 flex items-center justify-center px-8 rounded-l-3xl flex-col">
+                <div id="qrcode"></div>
+                <p class="text-gray-200">Scan to check in </p>
+                <p class="text-gray-200">ID: <?= $reservation['reservation_id'] ?></p>
+            </div>
+            <div class="relative h-full flex flex-col items-center border-dashed justify-between border-2 bg-gray-800 border-parking-text">
+                <div class="absolute rounded-full w-8 h-8 bg-white -top-5"></div>
+                <div class="absolute rounded-full w-8 h-8 bg-white -bottom-5"></div>
+            </div>
+            <div class="h-fulld py-8 px-10 bg-gray-800 flex-grow rounded-r-3xl flex flex-col text-gray-200">
+                <div class="flex flex-end justify-end">
+                    <?php if ($reservation['enter_datetime'] == null || $reservation['exit_datetime'] == null): ?>
+                        <button id="dropdownMenuIconButton" data-dropdown-toggle="dropdownDots2"
+                                class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-200 bg-gray-800 rounded-lg hover:bg-gray-600 focus:ring-4 focus:outline-none  focus:ring-gray-50  "
+                                type="button">
+                            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                 fill="currentColor" viewBox="0 0 4 15">
+                                <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
+                            </svg>
+                        </button>
+
+                        <div id="dropdownDots2"
+                             class="z-10 hidden bg-gray-400 divide-y divide-gray-100 rounded-lg shadow w-44 ">
+                            <ul class="py-2 text-sm text-gray-900 " aria-labelledby="dropdownMenuIconButton">
+                                <?php if ($user["user_type_id"] == "3" && $reservation['enter_datetime'] == null): ?>
+                                    <li><a href="#" class="block px-4 py-2 hover:bg-gray-100 "
+                                           onclick="submitAction('checkIn')">Check in</a></li>
+                                <?php elseif ($user["user_type_id"] == "3" && $reservation['exit_datetime'] == null): ?>
+                                    <li><a href="#" class="block px-4 py-2 hover:bg-gray-100 "
+                                           onclick="submitAction('checkOut')">Check out</a></li>
+                                <?php endif; ?>
+                                <?php if ($reservation['enter_datetime'] == null && $reservation['exit_datetime'] == null): ?>
+                                    <li><a href="#" class="block px-4 py-2 hover:bg-gray-100"
+                                           onclick="submitAction('cancelReservation')">Cancel Ticket</a></li>
+                                <?php endif; ?>
+                            </ul>
+                        </div>
+                    <?php endif; ?>
+
+
+                </div>
+                <div class="flex w-full justify-between items-center">
+                    <div class="flex flex-col items-center">
+                        <span class="text-4xl font-bold text-gray-200">PARK</span>
+                        <span class="text-parking-text text-sm text-gray-200">Parking Area</span>
+                    </div>
+                    <div class="flex flex-col flex-grow items-center px-10">
+                        <span class="font-bold text-xs text-gray-200">Spot <?= $parking_info['floor_number'] . 'st-' . $parking_info['zone_number'] . $parking_info["parking_number"] ?></span>
+                        <div class="w-full flex items-center mt-2">
+                            <div class="w-3 h-3 rounded-full border-2 border-parking-text"></div>
+                            <div class="flex-grow border-t-2 border-zinc-400 border-dotted h-px"></div>
+                            <!-- <div class="flex-grow border-t-2 border-parking-line border-dotted h-px"></div> -->
+                            <img src="/assets/img/car-2.png" class="w-6 h-6 mx-2" alt="">
+                            <div class="flex-grow border-t-2 border-zinc-400 border-dotted h-px"></div>
+                            <!-- <div class="flex-grow border-t-2 border-parking-line border-dotted h-px"></div> -->
+                            <div class="w-3 h-3 rounded-full border-2 border-parking-text"></div>
+                        </div>
+                        <div class="flex items-center px-3 rounded-full bg-parking-time h-8 mt-2">
+                            <span class="text-sm text-gray-200">1h 30m</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col items-center text-gray-200">
+                        <span class="text-4xl font-bold text-gray-200">EXIT</span>
+                        <span class="text-parking-text text-sm">Exit Gate</span>
+                    </div>
+                </div>
+                <div class="flex w-full mt-auto justify-between">
+                    <div class="flex flex-col">
+                        <span class="text-xs text-parking-text text-gray-200">Date</span>
+                        <span class="font-mono text-gray-200"><?= date('d/m/Y', strtotime($reservation['reservation_datetime'])) ?></span>
+                    </div>
+                    <div class="flex flex-col text-gray-200">
+                        <span class="text-xs text-parking-text">Car Number</span>
+                        <span class="font-mono"><?= $car_info["car_plate"] ?></span>
+                    </div>
+                    <div class="flex flex-col text-gray-200">
+                        <span class="text-xs text-parking-text">Vehicle</span>
+                        <span class="font-mono"><?= $car_info["car_type"] ?></span>
+                    </div>
+                    <div class="flex flex-col text-gray-200">
+                        <span class="text-xs text-parking-text">Floor/Spot</span>
+                        <span class="font-mono"><?= $parking_info['floor_number'] . '/' . $parking_info['zone_number'] . $parking_info["parking_number"] ?></span>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+
 <?php include "../snippets/layout/scripts.php" ?>
 <?php include "../snippets/layout/messages.php" ?>
 <script type="text/javascript">
     new QRCode(document.getElementById("qrcode"), {
+        text: "<?= $reservation_id  ?>",
+        width: 128,
+        height: 128,
+        correctLevel: QRCode.CorrectLevel.H
+    });
+
+    new QRCode(document.getElementById("qrcode-mobile"), {
         text: "<?= $reservation_id  ?>",
         width: 128,
         height: 128,

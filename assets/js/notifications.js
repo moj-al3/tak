@@ -2,9 +2,12 @@ let count = 1;
 const actions = {
     "sendReminder": showReminder,
     "showBlock": showBlock,
-    "sendWarning": sendWarning
+    "sendWarning": sendWarning,
+    "nothing": () => {
+    }
 }
 timeLeft = document.getElementById("time-left");
+timeLeft2 = document.getElementById("time-left2");
 
 
 async function checkNotifications() {
@@ -20,6 +23,9 @@ async function checkNotifications() {
         //    set the timer if exists
         if (timeLeft) {
             timeLeft.innerText = (response.timeLeft ?? 0) + "-min"
+        }
+        if (timeLeft2) {
+            timeLeft2.innerText = (response.timeLeft ?? 0) + "-min"
         }
     } catch (error) {
         console.error(error);
