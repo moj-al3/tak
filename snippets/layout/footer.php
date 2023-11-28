@@ -48,10 +48,10 @@ if (!defined('INCLUDED_BY_OTHER_FILE')) {
            
             <ul class="about-us">
                 <li>
-                <a href="/Privacy Policy.php">Privacy Policy</a>
+                <a href="/privacy-policy.php">Privacy Policy</a>
                 </li>
                 <li>
-                <a href="/FAQs.php">FAQs</a>
+                <a href="/faqs.php">FAQs</a>
                 </li>
                 
             </ul>
