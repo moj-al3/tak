@@ -27,8 +27,8 @@ if (!defined('INCLUDED_BY_OTHER_FILE')) {
                         <li class="item"><a href="/reservations/scan.php">QR scanning</a></li>
                     <?php endif; ?>
                 <?php endif; ?>
-                <li class="item"><a href="/abouot us.php">About us</a></li>
-                <li class="item"><a href="/contact us 2.php">Contact us</a></li>
+                <li class="item"><a href="/about-us.php">About us</a></li>
+                <li class="item"><a href="/contact-us.php">Contact us</a></li>
 
 
                 <!-- </li> -->
@@ -74,7 +74,7 @@ if (!defined('INCLUDED_BY_OTHER_FILE')) {
                     <li class="item"><a href="/reservations/scan.php">QR scanning</a></li>
                 <?php endif; ?>
             <?php endif; ?>
-            <li class="item"><a href="/abouot us.php">About us</a></li>
+            <li class="item"><a href="/about-us.php">About us</a></li>
             <li class="item"><a href="/">Contact us</a></li>
 
         </ul>

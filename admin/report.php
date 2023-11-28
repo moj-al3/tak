@@ -6,12 +6,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<?php include "./snippets/layout/head.php" ?>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <?php include "./snippets/layout/head.php" ?>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <title>Pie Chart Example</title>
     <style>
-       body {
+        body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
@@ -33,7 +33,7 @@
 
         .print-btn {
             color: white;
-            width:20%;
+            width: 20%;
             padding: 10px;
             background-color: #364F6B;
             border: none;
@@ -47,7 +47,7 @@
             .chart-container {
                 margin: 20px;
             }
-           
+
         }
 
         @media screen and (min-width: 768px) {
@@ -65,11 +65,11 @@
             }
 
         }
-        </style>
+    </style>
 </head>
 <body>
 <?php include "./snippets/layout/header.php" ?>
-<br> 
+<br>
 <div class="chart-container">
     <canvas id="myPieChart" width="400" height="400"></canvas>
     <canvas id="myBarChart" width="400" height="400"></canvas>
@@ -163,13 +163,13 @@
     });
 
     function printCharts() {
-            window.print();
-        }
+        window.print();
+    }
 </script>
 <?php include "./snippets/layout/footer.php" ?>
-    <!-- Javascripts -->
-    <?php include "./snippets/layout/scripts.php" ?>
-    <script src="./assets/js/header.js"></script>
+<!-- Javascripts -->
+<?php include "./snippets/layout/scripts.php" ?>
+<script src="./assets/js/header.js"></script>
 
 </body>
 
