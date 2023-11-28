@@ -1,4 +1,33 @@
-<?php include "./snippets/base.php" ?>
+<?php include "../snippets/base.php" ?>
+<?php
+// Set the desired user_type_ids
+$MemberUserTypeId = 1;
+$VisitorUserTypeId = 2;
+$violationTypeIds = [2, 1, 3];
+// Get the current month and year
+$currentMonth = date('m');
+$currentYear = date('Y');
+
+
+// Get reservation count
+$MemberReservationCount = getReservationCount($MemberUserTypeId, $connection, $currentMonth, $currentYear);
+$VisitorReservationCount = getReservationCount($VisitorUserTypeId, $connection, $currentMonth, $currentYear);
+
+// Store results for Member and Visitor in arrays
+$MemberViolationResults = [];
+$VisitorViolationResults = [];
+
+foreach ($violationTypeIds as $violationTypeId) {
+    $MemberViolationCount = getViolationCount($MemberUserTypeId, $violationTypeId, $connection, $currentMonth, $currentYear);
+    $MemberViolationResults[] = $MemberViolationCount;
+
+    $VisitorViolationCount = getViolationCount($VisitorUserTypeId, $violationTypeId, $connection, $currentMonth, $currentYear);
+    $VisitorViolationResults[] = $VisitorViolationCount;
+}
+
+// Close the database connection
+$connection->close();
+?>
 
 <!DOCTYPE html>
 <html>
@@ -6,7 +35,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <?php include "./snippets/layout/head.php" ?>
+    <?php include "../snippets/layout/head.php" ?>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <title>Pie Chart Example</title>
@@ -68,8 +97,9 @@
     </style>
 </head>
 <body>
-<?php include "./snippets/layout/header.php" ?>
+<?php include "../snippets/layout/header.php" ?>
 <br>
+<h3 style="text-align: center"><?= date('F-Y') ?> Report</h3>
 <div class="chart-container">
     <canvas id="myPieChart" width="400" height="400"></canvas>
     <canvas id="myBarChart" width="400" height="400"></canvas>
@@ -80,10 +110,10 @@
     document.addEventListener('DOMContentLoaded', function () {
         // Sample data for the pie chart
         var pieData = {
-            labels: ['Label 1', 'Label 2', 'Label 3'],
+            labels: ['Visitor', 'Member'],
             datasets: [{
-                data: [30, 40, 30],
-                backgroundColor: ['#364F6B', '#3FC1C9', '#FC5185']
+                data: [<?= $VisitorReservationCount?>, <?= $MemberReservationCount?>],
+                backgroundColor: ['#364F6B', '#FC5185']
             }]
         };
 
@@ -113,18 +143,14 @@
 
         // Sample data for the bar chart
         var barData = {
-            labels: ['Label 1', 'Label 2', 'Label 3'],
+            labels: ['Parked on a wrong parking', 'Exceeding the time allowed for parking', 'Extended reservation 3 times'],
             datasets: [{
-                label: 'Sample Data 1',
-                data: [30, 40, 30],
-                backgroundColor: '#3FC1C9'
-            }, {
-                label: 'Sample Data 2',
-                data: [20, 50, 30],
+                label: 'Visitor',
+                data: <?= json_encode($VisitorViolationResults); ?>,
                 backgroundColor: '#364F6B'
             }, {
-                label: 'Sample Data 3',
-                data: [10, 30, 20],
+                label: 'Member',
+                data: <?= json_encode($MemberViolationResults); ?>,
                 backgroundColor: '#FC5185'
             }]
         };
@@ -153,7 +179,7 @@
                         position: 'right',
                         labels: {
                             font: {
-                                size: 13 // Adjust the font size of the labels
+                                size: 12 // Adjust the font size of the labels
                             }
                         }
                     }
@@ -166,10 +192,10 @@
         window.print();
     }
 </script>
-<?php include "./snippets/layout/footer.php" ?>
+<?php include "../snippets/layout/footer.php" ?>
 <!-- Javascripts -->
-<?php include "./snippets/layout/scripts.php" ?>
-<script src="./assets/js/header.js"></script>
+<?php include "../snippets/layout/scripts.php" ?>
+<script src="assets/js/header.js"></script>
 
 </body>
 

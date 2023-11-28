@@ -1,5 +1,23 @@
 <?php include "./snippets/base.php" ?>
+<?php include "./snippets/emailSender.php" ?>
+<?php
 
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Assuming you have form fields with name attributes 'name', 'email', and 'message'
+    $name = $_POST['first_name'] . " " . $_POST['last_name'];
+    $email = $_POST['email'];
+    $message = $_POST['message'];
+    // Send email to the system admin
+    sendContactUsEmail($name, $email, $message);
+
+    // send a confirmation email to the user
+    sendEmail($email, 'Contact Us Form Submission Confirmation', 'Thank you for contacting us. We will get back to you soon.');
+    $_SESSION['messages'] = [["text" => "Thank you for contacting us. We will get back to you soon.", "type" => "success"]];
+}
+
+
+?>
 <!DOCTYPE html>
 <html>
 
@@ -15,16 +33,15 @@
 
         .form-container {
             width: 100%;
-            box-shadow: 1px 1px 10px -1px #979797; 
+            box-shadow: 1px 1px 10px -1px #979797;
         }
 
-       
 
         label {
             display: block;
             font-weight: bold;
             margin-bottom: 5px;
-          
+
         }
 
         input,
@@ -37,7 +54,7 @@
             resize: vertical;
             background-color: transparent;
             background-color: #f9f9f9; /* Set background color to a slightly lighter gray */
-          
+
         }
 
         .contact-btn {
@@ -49,7 +66,7 @@
             cursor: pointer;
             width: 20%;
             /* align-items: center; */
-            margin-left:200px;
+            margin-left: 200px;
         }
 
         .card {
@@ -66,91 +83,58 @@
 </head>
 
 <body>
-    <?php include "./snippets/layout/header.php" ?>
+<?php include "./snippets/layout/header.php" ?>
 
-    <div class="container">
-        <h1>Contact Us</h1>
-        <form id="contact-form" class="card">
-            <div class="form-group">
-                <label for="name">First Name:</label>
-                <input type="text" id="name" name="name" required>
-            </div>
-            <div class="form-group">
-                <label for="name">Last Name:</label>
-                <input type="text" id="name" name="name" required>
-            </div>
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div class="form-group">
-                <label for="message">Message:</label>
-                <textarea id="message" name="message" rows="5" required></textarea>
-            </div>
-            <button value="submit" id="submit" type="submit" class="contact-btn">Submit</button>
-        </form>
-
-        <div id="success-message" class="success-message" style="display: none;">
-            Your message has been sent successfully. We will get back to you soon!
+<div class="container">
+    <h1>Contact Us</h1>
+    <form id="contact-form" class="card" onsubmit="showConfirmationMessage(this);return false" method="post">
+        <div class="form-group">
+            <label for="first_name">First Name:</label>
+            <input type="text" id="first_name" name="first_name" required>
         </div>
+        <div class="form-group">
+            <label for="last_name">Last Name:</label>
+            <input type="text" id="last_name" name="last_name" required>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+            <label for="message">Message:</label>
+            <textarea id="message" name="message" rows="5" required></textarea>
+        </div>
+        <button type="submit" class="contact-btn">Submit</button>
+    </form>
+
+    <div id="success-message" class="success-message" style="display: none;">
+        Your message has been sent successfully. We will get back to you soon!
     </div>
+</div>
 
-    <script src="/assets/js/sweetalert2.all.min.js"></script>
-    <script>
-        document.getElementById("contact-form").addEventListener("submit", function(event) {
-            event.preventDefault();
-            var form = event.target;
-            var formData = new FormData(form);
+<script src="/assets/js/sweetalert2.all.min.js"></script>
+<script>
+    async function showConfirmationMessage(form) {
+        const result = await Swal.fire({
+            title: "Are you sure?",
+            confirmButtonText: "Yes",
+            showCancelButton: true,
+            cancelButtonText: "Cancel",
+            cancelButtonColor: '#d33',
+        })
 
-            // You can send the form data to the server using AJAX or fetch API
-            // Here's an example using fetch API
-            fetch(form.action, {
-                    method: form.method,
-                    body: formData
-                })
-                .then(function(response) {
-                    if (response.ok) {
-                        form.reset();
-                        document.getElementById("success-message").style.display = "block";
-                    }
-                })
-                .catch(function(error) {
-                    console.error('Error:', error);
-                });
-        });
-
-        function sure() {
-            Swal.fire({
-                title: "Are you sure?",
-             
-
-                confirmButtonText: "Yes",
-                showCancelButton: true,
-                cancelButtonText: "Cancel",
-                cancelButtonColor: '#d33',
-
-            })
-
+        if (result.isConfirmed) {
+            form.submit();
         }
+    }
+</script>
 
-
-        // define setup
-        function setup() {
-            // get reference to button
-
-
-            var btn = document.getElementById("submit");
-            // add event listener for the button, for action "click"
-            btn.addEventListener("click", sure);
-
-        }
-
-        window.onload = setup;
-    </script>
-    <?php include "./snippets/layout/footer.php" ?>
-    <!-- Javascripts -->
-    <?php include "./snippets/layout/scripts.php" ?>
-    <script src="./assets/js/header.js"></script>
+<?php include "./snippets/layout/footer.php" ?>
+<!-- Javascripts -->
+<?php include "./snippets/layout/scripts.php" ?>
+<?php include "./snippets/layout/messages.php" ?>
+<script src="./assets/js/header.js"></script>
 
 </body>
 

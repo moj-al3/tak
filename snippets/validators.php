@@ -545,5 +545,45 @@ function rateReservation($connection, $user)
         $_SESSION['messages'] = [["text" => "Failed to submit rating. Please try again.", "type" => "error"]];
     }
 }
+// Function to get reservation count
+function getReservationCount($userTypeId, $connection, $currentMonth, $currentYear)
+{
+    $sql = "SELECT COUNT(*) AS reservation_count
+            FROM Reservation AS R
+            JOIN users AS U ON R.reserver_id = U.user_id
+            WHERE MONTH(R.reservation_datetime) = ? 
+            AND YEAR(R.reservation_datetime) = ?
+            AND U.user_type_id = ?";
+
+    $stmt = $connection->prepare($sql);
+    $stmt->bind_param("iii", $currentMonth, $currentYear, $userTypeId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    $stmt->close();
+
+    return $row['reservation_count'];
+}
+
+// Function to get violation count
+function getViolationCount($userTypeId, $violationTypeId, $connection, $currentMonth, $currentYear)
+{
+    $sql = "SELECT COUNT(*) AS violation_count
+            FROM violations AS V
+            JOIN users AS U ON V.violator_id = U.user_id
+            WHERE MONTH(V.violation_datetime) = ? 
+            AND YEAR(V.violation_datetime) = ?
+            AND U.user_type_id = ?
+            AND V.violation_type_id = ?";
+
+    $stmt = $connection->prepare($sql);
+    $stmt->bind_param("iiii", $currentMonth, $currentYear, $userTypeId, $violationTypeId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    $stmt->close();
+
+    return $row['violation_count'];
+}
 
 ?>
