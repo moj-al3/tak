@@ -1,0 +1,186 @@
+
+@import "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css";
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap");
+body {
+  text-align: center;
+  height: 100vh;
+}
+*, ::after, ::before {
+    box-sizing: unset !important;
+    border-width: 0;
+    border-style: solid;
+    border-color: #e5e7eb;
+}
+
+.ticket {
+  display: inline-block;
+  /* width: 350px; */
+  margin: 20px;
+  background-color: #273138;
+  border-radius: 10px;
+  color: #fff;
+  /* font-family: Helvetica Neue; */
+  font-weight: 300;
+  letter-spacing: 1px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  line-height: 20px;
+}
+.ticket header {
+  position: relative;
+  height: 35px;
+  background-color: #1B252E;
+  padding: 10px;
+  border-radius: 10px;
+}
+.ticket header .company-name {
+  line-height: 35px;
+  text-align: left;
+}
+.ticket header .gate {
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  font-weight: 400;
+  line-height: 18px;
+  text-align: center;
+  font-size: 12px;
+}
+.ticket header:after {
+  content: "";
+  width: 16px;
+  height: 16px;
+  background-color: #8989ba;
+  position: absolute;
+  bottom: -8px;
+  right: -8px;
+  border-radius: 50%;
+  /* box-shadow: inset 12px 0px 18px -11px rgba(0, 0, 0, 0.5); */
+}
+.ticket header:before {
+  content: "";
+  width: 16px;
+  height: 16px;
+  background-color: #8989ba;
+  position: absolute;
+  bottom: -8px;
+  left: -8px;
+  border-radius: 50%;
+  /* box-shadow: inset -12px 0px 18px -11px rgba(0, 0, 0, 0.5); */
+}
+.ticket .airports {
+  padding: 5px 10px 10px 10px;
+  height: 100px;
+  text-align: center;
+  position: relative;
+  border-bottom: 2px dashed #000;
+}
+.ticket .airports .airport {
+  position: relative;
+  margin: 10px;
+  text-align: center;
+  display: inline-block;
+}
+.ticket .airports .airport .airport-name {
+  color: #29A8EB;
+  font-size: 12px;
+  font-weight: 400;
+}
+.ticket .airports .airport .airport-code {
+  font-size: 32px;
+  font-weight: 400;
+  margin: 5px 0;
+}
+.ticket .airports .airport .dep-arr-label {
+  color: #9299A0;
+  font-size: 12px;
+  font-weight: 500;
+}
+.ticket .airports .airport .time {
+  font-size: 10px;
+  color: #9299A0;
+}
+.ticket .airports .airport:first-child {
+  margin-right: 40%;
+}
+.ticket .airports .airport:first-child:after {
+  font-family: FontAwesome;
+  color: #353E48;
+  content: "";
+  position: absolute;
+  font-size: 55px;
+  top: calc(50% - 25px);
+  right: -176%;
+}
+.ticket .airports:after {
+  content: "";
+  width: 16px;
+  height: 16px;
+  background-color: #8989ba;
+  position: absolute;
+  bottom: -8px;
+  right: -8px;
+  border-radius: 50%;
+  /* box-shadow: inset 12px 0px 18px -11px rgba(0, 0, 0, 0.5); */
+}
+.ticket .airports:before {
+  content: "";
+  width: 16px;
+  height: 16px;
+  background-color: #8989ba;
+  position: absolute;
+  bottom: -8px;
+  left: -8px;
+  border-radius: 50%;
+  /* box-shadow: inset -12px 0px 18px -11px rgba(0, 0, 0, 0.5); */
+}
+.ticket .place {
+  padding: 10px;
+  text-align: center;
+  height: 330px;
+}
+.ticket .place-block {
+  display: inline-block;
+  /* margin: 10px 30px; */
+}
+.ticket .place-block .place-label {
+  color: #29A8EB;
+  text-transform: uppercase;
+  font-weight: 400;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+.ticket .place-block .place-value {
+  color: #9299A0;
+  font-size: 12px;
+  font-weight: 500;
+}
+.ticket .qr {
+    width: 191px;
+    height: 201px;
+    margin: 20px auto;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 45px;
+}
+.ticket .qr img {
+  width: 100%;
+  height: 100%;
+}
+
+.ticket.inverse {
+  background-color: #F8F8F8;
+}
+.ticket.inverse header {
+  background-color: #29A8EB;
+}
+.ticket.inverse .airports {
+  border-bottom-color: #D3D6DA;
+}
+.ticket.inverse .airport:first-child:after {
+  color: #D3D6DA;
+}
+.ticket.inverse .airport .airport-code {
+  color: #707884;
+  font-weight: 500;
+}
+

@@ -69,6 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <input type="password" name="password" id="password" required>
             <p class="error-message" id="password_err" hidden></p>
         </div>
+        <br>
         <div class="reset">
             <input type="submit" value="Submit">
         </div>

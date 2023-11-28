@@ -1,26 +1,32 @@
 :root {
   background: #080b1d;
-  background-image: url("/assets/img/landing.png");
+  background-image: url("/assets/img/landing.png") !important;
   background-repeat: no-repeat;
 
 }
+/* body {
+  background: #080b1d;
+  background-image: url("/assets/img/landing.png") !important;
+  background-repeat: no-repeat;
 
-/*responsive*/
+} */
+
+/* responsive */
 @media(max-width: 667px) {
   .landing {
     font-size: small;
-    margin: auto;
+    /* margin: auto;
     width: 50%;
     position: absolute;
-    left: 100px;
+    left: 100px; */
   }
 }
 
-@media(max-width: 667px) {
+/* @media(max-width: 667px) {
   .enter {
     position: absolute;
     top: 600px;
     width: 50%;
 
   }
-}
+} */

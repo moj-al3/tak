@@ -37,6 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <body class="body">
 <?php include "snippets/layout/header.php" ?>
+<br>
 <main>
     <div class="container-profile">
         <div class="left">
@@ -76,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <span>Car Type:</span>
                                 <input class="editable" type="text" name="car_type1"
                                        value="<?= $car['car_type'] ?? '' ?>" readonly>
-                                <span>Car Plate:</span>
+                                <span class="car">Car Plate:</span>
                                 <input class="editable" type="text" name="car_plate1"
                                        value="<?= $car['car_plate'] ?? '' ?>" readonly>
                                 <?php if (count($user["cars"]) >= 2): ?>
@@ -88,9 +89,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <?php endforeach; ?>
 
                         <?php if (count($user["cars"]) <= 1): ?>
-                            <label for="">
-                                <span>Do you want to</span>
-                                <p><span id="new car" class="new-car">Add new car</span></p>
+                            <label for="" style="justify-content: space-between">
+                                <span>Do you want to add new car?</span>
+                                <p><span id="new car" class="new-car">Add</span></p>
                             </label>
                         <?php endif; ?>
                     <?php endif; ?>
@@ -234,6 +235,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
     </dialog>
 </main>
+<br><br>
 <?php include "snippets/layout/footer.php" ?>
 <!-- Javascript -->
 <?php include "snippets/layout/scripts.php" ?>

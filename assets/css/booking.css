@@ -1,14 +1,30 @@
 
+#content{
+    display: flex !important;
+    flex-direction: column !important;
+    height: auto;
+    margin-bottom: 3rem;
+    
+}
+.floor.show{
+    display: flex;
+    flex-direction: column;
+}
+.floor.hide{
+    display: none;
+}
 .spot-container {
     margin: 20px 0;
     display: flex;
     justify-content: center;
+    gap: 10px;
+    margin-top: 2rem;
 }
 
-.spot-container label {
+/* .spot-container label {
     margin-top: 60px;
     margin-left: 20px;
-}
+} */
 
 .spot-container select {
     background-color: rgba(0, 0, 0, 0.1);
@@ -20,7 +36,7 @@
     -moz-appearance: none;
     -webkit-appearance: none;
     appearance: none;
-    margin-top: 60px;
+    margin-top: 8px;
 }
 
 .row-container {
@@ -97,7 +113,7 @@
     margin-top: 30px;
     align-items: center;
     justify-content: center;
-    margin-right: 80px;
+    /* margin-right: 80px; */
 
 }
 
@@ -118,6 +134,7 @@
 .time-selection button {
     background-color: rgb(142, 142, 142);
     margin: unset;
+    margin: 0 1rem;
 }
 
 h6 {
@@ -136,4 +153,17 @@ h6 {
     .row-container {
         display: flex;
     }
+}
+@media (max-width:768px){
+    
+.floor.show{
+    /* display: flex; */
+    flex-direction: row;
+}
+}
+@media (max-width: 968px){
+.row {
+   flex-direction: row;
+    
+}
 }

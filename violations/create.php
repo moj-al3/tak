@@ -70,56 +70,62 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <?php include "../snippets/layout/head.php" ?>
     <title>Record Violation</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
+
+
 <body>
-<?php include "../snippets/layout/header.php" ?>
-<main class="mb-12">
-    <h1 class="text-6xl mb-8  mt-5 text-white texe-bold">Implementing Violations</h1>
-    <form class=" mb-5  flex justify-end items-center flex-col" method="post">
-        <div class="w-full max-w-mds flex justify-end gap-12 items-center row">
-            <div class="col-md-6 w-fulls w-5/12	">
-                <div class="flex items-center border-b border-gray-500 py-2 mb-4">
-                    <input class="appearance-none bg-transparent border-none  w-full text-white mr-3 py-1 px-2  focus:outline-none"
-                           type="text" placeholder="Car plate*" aria-label="Full name" name="car_plate" required>
+    <?php include "../snippets/layout/header.php" ?>
+    <main class="mb-12">
+        <h1 class="text-2xl md:text-6xl mb-8  mt-5 text-gray-800 font-bold">Implementing Violations</h1>
+        <form class=" mb-5  flex justify-end items-center flex-col" method="post">
+            <div class="w-full max-w-mds flex justify-end gap-12 items-center row">
+                <div class="col-md-6 w-fulls w-64 md:w-5/12 ">
+                    <div class="flex items-center b border-gray-500 py-2 mb-4">
+                        <input class="appearance-none border-gray-500 border-b bg-transparent  
+                        placeholder-gray-700 w-full text-gray-800 mr-3 py-1 px-2  focus:outline-none" type="text" placeholder="Car plate*" aria-label="Full name" name="car_plate" required>
+                    </div>
+                    <!-- هنا البوكس الجديد -->
+                    <div class="flexd items-center  border-gray-500 py-2 mb-4">
+                        <label for="message" class="block font-medium text-sm text-gray-800">Comment</label>
+                        <textarea class="border-gray-800 appearance-none bg-transparent border 
+                         w-full text-gray-800 py-1 " name="note" id="" cols="20" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="col w-64 md:w-5/12 ">
+                    <?php foreach ($violationTypes as $type) : ?>
+                        <div class="flex items-center">
+                            <input id="default-radio-<?= $type['violation_type_id'] ?>" type="radio" value="<?= $type['violation_type_id'] ?>" name="violation_id">
+                            <label for="default-radio-<?= $type['violation_type_id'] ?>" class="ml-2 text-sm font-medium text-gray-800 "><?= $type['name'] ?></label>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
             </div>
-            <div class="col w-5/12 ">
-                <?php foreach ($violationTypes as $type): ?>
-                    <div class="flex items-center">
-                        <input id="default-radio-<?= $type['violation_type_id'] ?>" type="radio"
-                               value="<?= $type['violation_type_id'] ?>" name="violation_id">
-                        <label for="default-radio-<?= $type['violation_type_id'] ?>"
-                               class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"><?= $type['name'] ?></label>
-                    </div>
-                <?php endforeach; ?>
+            <div class="flex items-center flex-col  py-2  mt-5 w-full">
+                <!-- هنا كان البوكس القديم -->
+                <!-- <div class="w-6/12">
+                    <label for="message" class="block font-medium text-sm text-gray-800">Comment</label>
+                    <textarea class="appearance-none bg-transparent border  w-full text-gray-800 py-1 "
+                     name="note" id="" cols="20" rows="3"></textarea>
+                </div> -->
+                <button style="background-color: #FF0050;" class="px-5 w-60 mt-3  text-gray-100 text-center rounded-xl" type="submit">Submit</button>
+                <!-- <input class="appearance-none bg-transparent border-none  w-full text-gray-800 mr-3 py-1 px-2 leading-tight focus:outline-none" type="text" placeholder="Car plate*" aria-label="Full name"> -->
             </div>
-        </div>
-        <div class="flex items-center flex-col  py-2  mt-5 w-full">
-            <div class="w-6/12">
-                <label for="message" class="block font-medium text-sm text-gray-100">Comment</label>
-                <textarea class="appearance-none bg-transparent border  w-full text-white py-1 "
-                          name="note"
-                          id="" cols="20" rows="3"></textarea>
-            </div>
-            <button class="px-5 w-60 mt-3 bg-red-500 text-gray-100 text-center rounded-xl" type="submit">Submit</button>
-            <!-- <input class="appearance-none bg-transparent border-none  w-full text-white mr-3 py-1 px-2 leading-tight focus:outline-none" type="text" placeholder="Car plate*" aria-label="Full name"> -->
-        </div>
 
 
-    </form>
+        </form>
 
 
-</main>
-<?php include "../snippets/layout/footer.php" ?>
-<!-- Javascript -->
-<?php include "../snippets/layout/scripts.php" ?>
-<?php include "../snippets/layout/messages.php" ?>
+    </main>
+    <?php include "../snippets/layout/footer.php" ?>
+    <!-- Javascript -->
+    <?php include "../snippets/layout/scripts.php" ?>
+    <?php include "../snippets/layout/messages.php" ?>
 
 </body>
+
 </html>
-
-

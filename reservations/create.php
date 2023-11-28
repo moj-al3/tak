@@ -227,14 +227,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <?php include "../snippets/layout/header.php" ?>
 <div id="content" class="container">
     <div class="spot-container">
-        <label>Pick a flour:</label>
+        <label>Pick a flour:
         <select id="floor">
             <option value="floor1">floor1</option>
             <option value="floor2">floor2</option>
             <option value="floor3">floor3</option>
         </select>
+        </label>
         <?php if ($user["user_type_id"] == "1" || $user["user_type_id"] == "2"): ?>
-            <label>Choose car :</label>
+            <label>Choose car :
             <select id="car">
                 <?php
                 foreach ($user["cars"] as $car) {
@@ -243,6 +244,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 ?>
 
             </select>
+            </label>
         <?php endif; ?>
     </div>
     <ul class="showcase">
@@ -392,7 +394,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 title: 'Switch Spot',
                 html: `
                   <input type="text" id="previous-spot" class="" placeholder="Previous Spot e.g 1-A1">
-                  <input type="text" id="new-spot" placeholder="New Spot e.g 1-A1">
+                  <input type="text" id="new-spot" placeholder="New Spot e.g 1-A1"><br><br>
                   </label><input type="checkbox" id="apply-violation"/> Apply Violation for this reservation</label>
             `,
 

@@ -72,7 +72,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <input type="submit" value="log in">
             <div class="flex-container">
                 <p>Don't have an account?</p>
-                <button type="button" onclick="window.location.href = '/auth/signup.php'">sign up</button>
+                <a href="/auth/signup.php">Sign up</a>
+                <!-- <button type="button" onclick="window.location.href = '/auth/signup.php'">sign up</button> -->
             </div>
         </div>
     </form>

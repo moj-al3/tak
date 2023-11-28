@@ -27,7 +27,10 @@ if (!defined('INCLUDED_BY_OTHER_FILE')) {
                         <li class="item"><a href="/reservations/scan.php">QR scanning</a></li>
                     <?php endif; ?>
                 <?php endif; ?>
-                <li class="item"><a href="/">About us</a></li>
+                <li class="item"><a href="/abouot us.php">About us</a></li>
+                <li class="item"><a href="/contact us 2.php">Contact us</a></li>
+
+
                 <!-- </li> -->
 
             </ul>
@@ -58,7 +61,7 @@ if (!defined('INCLUDED_BY_OTHER_FILE')) {
             <?php else: ?>
                 <li class="item button"><a href="/auth/login.php">Log In</a></li>
             <?php endif; ?>
-            <li class="toggle"><span class="bars"></span></li>
+            <!-- <li class="toggle"><span class="bars"></span></li> -->
         </ul>
     </div>
     <div class="nav-cont mobile-nav-cont">
@@ -71,7 +74,8 @@ if (!defined('INCLUDED_BY_OTHER_FILE')) {
                     <li class="item"><a href="/reservations/scan.php">QR scanning</a></li>
                 <?php endif; ?>
             <?php endif; ?>
-            <li class="item"><a href="/">About us</a></li>
+            <li class="item"><a href="/abouot us.php">About us</a></li>
+            <li class="item"><a href="/">Contact us</a></li>
 
         </ul>
     </div>

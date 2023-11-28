@@ -30,16 +30,16 @@ label {
   font-weight: 700;
 }
 
-input {
+.input-group input {
   display: block;
-  width: 95%;
+  width: 88%;
   padding: 0.75rem;
   border: 1px solid #ccc;
   border-radius: 5px;
 }
 
 .input-group {
-  margin: 2rem 0;
+  /* margin: 2rem 0; */
 }
 
 .width-50 {
@@ -103,12 +103,11 @@ input {
 .form {
   width: clamp(320px, 30px, 430px);
   margin: auto;
-  margin-top: 100px;
   border: 1px solid #ccc;
   border-radius: 10px;
   padding: 10%;
   background-color: #ffffff;
-  box-shadow: 0 0 2px #5f5f5f,  8px 8px 15px #a7aaaf ;
+  box-shadow: 0 0 2px #5f5f5f, 8px 8px 15px #a7aaaf;
 }
 
 .form-step {
@@ -137,21 +136,6 @@ input {
   text-align: center;
 }
 
-.input-group {
-  margin: 10px;
-}
-
-@media(max-width: 667px) {
-  .form  {
-    font-size: small;
-    margin: auto;
-    margin-top: 90px;
-    margin-right: 30px;
-    width: 100%;
-
-  }
-}
-
 /*button*/
 .btn-group {
   display: grid;
@@ -160,6 +144,7 @@ input {
 }
 
 .btn {
+  margin-top: 10px;
   padding: 10px;
   display: block;
   text-decoration: none;
@@ -196,18 +181,20 @@ p {
   margin-bottom: 5px;
 }
 
+.login-form p {
+  margin: 0px;
+
+}
 
 
 /* login form  */
 .login-form {
-  width: clamp(320px, 30px, 430px);
-  margin:  auto;
-  margin-top: 150px;
+  margin: auto;
   border: 1px solid #ccc;
   border-radius: 10px;
-  padding: 10px;
+  padding: 30px;
   background-color: #ffffff;
-  box-shadow: 0 0 2px #5f5f5f,  8px 8px 15px #a7aaaf ;
+  box-shadow: 0 0 2px #5f5f5f, 8px 8px 15px #a7aaaf;
 }
 
 h1 {
@@ -216,7 +203,11 @@ h1 {
 
 .login-form a {
   text-decoration: none;
-  color: #333437;
+  color: #094da2;
+}
+
+.login-form .input-group {
+  margin-bottom: 8px;
 }
 
 .login input {
@@ -225,6 +216,13 @@ h1 {
   border-radius: 50px;
   font-weight: 500;
   font-size: large;
+  display: block;
+  width: 95%;
+  padding: 0.5rem;
+  border: 2px solid #000000;
+  color: white;
+
+
 
 }
 
@@ -232,18 +230,40 @@ h1 {
   display: flex;
   margin: 10px;
   padding: 10px;
+  align-items: center;
+  gap: 9px;
+  flex-wrap: wrap;
+  justify-content: center;
 
 }
 
 button {
-  width: 80px;
-  height: 40px;
-  background-color: #333437;
+  appearance: button;
+  backface-visibility: hidden;
+  background-color: #f54082;
+  border-radius: 6px;
+  border-width: 0;
+  box-shadow: rgba(50, 50, 93, .1) 0 0 0 1px inset, rgba(50, 50, 93, .1) 0 2px 5px 0, rgba(0, 0, 0, .07) 0 1px 1px 0;
+  box-sizing: border-box;
   color: #fff;
-  border-radius: 3px;
   cursor: pointer;
-  transition: 0.3s;
-  margin-left: 10%;
+    font-family: -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Ubuntu, sans-serif;
+  font-size: 100%;
+  height: 44px;
+  line-height: 1.15;
+  margin: 12px 0 0;
+  outline: none;
+  overflow: hidden;
+  padding: 0 25px;
+  position: relative;
+  text-align: center;
+  text-transform: none;
+  transform: translateZ(0);
+  transition: all .2s, box-shadow .08s ease-in;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: 100%;
 }
 
 button:hover {
@@ -253,13 +273,12 @@ button:hover {
 /* forget password form  */
 .fp_form {
   width: clamp(320px, 30px, 430px);
-  margin: auto;
   margin-top: 150px;
   border: 1px solid #ccc;
   border-radius: 10px;
   padding: 10%;
   background-color: #ffffff;
-  box-shadow: 0 0 2px #5f5f5f,  8px 8px 15px #a7aaaf ;
+  box-shadow: 0 0 2px #5f5f5f, 8px 8px 15px #a7aaaf;
 
 }
 
@@ -271,20 +290,23 @@ p {
   background-color: #FF0050;
   align-items: center;
   width: 100%;
-  height: 50%;
+  height: 40px;
   border-radius: 50px;
+  color: white;
+  font-size: large;
+
+  
 }
 
 /* reset password */
 .reset_form {
   width: clamp(320px, 30px, 430px);
-  margin: auto;
   margin-top: 150px;
   border: 1px solid #ccc;
   border-radius: 10px;
   padding: 10%;
   background-color: #ffffff;
-  box-shadow: 0 0 2px #5f5f5f,  8px 8px 15px #a7aaaf ;
+  box-shadow: 0 0 2px #5f5f5f, 8px 8px 15px #a7aaaf;
 
 }
 
@@ -292,8 +314,12 @@ p {
   background-color: #FF0050;
   align-items: center;
   width: 100%;
-  height: 50%;
+  height: 40px;
   border-radius: 50px;
+  color: white;
+  font-size: large;
+
+
 }
 
 .error-message {
@@ -304,23 +330,32 @@ p {
   margin-top: 5px;
 }
 
-/* landing content */
-.test-landing {
-  height: 300px;
-}
-
-.landing {
-  position: absolute;
-  left: 100px;
-  top: 300px;
-  font-size: larger;
+.lan #content {
+  display: flex;
+  align-items: center;
+  margin: 1rem 2rem;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 /* enter buttom */
-.enter button {
-  background-color: #FF0050;
-  position: absolute;
-  right: 150px;
-  bottom: 100px;
+.index .enter {
   color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.index .enter button {
+  background-color: #FF0050;
+  width: 200px;
+  margin-top: 90px;
+}
+
+.swal2-html-container input {
+
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+
 }

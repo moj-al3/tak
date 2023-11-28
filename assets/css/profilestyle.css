@@ -26,16 +26,18 @@ h3 {
 
 main {
   
- 
-   padding: 175px;
-   margin-top: -111PX;
-   margin-bottom: -111PX;
+ display: flex;
+ align-items: center;
+justify-content: space-around;
+ margin: 1rem;
 }
 
 .container-profile {
    display: flex;
    gap: 30px;
    height: 100%;
+   width: 76%;
+   /* flex-wrap: wrap; */
 }
 
 .container-profile .left {
@@ -48,8 +50,12 @@ main {
 
 .container-profile .right {
    flex: 50%;
-   display: grid;
-   gap: 15px;
+ display: flex;
+ align-items: center;
+ /* justify-content: center; */
+ flex-direction: column;
+ gap: 20px;
+ /* width: 100%; */
 }
 
 .img-container {
@@ -67,18 +73,19 @@ main {
    align-items: center;
    border-bottom: 1px solid #a9a9a9;
    margin-bottom: 5px;
+   flex-wrap: wrap;
 }
 
 .fields label input {
    border: 0px;
    outline: 0px;
    padding: 11px;
-   flex: 1;
+   /* flex: 1; */
 }
 
 #delete { 
-   cursor: pointer; /* Add a pointer cursor to indicate it's clickable */ 
-   transition: text-decoration 0.3s; /* Add a smooth transition for text-decoration changes */ 
+   cursor: pointer;  
+   transition: text-decoration 0.3s; 
 font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 
  } 
@@ -89,10 +96,9 @@ font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
  }
 
  .new-car { 
-   cursor: pointer; /* Add a pointer cursor to indicate it's clickable */ 
-   transition: text-decoration 0.3s; /* Add a smooth transition for text-decoration changes */ 
-   margin-left: 255px;
-   font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+   cursor: pointer; 
+   transition: text-decoration 0.3s; 
+   margin: 0 10px;
  } 
   
  .new-car:hover { 
@@ -106,6 +112,7 @@ font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
    border-radius: 20px;
    box-shadow: 1px 1px 10px -1px #979797;
    padding: 10px;
+   width: 100%;
 }
 
 
@@ -117,10 +124,16 @@ font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   
   
 }
+.car{
+   margin-left: -80px;
+}
 
-
+.more{
+ display: flex;
+ justify-content: center;
+}
 .more .more-btn {
-   margin-left: 400px;
+   /* margin-left: 400px; */
    margin-top: 120px;
    background-color: #FF0050;
    border: 1px solid #FF0050;
@@ -129,6 +142,8 @@ font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
    color: #fff;
    border-radius: 5px;
    cursor: pointer;
+   /* float: right; */
+   width: 150px;
   
 }
 
@@ -198,7 +213,8 @@ dialog .dialog-list li span:last-child {
 
 @media (max-width:768px) {
    .container-profile {
-      flex-direction: column;
+     flex-wrap: wrap;
+     width: 95%;
    }
 
    dialog {
