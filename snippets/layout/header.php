@@ -26,6 +26,9 @@ if (!defined('INCLUDED_BY_OTHER_FILE')) {
                         <li class="item"><a href="/violations/create.php">Violations</a></li>
                         <li class="item"><a href="/reservations/scan.php">QR scanning</a></li>
                     <?php endif; ?>
+                    <?php if ($user["user_type_id"] == 3 || $user["user_type_id"] == 4): ?>
+                        <li class="item"><a href="/admin/report.php">Report</a></li>
+                    <?php endif; ?>
                 <?php endif; ?>
                 <li class="item"><a href="/about-us.php">About us</a></li>
                 <li class="item"><a href="/contact-us.php">Contact us</a></li>
@@ -73,9 +76,12 @@ if (!defined('INCLUDED_BY_OTHER_FILE')) {
                     <li class="item"><a href="/violations/create.php">Violations</a></li>
                     <li class="item"><a href="/reservations/scan.php">QR scanning</a></li>
                 <?php endif; ?>
+                <?php if ($user["user_type_id"] == 3 || $user["user_type_id"] == 4): ?>
+                    <li class="item"><a href="/admin/report.php">Report</a></li>
+                <?php endif; ?>
             <?php endif; ?>
             <li class="item"><a href="/about-us.php">About us</a></li>
-            <li class="item"><a href="/">Contact us</a></li>
+            <li class="item"><a href="/contact-us.php">Contact us</a></li>
 
         </ul>
     </div>

@@ -91,35 +91,10 @@ function SwitchReservation()
         return;
     }
 
-    // Violation logic
-    $violationTypeId = 2; // Set violation type ID to 2
-    // Fetch violation types with their IDs from the database
-    $violationTypeQuery = "SELECT number_of_days FROM ViolationTypes where violation_type_id=2";
-    $violationTypeStmt = $connection->prepare($violationTypeQuery);
-    $violationTypeStmt->execute();
-    $selectedViolationTypeDays = $violationTypeStmt->get_result()->fetch_assoc()['number_of_days'];
-    $violationDatetime = date('Y-m-d H:i:s');
 
-
-    // Calculate violation_end_datetime
-    $violationEndDatetime = date('Y-m-d H:i:s', strtotime("+ $selectedViolationTypeDays days"));
-
-    // Insert the violation into the violations table including the note and violation_end_datetime
-    $insertViolationQuery = "INSERT INTO violations (violation_datetime, violation_end_datetime, car_id, violation_type_id, violator_id, violated_id) 
-                                VALUES (?, ?, ?, ?, ?, ?)";
-    $insertStatement = $connection->prepare($insertViolationQuery);
-    $insertStatement->bind_param("ssiiis", $violationDatetime, $violationEndDatetime, $carId, $violationTypeId, $ownerId, $violatorId);
-    $violationResult = $insertStatement->execute();
-
-    if ($violationResult == false) {
-        $_SESSION['messages'] = [["text" => "Failed to record violation." . $connection->error, "type" => "error"]];
-        return;
-    }
-
-    $_SESSION['messages'] = [["text" => "Switching and Violation recorded successfully.", "type" => "success"]];
+    $_SESSION['messages'] = [["text" => "Switching recorded successfully.", "type" => "success"]];
     // Close the statements
     $updateStmt->close();
-    $insertStatement->close();
     $getReservationDataStmt->close();
     // update the stored data in $user by refreshing the page
     header('Location: /reservations/create.php');
@@ -228,22 +203,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <div id="content" class="container">
     <div class="spot-container">
         <label>Pick a flour:
-        <select id="floor">
-            <option value="floor1">floor1</option>
-            <option value="floor2">floor2</option>
-            <option value="floor3">floor3</option>
-        </select>
+            <select id="floor">
+                <option value="floor1">floor1</option>
+                <option value="floor2">floor2</option>
+                <option value="floor3">floor3</option>
+            </select>
         </label>
         <?php if ($user["user_type_id"] == "1" || $user["user_type_id"] == "2"): ?>
             <label>Choose car :
-            <select id="car">
-                <?php
-                foreach ($user["cars"] as $car) {
-                    echo '<option value="' . $car['car_id'] . '">' . $car['car_type'] . ' - ' . $car['car_plate'] . '</option>';
-                }
-                ?>
+                <select id="car">
+                    <?php
+                    foreach ($user["cars"] as $car) {
+                        echo '<option value="' . $car['car_id'] . '">' . $car['car_type'] . ' - ' . $car['car_plate'] . '</option>';
+                    }
+                    ?>
 
-            </select>
+                </select>
             </label>
         <?php endif; ?>
     </div>
@@ -303,7 +278,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="reserve-btn">
             <button class="rserve" type="button" id="reserve">Reserve</button>
         </div>
-    <?php else: ?>
+    <?php elseif ($user["user_type_id"] == "3"): ?>
         <div class="switch-btn">
             <button id="switchButton">Switch</button>
         </div>
@@ -395,7 +370,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 html: `
                   <input type="text" id="previous-spot" class="" placeholder="Previous Spot e.g 1-A1">
                   <input type="text" id="new-spot" placeholder="New Spot e.g 1-A1"><br><br>
-                  </label><input type="checkbox" id="apply-violation"/> Apply Violation for this reservation</label>
             `,
 
                 showCancelButton: true,
@@ -405,7 +379,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                     const previousSpot = document.getElementById('previous-spot').value;
                     const newSpot = document.getElementById('new-spot').value;
-                    const applyViolation = document.getElementById('apply-violation').checked;
 
 
                     if (!previousSpot || !newSpot) {
@@ -413,10 +386,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         return false;
                     }
 
-                    if (!applyViolation) {
-                        Swal.showValidationMessage('Please confirm applying the violation');
-                        return false;
-                    }
                     submitForm({"previous-spot": previousSpot, "new-spot": newSpot});
 
                 },

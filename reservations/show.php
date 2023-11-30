@@ -316,7 +316,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <div class="w-3 h-3 rounded-full border-2 border-parking-text"></div>
                         </div>
                         <div class="flex items-center px-3 rounded-full bg-parking-time h-8 mt-2">
-                            <span class="text-sm text-gray-200" id="time-left">1h 30m</span>
+                            <span class="text-sm text-gray-200" id="time-left"></span>
                         </div>
                     </div>
                     <div class="flex flex-col items-center text-gray-200">

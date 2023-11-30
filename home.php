@@ -143,42 +143,44 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </div>
                 </div>
             <?php endif; ?>
-            <div class="violation">
-                <div class="title">
-                    <span>Violations</span>
-                    <?php if ($user["user_type_id"] == "3"): ?>
-                        <i class="bx bx-plus-circle bx-sm" style="float: right"
-                           onclick="window.location.href = '/violations/create.php'">
-                        </i>
-                    <?php endif; ?>
-                </div>
-                <ul class="violation-list">
-                    <?php
-                    // Display violations using data from $user limited to the first 3 records
-                    if (isset($user['violations']) && count($user['violations']) > 0) {
-                        $displayedViolations = 0;
-                        foreach ($user['violations'] as $violation) {
-                            if ($displayedViolations < 3) {
-                                ?>
-                                <li>
-                                    <span><?php echo $violation['name'] . '  |   ' . $violation['car_plate']; ?></span>
-                                    <span><?php echo date('d F, Y h:i A', strtotime($violation['violation_datetime'])) ?></span>
-                                </li>
-                                <?php
-                                $displayedViolations++;
-                            } else {
-                                break; // Break the loop after displaying the first 3 records
+            <?php if ($user["user_type_id"] == "1" || $user["user_type_id"] == "2" || $user["user_type_id"] == "3"): ?>
+                <div class="violation">
+                    <div class="title">
+                        <span>Violations</span>
+                        <?php if ($user["user_type_id"] == "3"): ?>
+                            <i class="bx bx-plus-circle bx-sm" style="float: right"
+                               onclick="window.location.href = '/violations/create.php'">
+                            </i>
+                        <?php endif; ?>
+                    </div>
+                    <ul class="violation-list">
+                        <?php
+                        // Display violations using data from $user limited to the first 3 records
+                        if (isset($user['violations']) && count($user['violations']) > 0) {
+                            $displayedViolations = 0;
+                            foreach ($user['violations'] as $violation) {
+                                if ($displayedViolations < 3) {
+                                    ?>
+                                    <li>
+                                        <span><?php echo $violation['name'] . '  |   ' . $violation['car_plate']; ?></span>
+                                        <span><?php echo date('d F, Y h:i A', strtotime($violation['violation_datetime'])) ?></span>
+                                    </li>
+                                    <?php
+                                    $displayedViolations++;
+                                } else {
+                                    break; // Break the loop after displaying the first 3 records
+                                }
                             }
                         }
-                    }
-                    ?>
-                </ul>
-                <div class="more">
-                    <button class="more-btn violation-more-btn">
-                        more
-                    </button>
+                        ?>
+                    </ul>
+                    <div class="more">
+                        <button class="more-btn violation-more-btn">
+                            more
+                        </button>
+                    </div>
                 </div>
-            </div>
+            <?php endif; ?>
         </div>
     </div>
 

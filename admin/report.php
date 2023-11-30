@@ -1,5 +1,9 @@
 <?php include "../snippets/base.php" ?>
 <?php
+require("../snippets/force_loggin.php");
+if ($user["user_type_id"] != "3" && $user["user_type_id"] != "4") {
+    die("Access Denied");
+}
 // Set the desired user_type_ids
 $MemberUserTypeId = 1;
 $VisitorUserTypeId = 2;
@@ -195,7 +199,7 @@ $connection->close();
 <?php include "../snippets/layout/footer.php" ?>
 <!-- Javascripts -->
 <?php include "../snippets/layout/scripts.php" ?>
-<script src="assets/js/header.js"></script>
+<script src="/assets/js/header.js"></script>
 
 </body>
 

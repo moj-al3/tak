@@ -7,8 +7,19 @@ const actions = {
     }
 }
 timeLeft = document.getElementById("time-left");
-timeLeft2 = document.getElementById("time-left2");
 
+
+function convertMinutesToString(minutes) {
+    if (minutes === 0) {
+        return '';
+    } else if (minutes < 60) {
+        return `${minutes}min`;
+    } else {
+        const hours = Math.floor(minutes / 60);
+        const remainingMinutes = minutes % 60;
+        return `${hours}h-${remainingMinutes}min`;
+    }
+}
 
 async function checkNotifications() {
     try {
@@ -22,11 +33,9 @@ async function checkNotifications() {
         }
         //    set the timer if exists
         if (timeLeft) {
-            timeLeft.innerText = (response.timeLeft ?? 0) + "-min"
+            timeLeft.innerText = convertMinutesToString(response.timeLeft ?? 0)
         }
-        if (timeLeft2) {
-            timeLeft2.innerText = (response.timeLeft ?? 0) + "-min"
-        }
+
     } catch (error) {
         console.error(error);
         console.error(error.responseText);
