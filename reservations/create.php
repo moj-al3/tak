@@ -14,7 +14,7 @@ function createReservation()
     $hours = $_POST['hours'];
     $carId = $_POST['car_id'];
     // get the current DateTime
-    $currentDatetime = strtotime(date('Y-m-d H:i:s'));
+    $currentDatetime = date('Y-m-d H:i:s');
 
     // Insert reservation data into the database
     $insertReservationSql = "INSERT INTO Reservation (reserver_id, parking_id, car_id, reservation_datetime,reservation_length) VALUES (?, ?, ?, ?,?)";
@@ -28,7 +28,6 @@ function createReservation()
         header('Location: /reservations/show.php?reservation_id=' . $insertReservationStmt->insert_id);
         exit();
     } else {
-        die($connection->error);
         $_SESSION['messages'] = [["text" => "Failed to create reservation", "type" => "error"]];
         // Handle the error accordingly
     }
