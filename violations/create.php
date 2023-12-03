@@ -47,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $violationTypeId = $violationId;
 
         // Insert the violation into the violations table including the note and violation_end_datetime
-        $insertViolationQuery = "INSERT INTO violations (violation_datetime, violation_end_datetime, car_id, violation_type_id, violator_id, violated_id, note) 
+        $insertViolationQuery = "INSERT INTO Violations (violation_datetime, violation_end_datetime, car_id, violation_type_id, violator_id, violated_id, note) 
                                     VALUES (?, ?, ?, ?, ?, ?, ?)";
         $insertStatement = $connection->prepare($insertViolationQuery);
         $insertStatement->bind_param("ssiiiss", $violationDatetime, $violationEndDatetime, $carId, $violationId, $ownerId, $user['user_id'], $note);
