@@ -20,7 +20,9 @@ if (!defined('INCLUDED_BY_OTHER_FILE')) {
             </ul>
             <ul class="menu desk-menu">
                 <?php if (isset($user)): ?>
-                    <li class="item"><a href="/home.php">Home</a></li>
+                    <?php if ($user["user_type_id"] != 4): ?>
+                        <li class="item"><a href="/home.php">Home</a></li>
+                    <?php endif; ?>
                     <li class="item"><a href="/reservations/create.php">Reservation</a></li>
                     <?php if ($user["user_type_id"] == 3): ?>
                         <li class="item"><a href="/violations/create.php">Violations</a></li>
@@ -70,7 +72,9 @@ if (!defined('INCLUDED_BY_OTHER_FILE')) {
     <div class="nav-cont mobile-nav-cont">
         <ul class="menu modile-menu">
             <?php if (isset($user)): ?>
-                <li class="item"><a href="/home.php">Home</a></li>
+                <?php if ($user["user_type_id"] != 4): ?>
+                    <li class="item"><a href="/home.php">Home</a></li>
+                <?php endif; ?>
                 <li class="item"><a href="/reservations/create.php">Reservation</a></li>
                 <?php if ($user["user_type_id"] == 3): ?>
                     <li class="item"><a href="/violations/create.php">Violations</a></li>

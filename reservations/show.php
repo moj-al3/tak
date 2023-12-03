@@ -198,7 +198,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <section class="airports">
             <div class="flex flex-col flex-grow order-first md:order-2 items-center px-10">
                 <span class="font-bold text-xs text-gray-200">Spot <?= $parking_info['floor_number'] . 'st-' . $parking_info['zone_number'] . $parking_info["parking_number"] ?></span>
-                <h1>timmmmmme</h1>
+                <h1 class="time-left"></h1>
                 <div class="w-full flex items-center mt-2">
                     <div class="w-3 h-3 rounded-full border-2 border-parking-text"></div>
                     <div class="flex-grow border-t-2 border-zinc-400 border-dotted h-px"></div>
@@ -318,7 +318,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <div class="w-3 h-3 rounded-full border-2 border-parking-text"></div>
                         </div>
                         <div class="flex items-center px-3 rounded-full bg-parking-time h-8 mt-2">
-                            <span class="text-sm text-gray-200" id="time-left"></span>
+                            <span class="text-sm text-gray-200 time-left"></span>
                         </div>
                     </div>
                     <div class="flex flex-col items-center text-gray-200">

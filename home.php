@@ -1,6 +1,10 @@
 <?php include "snippets/base.php" ?>
 <?php
 require("snippets/force_loggin.php");
+if ($user["user_type_id"] == 4) {
+    header('Location: /admin/report.php');
+    exit();
+}
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     switch ($_POST["action"] ?? "") {

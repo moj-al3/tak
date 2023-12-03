@@ -31,10 +31,9 @@ async function checkNotifications() {
         } else {
             console.error(response.action + " :Action Not Found")
         }
-        //    set the timer if exists
-        if (timeLeft) {
-            timeLeft.innerText = convertMinutesToString(response.timeLeft ?? 0)
-        }
+        document.querySelectorAll('.time-left').forEach((element) => {
+            element.innerText = convertMinutesToString(response.timeLeft ?? 0)
+        })
 
     } catch (error) {
         console.error(error);
