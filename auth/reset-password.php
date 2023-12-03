@@ -4,13 +4,13 @@
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST["password"];
     $token = $_GET["token"] ?? ""; // Get the token from the URL
-
+    $currentDatetime = date('Y-m-d H:i:s');
     // Verify the validity of the reset token
-    $query = "SELECT email FROM Users WHERE reset_token = ? AND reset_token_expiry > NOW()";
+    $query = "SELECT email FROM Users WHERE reset_token = ? AND reset_token_expiry > ?";
     $stmt = $connection->prepare($query);
 
     if ($stmt) {
-        $stmt->bind_param("s", $token);
+        $stmt->bind_param("ss", $token, $currentDatetime);
         $stmt->execute();
         $stmt->store_result();
 

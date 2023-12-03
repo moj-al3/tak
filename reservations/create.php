@@ -13,12 +13,13 @@ function createReservation()
     $parkingId = $_POST['parking_id'];
     $hours = $_POST['hours'];
     $carId = $_POST['car_id'];
-
+    // get the current DateTime
+    $currentDatetime = strtotime(date('Y-m-d H:i:s'));
 
     // Insert reservation data into the database
-    $insertReservationSql = "INSERT INTO Reservation (reserver_id, parking_id, car_id, reservation_datetime,reservation_length) VALUES (?, ?, ?, NOW(),?)";
+    $insertReservationSql = "INSERT INTO Reservation (reserver_id, parking_id, car_id, reservation_datetime,reservation_length) VALUES (?, ?, ?, ?,?)";
     $insertReservationStmt = $connection->prepare($insertReservationSql);
-    $insertReservationStmt->bind_param("iiii", $user['user_id'], $parkingId, $carId, $hours);
+    $insertReservationStmt->bind_param("iiisi", $user['user_id'], $parkingId, $carId, $currentDatetime, $hours);
 
     if ($insertReservationStmt->execute()) {
         $reservationId = $insertReservationStmt->insert_id;
@@ -245,7 +246,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             foreach ($rows as $row) {
                 echo '<div class="row">';
-                for ($i = 1; $i <= 9; $i++) { 
+                for ($i = 1; $i <= 9; $i++) {
                     $spot = $row . $i;
                     $key = $floor . '-' . $spot;
 
@@ -265,11 +266,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 
     <?php if ($user["user_type_id"] == "2"): ?>
-            <div class="time-selection">
-                <button class="time-reservation" data-hours="1">1 hour</button>
-                <button class="time-reservation" data-hours="2">2 hours</button>
-                <button class="time-reservation" data-hours="3">3 hours</button>
-            </div>
+        <div class="time-selection">
+            <button class="time-reservation" data-hours="1">1 hour</button>
+            <button class="time-reservation" data-hours="2">2 hours</button>
+            <button class="time-reservation" data-hours="3">3 hours</button>
+        </div>
     <?php endif ?>
 
     <?php if ($user["user_type_id"] == "1" || $user["user_type_id"] == "2"): ?>

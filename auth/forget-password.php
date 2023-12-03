@@ -10,13 +10,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (filter_var($email, FILTER_VALIDATE_EMAIL) && isEmailAlreadyUsed($connection, $email)) {
         // Generate a random token for password reset
         $token = bin2hex(random_bytes(32));
+        $currentDatetime = date('Y-m-d H:i:s');
 
         // Store the token in the users table along with the user's email
-        $query = "UPDATE Users SET reset_token = ?, reset_token_expiry = DATE_ADD(NOW(), INTERVAL 1 HOUR) WHERE email = ?";
+        $query = "UPDATE Users SET reset_token = ?, reset_token_expiry = DATE_ADD(?, INTERVAL 1 HOUR) WHERE email = ?";
         $stmt = $connection->prepare($query);
 
         if ($stmt) {
-            $stmt->bind_param("ss", $token, $email);
+            $stmt->bind_param("sss", $token, $currentDatetime, $email);
             $stmt->execute();
             $stmt->close();
 

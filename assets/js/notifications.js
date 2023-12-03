@@ -141,7 +141,7 @@ async function showBlock(response) {
 const minutesSpace = 0.08;
 window.onload = () => {
     // run for the first time
-    // checkNotifications()
+    checkNotifications()
     //then run every minutesSpace
-    // setInterval(checkNotifications, (minutesSpace) * 60000);
+    setInterval(checkNotifications, (minutesSpace) * 60000);
 }
