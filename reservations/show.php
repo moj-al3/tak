@@ -1,4 +1,4 @@
-    <?php include "../snippets/base.php" ?>
+<?php include "../snippets/base.php" ?>
 <?php
 require("../snippets/force_loggin.php");
 
