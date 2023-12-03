@@ -28,6 +28,7 @@ function createReservation()
         header('Location: /reservations/show.php?reservation_id=' . $insertReservationStmt->insert_id);
         exit();
     } else {
+        die($connection->error);
         $_SESSION['messages'] = [["text" => "Failed to create reservation", "type" => "error"]];
         // Handle the error accordingly
     }
