@@ -550,7 +550,7 @@ function getReservationCount($userTypeId, $connection, $currentMonth, $currentYe
 {
     $sql = "SELECT COUNT(*) AS reservation_count
             FROM Reservation AS R
-            JOIN users AS U ON R.reserver_id = U.user_id
+            JOIN Users AS U ON R.reserver_id = U.user_id
             WHERE MONTH(R.reservation_datetime) = ? 
             AND YEAR(R.reservation_datetime) = ?
             AND U.user_type_id = ?";
@@ -569,8 +569,8 @@ function getReservationCount($userTypeId, $connection, $currentMonth, $currentYe
 function getViolationCount($userTypeId, $violationTypeId, $connection, $currentMonth, $currentYear)
 {
     $sql = "SELECT COUNT(*) AS violation_count
-            FROM violations AS V
-            JOIN users AS U ON V.violator_id = U.user_id
+            FROM Violations AS V
+            JOIN Users AS U ON V.violator_id = U.user_id
             WHERE MONTH(V.violation_datetime) = ? 
             AND YEAR(V.violation_datetime) = ?
             AND U.user_type_id = ?
