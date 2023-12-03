@@ -9,7 +9,7 @@ include 'PHPMailer/src/SMTP.php';
 
 $EMAIL = 'ghadoorabbas1422@gmail.com';
 $PASSWORD = "nzqb entp kyhn wvin";
-$ADMIN_EMAIL = "mojtaba1430@gmail.com";
+$ADMIN_EMAIL = "trkeen.kfu@gmail.com";
 
 function sendEmail($receiver, $subject, $body)
 {

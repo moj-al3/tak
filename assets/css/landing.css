@@ -1,32 +1,51 @@
-:root {
+body {
   background: #080b1d;
   background-image: url("/assets/img/landing.png") !important;
   background-repeat: no-repeat;
-
+  background-size: cover;
 }
-/* body {
-  background: #080b1d;
-  background-image: url("/assets/img/landing.png") !important;
-  background-repeat: no-repeat;
+/* landing design */
+.landing {
+  color: #fff;
+  font-size: larger;
+}
 
-} */
 
-/* responsive */
+.lan #content {
+  color: #fff;
+  display: flex;
+  align-items: center;
+  margin: 1rem 2rem;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+/* enter buttom */
+.index .enter {
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.index .enter button {
+  background-color: #FF0050;
+  width: 200px;
+  margin-top: 90px;
+}
+
+
 @media(max-width: 667px) {
   .landing {
     font-size: small;
-    /* margin: auto;
-    width: 50%;
-    position: absolute;
-    left: 100px; */
   }
+.lan #content {
+  justify-content: center;
 }
+}
+@media (max-width: 957px) {
 
-/* @media(max-width: 667px) {
-  .enter {
-    position: absolute;
-    top: 600px;
-    width: 50%;
-
-  }
-} */
+.lan #content {
+  justify-content: center;
+}
+}

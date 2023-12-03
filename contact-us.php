@@ -53,7 +53,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             border-radius: 4px;
             resize: vertical;
             background-color: transparent;
-            background-color: #f9f9f9; /* Set background color to a slightly lighter gray */
+            background-color: #f9f9f9;
+            /* Set background color to a slightly lighter gray */
 
         }
 
@@ -71,70 +72,92 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         .card {
             background-color: #fff;
-            padding: 20px;
+            padding: 40px;
             margin-top: 20px;
             /* box-shadow: 0 0 100px rgba(0, 0, 0, 0.1); */
             border-radius: 8px;
-            width: 500px;
+            /* width: 500px; */
             margin-bottom: 100px;
             box-shadow: 1px 1px 10px -1px black;
+        }
+
+        @media only screen and (max-width: 375px) {
+
+            h1 {
+                font-size: 30px;
+                font-family: 'Fira Sans', sans-serif;
+                font-family: 'Poppins', sans-serif;
+                font-family: 'Roboto', sans-serif;
+            }
+
+            .form-container {
+                padding: 10px;
+            }
+
+            .card {
+                width: 95%;
+                margin: auto;
+
+            }
         }
     </style>
 </head>
 
 <body>
-<?php include "./snippets/layout/header.php" ?>
+    <?php include "./snippets/layout/header.php" ?>
 
-<div class="container">
-    <h1>Contact Us</h1>
-    <form id="contact-form" class="card" onsubmit="showConfirmationMessage(this);return false" method="post">
-        <div class="form-group">
-            <label for="first_name">First Name:</label>
-            <input type="text" id="first_name" name="first_name" required>
-        </div>
-        <div class="form-group">
-            <label for="last_name">Last Name:</label>
-            <input type="text" id="last_name" name="last_name" required>
-        </div>
+    <div class="container">
+        <h1 style="color:#FF0050; ">We are here to help you!</h1>
+        <h4 style="text-align: center;">If you have any suggestions or any problems, we are happy with contact as </h4>
+        <form id="contact-form" class="card" onsubmit="showConfirmationMessage(this);return false" method="post">
+            <h2>Do You Need Help?</h2>
+            <div class="form-group">
+                <label for="first_name">First Name:</label>
+                <input type="text" id="first_name" name="first_name" required>
+            </div>
+            <div class="form-group">
+                <label for="last_name">Last Name:</label>
+                <input type="text" id="last_name" name="last_name" required>
+            </div>
 
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-        </div>
-        <div class="form-group">
-            <label for="message">Message:</label>
-            <textarea id="message" name="message" rows="5" required></textarea>
-        </div>
-        <button type="submit" class="contact-btn">Submit</button>
-    </form>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" rows="5" required></textarea>
+            </div>
+            <button type="submit" class="contact-btn">Submit</button>
+        </form>
 
-    <div id="success-message" class="success-message" style="display: none;">
-        Your message has been sent successfully. We will get back to you soon!
+        <div id="success-message" class="success-message" style="display: none;">
+            Your message has been sent successfully. We will get back to you soon!
+        </div>
     </div>
-</div>
 
-<script src="/assets/js/sweetalert2.all.min.js"></script>
-<script>
-    async function showConfirmationMessage(form) {
-        const result = await Swal.fire({
-            title: "Are you sure?",
-            confirmButtonText: "Yes",
-            showCancelButton: true,
-            cancelButtonText: "Cancel",
-            cancelButtonColor: '#d33',
-        })
+    <script src="/assets/js/sweetalert2.all.min.js"></script>
+    <script>
+        async function showConfirmationMessage(form) {
+            const result = await Swal.fire({
+                title: "Are you sure?",
+                confirmButtonText: "Yes",
+                showCancelButton: true,
+                cancelButtonText: "Cancel",
+                cancelButtonColor: '#d33',
+            })
 
-        if (result.isConfirmed) {
-            form.submit();
+            if (result.isConfirmed) {
+                form.submit();
+            }
         }
-    }
-</script>
+    </script>
 
-<?php include "./snippets/layout/footer.php" ?>
-<!-- Javascripts -->
-<?php include "./snippets/layout/scripts.php" ?>
-<?php include "./snippets/layout/messages.php" ?>
-<script src="./assets/js/header.js"></script>
+    <?php include "./snippets/layout/footer.php" ?>
+    <!-- Javascripts -->
+    <?php include "./snippets/layout/scripts.php" ?>
+    <?php include "./snippets/layout/messages.php" ?>
+    <script src="./assets/js/header.js"></script>
 
 </body>
 

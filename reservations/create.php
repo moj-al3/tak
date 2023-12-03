@@ -240,12 +240,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         foreach ($floors as $floor) {
             $floorClass = ($floor === 1) ? '' : 'hide';
-            echo '<div id="floor' . $floor . '" class="floor ' . $floorClass . '">';
+            echo '<div id="floor' . $floor . '" class="floor show ' . $floorClass . '">';
             $rows = ['A', 'B', 'C', 'D', 'E', 'F'];
 
             foreach ($rows as $row) {
                 echo '<div class="row">';
-                for ($i = 1; $i <= 9; $i++) {
+                for ($i = 1; $i <= 9; $i++) { 
                     $spot = $row . $i;
                     $key = $floor . '-' . $spot;
 
@@ -265,11 +265,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 
     <?php if ($user["user_type_id"] == "2"): ?>
-        <div class="time-selection">
-            <button class="time-reservation" data-hours="1">1 hour</button>
-            <button class="time-reservation" data-hours="2">2 hours</button>
-            <button class="time-reservation" data-hours="3">3 hours</button>
-        </div>
+            <div class="time-selection">
+                <button class="time-reservation" data-hours="1">1 hour</button>
+                <button class="time-reservation" data-hours="2">2 hours</button>
+                <button class="time-reservation" data-hours="3">3 hours</button>
+            </div>
     <?php endif ?>
 
     <?php if ($user["user_type_id"] == "1" || $user["user_type_id"] == "2"): ?>

@@ -5,7 +5,7 @@ if ($user["user_type_id"] != "3") {
     die("Access Denied");
 }
 // Fetch violation types with their IDs from the database
-$violationTypesQuery = "SELECT violation_type_id, name,number_of_days FROM ViolationTypes";
+$violationTypesQuery = "SELECT violation_type_id, name,number_of_days FROM ViolationTypes WHERE violation_type_id!=3";
 $violationTypesResult = $connection->query($violationTypesQuery);
 $violationTypes = $violationTypesResult->fetch_all(MYSQLI_ASSOC);
 
@@ -76,7 +76,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Record Violation</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-
+    
 
 <body>
     <?php include "../snippets/layout/header.php" ?>

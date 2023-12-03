@@ -49,7 +49,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <?php include "../snippets/layout/header.php" ?>
 <div id="content" class="container">
     <form class="fp_form" method="POST">
-        <h1>Forget Password</h1>
+        <h1 style="text-align: center; 
+        font-size:30px">Forget Password</h1>
         <p>Please enter your email address</p>
         <div class="input-group">
             <label for="email">Email*</label>

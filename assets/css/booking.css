@@ -52,7 +52,7 @@
 }
 
 .spot.selected {
-    background-color: #FF0050;
+    background-color:#fff;
 
 }
 
@@ -146,6 +146,7 @@ h6 {
 .spot.available:hover h6 {
     color: white;
 }
+
 
 
 /* Tablet menu */

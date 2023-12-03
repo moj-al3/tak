@@ -16,12 +16,6 @@ body {
   display: grid;
 }
 
-/* landing design */
-.landing {
-  color: #fff;
-  font-size: larger;
-}
-
 /* glopal design */
 label {
   display: block;
@@ -38,9 +32,6 @@ label {
   border-radius: 5px;
 }
 
-.input-group {
-  /* margin: 2rem 0; */
-}
 
 .width-50 {
   width: 30%;
@@ -240,7 +231,7 @@ h1 {
 button {
   appearance: button;
   backface-visibility: hidden;
-  background-color: #f54082;
+  background-color:#FF0050;
   border-radius: 6px;
   border-width: 0;
   box-shadow: rgba(50, 50, 93, .1) 0 0 0 1px inset, rgba(50, 50, 93, .1) 0 2px 5px 0, rgba(0, 0, 0, .07) 0 1px 1px 0;
@@ -272,8 +263,7 @@ button:hover {
 
 /* forget password form  */
 .fp_form {
-  width: clamp(320px, 30px, 430px);
-  margin-top: 150px;
+  width: clamp(420px, 30px, 430px);
   border: 1px solid #ccc;
   border-radius: 10px;
   padding: 10%;
@@ -300,8 +290,7 @@ p {
 
 /* reset password */
 .reset_form {
-  width: clamp(320px, 30px, 430px);
-  margin-top: 150px;
+  width: clamp(380px, 30px, 430px);
   border: 1px solid #ccc;
   border-radius: 10px;
   padding: 10%;
@@ -338,19 +327,7 @@ p {
   justify-content: space-between;
 }
 
-/* enter buttom */
-.index .enter {
-  color: #fff;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
 
-.index .enter button {
-  background-color: #FF0050;
-  width: 200px;
-  margin-top: 90px;
-}
 
 .swal2-html-container input {
 

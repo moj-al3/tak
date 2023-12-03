@@ -1,4 +1,4 @@
-<?php include "../snippets/base.php" ?>
+    <?php include "../snippets/base.php" ?>
 <?php
 require("../snippets/force_loggin.php");
 
@@ -146,7 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <style>
         body {
             overflow-x: hidden;
-            background-image: linear-gradient(to top, #a7a6cb 0%, #8989ba 52%, #8989ba 100%);
+            background-image: linear-gradient(to top, #FAF3F0 0%, #d7e3f9 150%);
             background-position: center !important;
             background-repeat: no-repeat !important;
             background-size: contain !important;
@@ -198,6 +198,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <section class="airports">
             <div class="flex flex-col flex-grow order-first md:order-2 items-center px-10">
                 <span class="font-bold text-xs text-gray-200">Spot <?= $parking_info['floor_number'] . 'st-' . $parking_info['zone_number'] . $parking_info["parking_number"] ?></span>
+                <h1>timmmmmme</h1>
                 <div class="w-full flex items-center mt-2">
                     <div class="w-3 h-3 rounded-full border-2 border-parking-text"></div>
                     <div class="flex-grow border-t-2 border-zinc-400 border-dotted h-px"></div>
@@ -220,7 +221,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div>
             </div>
         </section>
-        <section class="place">
+        <section class="    ">
             <div class="flex w-full mt-auto justify-between">
                 <!-- <div class="flex flex-col">
                                     <span class="text-xs text-parking-text text-gray-200">Date</span>
@@ -299,6 +300,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
                 </div>
+                <!-- larg ticket -->
                 <div class="flex w-full justify-between items-center">
                     <div class="flex flex-col items-center">
                         <span class="text-4xl font-bold text-gray-200">PARK</span>
