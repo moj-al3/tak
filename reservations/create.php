@@ -63,15 +63,15 @@ function SwitchReservation()
         $_SESSION['messages'] = [["text" => "There is already a reservation in the new spot", "type" => "error"]];
         return;
     }
-
+    $currentDatetime = date('Y-m-d');
     // Fetch reservation data for the new spot
     $getReservationDataSql = "SELECT res.car_id, reserver_id, Cars.owner_id 
                               FROM Reservation res
                               JOIN Cars ON res.car_id = Cars.car_id
                               WHERE res.parking_id = ? 
-                              AND DATE(res.reservation_datetime) = CURDATE()";
+                              AND DATE(res.reservation_datetime) = ?";
     $getReservationDataStmt = $connection->prepare($getReservationDataSql);
-    $getReservationDataStmt->bind_param("i", $parkingInfoArray[$previousSpot]);
+    $getReservationDataStmt->bind_param("is", $parkingInfoArray[$previousSpot], $currentDatetime);
     $getReservationDataStmt->execute();
     $reservationDataResult = $getReservationDataStmt->get_result();
 
@@ -79,11 +79,11 @@ function SwitchReservation()
     $carId = $reservationData['car_id'];
     $ownerId = $reservationData['owner_id'];
     $violatorId = $user['user_id']; // Use the violator_id from $user
-
+    $currentDate = date('Y-m-d');
     // Update the database with the new parking information
-    $updateSql = "UPDATE Reservation SET parking_id = ? WHERE parking_id = ? AND DATE(reservation_datetime) = CURDATE()";
+    $updateSql = "UPDATE Reservation SET parking_id = ? WHERE parking_id = ? AND DATE(reservation_datetime) = ?";
     $updateStmt = $connection->prepare($updateSql);
-    $updateStmt->bind_param("ii", $parkingInfoArray[$newSpot], $parkingInfoArray[$previousSpot]);
+    $updateStmt->bind_param("iis", $parkingInfoArray[$newSpot], $parkingInfoArray[$previousSpot], $currentDate);
 
     $result = $updateStmt->execute();
 
@@ -112,11 +112,11 @@ if ($blockingEndDatetime !== null) {
     exit();
 }
 
-
+$currentDate = date('Y-m-d');
 // Check if the user already has a reservation for today
-$checkReservationSql = "SELECT COUNT(*) AS count FROM Reservation WHERE reserver_id = ? AND DATE(reservation_datetime) = CURDATE() AND exit_datetime is NULL";
+$checkReservationSql = "SELECT COUNT(*) AS count FROM Reservation WHERE reserver_id = ? AND DATE(reservation_datetime) = ? AND exit_datetime is NULL";
 $checkReservationStmt = $connection->prepare($checkReservationSql);
-$checkReservationStmt->bind_param("i", $user['user_id']);
+$checkReservationStmt->bind_param("is", $user['user_id'], $currentDate);
 $checkReservationStmt->execute();
 $checkReservationResult = $checkReservationStmt->get_result();
 $reservationCount = $checkReservationResult->fetch_assoc()['count'];

@@ -92,11 +92,11 @@ if (!isset($user) || ($user["user_type_id"] != 1 && $user["user_type_id"] != 2))
     echo json_encode(["action" => "nothing"]);
     exit();
 }
-
+$currentDatetime = date('Y-m-d');
 // Check if the user already has an open reservation for today
-$reservationSql = "SELECT *  FROM Reservation WHERE reserver_id = ? AND DATE(reservation_datetime) = CURDATE() AND exit_datetime is NULL LIMIT 1";
+$reservationSql = "SELECT *  FROM Reservation WHERE reserver_id = ? AND DATE(reservation_datetime) = ? AND exit_datetime is NULL LIMIT 1";
 $reservationStmt = $connection->prepare($reservationSql);
-$reservationStmt->bind_param("i", $user['user_id']);
+$reservationStmt->bind_param("is", $user['user_id'], $currentDatetime);
 $reservationStmt->execute();
 $reservationResult = $reservationStmt->get_result()->fetch_assoc();
 
