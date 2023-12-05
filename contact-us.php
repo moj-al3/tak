@@ -108,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <div class="container">
         <h1 style="color:#FF0050; ">We are here to help you!</h1>
-        <h4 style="text-align: center;">If you have any suggestions or any problems, we are happy with contact as </h4>
+        <h4 style="text-align: center;">If you have any suggestions or any problems, we are happy with contact us </h4>
         <form id="contact-form" class="card" onsubmit="showConfirmationMessage(this);return false" method="post">
             <h2>Do You Need Help?</h2>
             <div class="form-group">

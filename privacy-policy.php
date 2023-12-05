@@ -6,7 +6,7 @@
 <head>
 <?php include "./snippets/layout/head.php" ?>
 
-    <title>Privacy Policy - Your Parking Website</title>
+    <title>Privacy Policy Tarkeen </title>
     <style>
         .container {
             max-width: 800px;
@@ -40,7 +40,7 @@
 <?php include "./snippets/layout/header.php" ?>
 <div class="container">
 
-    <h1>Privacy Policy for Your Parking Website</h1>
+    <h1>Privacy Policy for Tarkeen website</h1>
 
     <p>At Tarkeen, we respect your privacy and are committed to protecting your personal information. This Privacy Policy outlines how we collect, use, disclose, and safeguard your information when you visit or use our parking website. Please read this policy carefully to understand our practices regarding your personal information and how we will treat it.</p>
 
@@ -94,7 +94,7 @@
 
     <p>We may update this Privacy Policy from time to time to reflect changes to our information practices. We encourage you to review this Privacy Policy periodically for any updates. The "Effective Date" at the top of this Privacy Policy indicates when it was last revised.</p>
 
-    <p id="last-updated">Last Updated: [Insert Date]</p>
+    <p id="last-updated">Last Updated:</p>
 
     <p>By using our parking website, you signify your acceptance of this Privacy Policy. If you do not agree with the terms of this Privacy Policy, please do not use our website.</p>
 </div>

@@ -125,6 +125,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Javascript -->
     <?php include "../snippets/layout/scripts.php" ?>
     <?php include "../snippets/layout/messages.php" ?>
+    <script src="./assets/js/header.js"></script>
+
 
 </body>
 
