@@ -101,7 +101,7 @@ async function showReminder(response) {
         confirmButtonText: "Extend",
         showConfirmButton: canExtend,
         showCancelButton: true,
-        cancelButtonText: "Cancel",
+        cancelButtonText: "Cancel Reservation",
         cancelButtonColor: '#d33',
 
     });
