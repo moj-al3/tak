@@ -66,7 +66,7 @@ function checkAfterEnter(array $reservationResult, $connection)
         // Calculate violation_end_datetime
         $violationEndDatetime = date('Y-m-d H:i:s', strtotime("+ 1 days"));
         // Insert the violation into the violations table including the note and violation_end_datetime
-        $insertViolationQuery = "INSERT INTO violations (violation_datetime, violation_end_datetime, car_id, violation_type_id, violator_id, violated_id) 
+        $insertViolationQuery = "INSERT INTO Violations (violation_datetime, violation_end_datetime, car_id, violation_type_id, violator_id, violated_id) 
                                     VALUES (?, ?, ?, 1, ?, 1)";
         $insertStatement = $connection->prepare($insertViolationQuery);
         $insertStatement->bind_param("ssii", $violationDatetime, $violationEndDatetime, $reservationResult["car_id"], $reservationResult['reserver_id']);
